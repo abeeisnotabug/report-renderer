@@ -1,0 +1,125 @@
+/* Layered reports (see layers.lua). Inlined by render.mjs only when the page has the toolbar. */
+:root{--accent:#2f7d6d;--peek-shadow:rgba(0,0,0,.18)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--accent:#6cc3ae;--peek-shadow:rgba(0,0,0,.6)}}
+:root[data-theme="dark"]{--accent:#6cc3ae;--peek-shadow:rgba(0,0,0,.6)}
+
+#layer-toolbar{position:sticky;top:0;z-index:20;display:flex;flex-wrap:wrap;gap:6px;align-items:center;background:var(--bg);border-bottom:1px solid var(--rule);padding:6px 0;margin:0 0 .4em}
+.tb{font:inherit;font-size:.8em;line-height:1.2;color:var(--fg);background:var(--code-bg);border:1px solid var(--rule);border-radius:4px;padding:.25em .6em;min-height:30px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:.35em}
+.tb input{margin:0}
+[id]{scroll-margin-top:56px}
+
+details>summary{cursor:pointer;list-style:none}
+details>summary::-webkit-details-marker{display:none}
+
+/* sections */
+details.sec{border-bottom:1px solid var(--rule)}
+details.sec>summary{padding:0 0 .35em}
+details.sec>summary h2{border-bottom:0;margin:1.1em 0 .15em;padding:0 0 0 1.1em;position:relative}
+details.sec>summary h2::before{content:"▸";position:absolute;left:0;top:.05em;color:var(--accent);transition:transform .15s}
+details.sec[open]>summary h2::before{transform:rotate(90deg)}
+.gist{margin:0 0 .2em 1.35em;font-size:.95em}
+.gist p{margin:.3em 0}
+details.sec.side>summary h2::after{content:"side trip";font-size:.6em;font-weight:normal;color:var(--muted);border:1px solid var(--rule);border-radius:3px;padding:0 .3em;margin-left:.5em;vertical-align:middle}
+
+/* items */
+.item{margin:.9em 0;padding:0 0 0 .7em;border-left:3px solid var(--rule)}
+.item.core{border-left-color:var(--accent)}
+details.item>summary>p:first-child,div.item>p:first-child{margin-top:.2em}
+.uses{font-size:.85em;color:var(--muted);margin:.25em 0}
+.more-hint{display:block;font-size:.82em;color:var(--link);margin:.15em 0 .35em}
+.more-hint::before{content:"▸ steps and details"}
+details.item[open]>summary .more-hint::before{content:"▾ hide steps"}
+
+/* folds inside items: Why, Tools, restated results, R code */
+details.why,details.fold,details.rcode{margin:.35em 0}
+details.why>summary,details.fold>summary,details.rcode>summary{display:inline-block;font-size:.82em;color:var(--link)}
+details.why>summary::before,details.fold>summary::before,details.rcode>summary::before{content:"▸ "}
+details.why[open]>summary::before,details.fold[open]>summary::before,details.rcode[open]>summary::before{content:"▾ "}
+details.why[open],details.fold[open]{border-left:2px solid var(--rule);padding-left:.6em}
+
+/* the other report's route, under an item or in a pair */
+details.route{margin:.3em 0 .9em 1em;padding:.1em .6em;border:1px dashed var(--rule);border-radius:4px;background:var(--quote-bg)}
+details.route>summary{font-size:.85em;color:var(--link);padding:.15em 0}
+details.route>summary::before{content:"▸ "}
+details.route[open]>summary::before{content:"▾ "}
+details.route[open]>summary{margin-bottom:.3em;border-bottom:1px solid var(--rule)}
+.route-link{font-size:.82em;margin:.4em 0 .2em}
+.pair{border-left-color:var(--accent)}
+.pair>details.route{margin-left:0}
+
+/* phones: slimmer boxes, so display formulas keep almost the full width */
+@media (max-width:560px){
+  .item{padding-left:.35em;border-left-width:2px}
+  details.route{margin-left:0;padding:.1em .35em}
+}
+
+/* lecture results */
+.lec{margin:.7em 0;padding:0 0 0 .7em;border-left:3px solid var(--quote-bar)}
+
+/* big-picture map */
+.map{margin:1em 0;font-size:.86em;line-height:1.3}
+.map-row{border:1px solid var(--rule);border-radius:6px;padding:.4em .5em .5em;background:var(--quote-bg)}
+.map-row h4{margin:0 0 .35em;font-size:1em}
+.map-chain{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.map-chain a{display:block;border:1px solid var(--rule);border-left:3px solid var(--accent);border-radius:4px;padding:.25em .4em;background:var(--bg);color:var(--fg);text-decoration:none}
+.map-chain a b{color:var(--link)}
+.map-chain .arr{display:none}
+@media (min-width:700px){.map-chain{display:flex;align-items:stretch;gap:4px}.map-chain a{flex:1 1 0}.map-chain .arr{display:block;align-self:center;color:var(--muted)}}
+.map-link{text-align:center;color:var(--muted);margin:.25em 0;font-size:.95em}
+.map-side{margin-top:.6em;color:var(--muted)}
+
+/* core only (screen only; the PDF always has everything) */
+@media screen{html.core-only .side{display:none}}
+
+/* contents */
+#toc{font-size:.9em;margin:.5em 0 1em}
+#toc .toc-title{font-weight:bold;margin:.2em 0}
+#toc ol{padding-left:1.3em;margin:.2em 0}
+#toc li{margin:.25em 0}
+#toc li.side a{color:var(--muted)}
+#toc a.current{font-weight:bold}
+/* beside the text only where it fits next to the 832 px column (text 800 px plus padding) */
+@media screen and (min-width:1380px){
+  #toc{position:fixed;top:64px;left:calc(50% - 416px - 15rem - 24px);width:15rem;max-height:calc(100vh - 84px);overflow:auto;margin:0;font-size:.82em}
+  #tb-toc{display:none}
+}
+
+/* preview of a cited item or lecture result */
+#peek{position:fixed;left:0;right:0;bottom:0;z-index:30;max-height:62vh;overflow:auto;background:var(--bg);border-top:3px solid var(--accent);box-shadow:0 -4px 18px var(--peek-shadow);padding:0 16px 1em}
+@media (min-width:760px){#peek{left:auto;right:16px;bottom:16px;width:30rem;border:1px solid var(--rule);border-top:3px solid var(--accent);border-radius:6px}}
+#peek[hidden]{display:none}
+.peek-bar{display:flex;justify-content:space-between;align-items:center;gap:8px;position:sticky;top:0;background:var(--bg);padding:.45em 0 .3em;border-bottom:1px solid var(--rule)}
+.peek-go{font-size:.9em}
+.peek-close{font:inherit;font-size:1.3em;line-height:1;background:none;border:0;color:var(--muted);cursor:pointer;padding:0 .2em;min-width:32px;min-height:32px}
+
+@media print{
+  #layer-toolbar,#peek,.more-hint,details.route.inreport,.route-link{display:none!important}
+  #toc{position:static}
+  details.sec>summary{break-inside:avoid;break-after:avoid}
+  details.sec>summary h2{padding-left:0}
+  details.sec>summary h2::before{content:none}
+  details.why>summary::before,details.fold>summary::before,details.rcode>summary::before{content:""}
+  .map-chain a{break-inside:avoid}
+  .item{break-inside:auto}
+}
+
+/* Added for the lecture companions (2026-09-27) ------------------------------------------ */
+/* item kinds: definitions green, results red, examples and remarks blue */
+:root{--k-def:#146e28;--k-res:#961414;--k-ex:#1f5f8b;--k-exer:#8a5a00;--k-ov:#5b3f8c}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--k-def:#7fcf8f;--k-res:#f08a8a;--k-ex:#7fb6e0;--k-exer:#e0b060;--k-ov:#c0a8ec}}
+:root[data-theme="dark"]{--k-def:#7fcf8f;--k-res:#f08a8a;--k-ex:#7fb6e0;--k-exer:#e0b060;--k-ov:#c0a8ec}
+.item.k-def>summary>p:first-child>strong:first-child,div.item.k-def>p:first-child>strong:first-child{color:var(--k-def)}
+.item.k-res>summary>p:first-child>strong:first-child,div.item.k-res>p:first-child>strong:first-child{color:var(--k-res)}
+.item.k-ex>summary>p:first-child>strong:first-child,div.item.k-ex>p:first-child>strong:first-child,
+.item.k-rem>summary>p:first-child>strong:first-child,div.item.k-rem>p:first-child>strong:first-child{color:var(--k-ex)}
+.item.k-exer>summary>p:first-child>strong:first-child,div.item.k-exer>p:first-child>strong:first-child{color:var(--k-exer)}
+.item.k-ov>summary>p:first-child>strong:first-child,div.item.k-ov>p:first-child>strong:first-child{color:var(--k-ov)}
+.item.k-exer{background:linear-gradient(90deg,var(--quote-bg),transparent 60%)}
+/* wide tables scroll sideways instead of widening the page */
+table{display:block;overflow-x:auto;max-width:100%}
+td .katex,th .katex{white-space:nowrap}
+/* hand-drawn diagrams */
+.diagram{margin:1em 0;text-align:center}
+.diagram svg{max-width:100%;height:auto}
+.diagram .cap{font-size:.9em;color:var(--muted);text-align:left}
+figure img{background:#fff;border-radius:3px}
