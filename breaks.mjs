@@ -4,7 +4,8 @@
 // - centred; a formula that fits stays on one line;
 // - too wide: break before the first = outside brackets, later lines indented 1.5em; a part that
 //   still does not fit breaks before + or × outside brackets, its last line pushed to the right;
-// - a chain (two or more = outside brackets) always gets one line per =;
+// - a chain (two or more relations =, <, ≤, ≥, ≈ ... outside brackets) always gets one line per
+//   relation;
 // - inside brackets: before a conditioning bar first, then after a comma, anywhere else last.
 // Uses an internal KaTeX function (__renderToDomTree): keep KaTeX pinned in package.json.
 import { createRequire } from 'node:module';
@@ -91,7 +92,9 @@ export function render(tex) {
   endSeg();
   const nest = s => s.length === 1 ? s[0] : wrap('katex-seg', [s[0], nest(s.slice(1))]);
   const firstAtom = n => { for (const ch of (n.children || [])) { if (blank(ch)) continue; return /katex-(base|piece|seg|grp)/.test(cls(ch).join(' ')) ? firstAtom(ch) : ch; } return null; };
-  const eqStarts = segs.map((s, k) => k > 0 && textOf(firstAtom(s) || {}) === '=');
+  // relations that make a chain: comparisons, not ∈, ⊂, → or ∼
+  const chainRel = /^(=|<|>|≤|≥|≈|≡|≠|≔|:|⩽|⩾|≪|≫|≐|≃|≅)/;
+  const eqStarts = segs.map((s, k) => k > 0 && chainRel.test(textOf(firstAtom(s) || {})));
   if (eqStarts.filter(Boolean).length >= 2) {
     const lines = []; let cur = [];
     segs.forEach((s, k) => { if (eqStarts[k]) { lines.push(cur); cur = [s]; } else cur.push(s); });
@@ -108,6 +111,8 @@ export const css = `
 .katex-display{container-type:inline-size}
 td .katex-display,th .katex-display{container-type:normal}
 .katex-seg,.katex-piece,.katex-grp{display:inline-block;max-width:calc(100cqw - 1.5em)}
+/* set by the page script: the rest wrapped beside a short left-hand side, so it starts its own line */
+.katex-html.split>.katex-seg:nth-child(2){display:block;margin-left:1.5em}
 .katex-html>.katex-seg:first-child,.katex-html>.katex-seg:first-child :is(.katex-seg,.katex-piece,.katex-grp),.fx-lhs :is(.katex-seg,.katex-piece,.katex-grp){max-width:100cqw}
 .katex-seg{text-align:left;text-align-last:right}
 .katex-html .katex-base{text-align-last:auto}
@@ -126,6 +131,15 @@ export const script = `(() => {
     const h = d.querySelector('.katex-html');
     if (!h) return;
     h.style.width = '';
+    h.classList.remove('split');
+    // a right-hand side that wraps but still sits beside a left-hand side narrower than the indent
+    // would line up with it by its last line: give it its own line instead
+    const [lhs, rest] = h.children;
+    if (d.clientWidth > 0 && rest && rest.classList.contains('katex-seg') && lhs.classList.contains('katex-seg')) {
+      const bs = rest.querySelectorAll('.katex-base');
+      if (bs.length > 1 && bs[bs.length - 1].getBoundingClientRect().top > bs[0].getBoundingClientRect().bottom - 2
+        && rest.getBoundingClientRect().left > lhs.getBoundingClientRect().left + 1) h.classList.add('split');
+    }
     if (d.clientWidth > 0) {
       const left = h.getBoundingClientRect().left;
       const right = Math.max(...[...h.querySelectorAll('.katex-base')].map(b => b.getBoundingClientRect().right));

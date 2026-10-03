@@ -62,8 +62,9 @@ except where this file says otherwise.
   - too wide: it breaks before the first = outside brackets, and the lines after it are indented;
   - a part that still does not fit breaks before + or × outside brackets, and its last line is
     pushed to the right edge;
-  - a chain, a formula with two or more = outside brackets, always gets one line per =, on every
-    screen;
+  - a chain, a formula with two or more relations (=, <, ≤, ≥, ≈, ...) outside brackets, always
+    gets one line per relation, on every screen; ∈, ⊂, → and ∼ do not count;
+  - a right-hand side that has to wrap starts its own line under a short left-hand side;
   - inside brackets it breaks first before a conditioning bar, then after a comma, anywhere else
     only as a last resort;
   - a broken formula is centred as a whole;
