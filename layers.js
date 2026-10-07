@@ -49,7 +49,7 @@
     for (const n of nodes) {
       const c = n.cloneNode(true);
       if (c.nodeType === 1) {
-        if (c.matches('.uses, .more-hint')) continue;
+        if (c.matches('.uses, .more-hint, details.sub')) continue;
         c.removeAttribute('id');
         c.querySelectorAll('[id]').forEach(x => x.removeAttribute('id'));
       }

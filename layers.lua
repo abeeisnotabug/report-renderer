@@ -34,6 +34,13 @@ Markup (Pandoc fenced divs):
   :::
   :::
 
+  ::: {#W5 .item}                   an item with separate folds instead of `::: more`:
+  **W5. [core] Title.** Statement.  the statement stays open; under it one closed fold each,
+  ::: intuition                     "Intuition" (what it means, a picture, where it fails),
+  ::: steps                         "Steps" (the derivation),
+  ::: {.fold summary="Example"}     and named folds whose label says what kind they are
+  :::
+
   ::: why                           inside a step: the justification, folded under "Why"
   ::: {.fold summary="Tools"}       any other folded block, with its own summary text
   ::: {#lec-3-7 .lec}               a restated lecture result (target of lecture links)
@@ -245,6 +252,15 @@ end
 local function fold_divs(blk)
   return blk:walk {
     Div = function(d)
+      -- an item's own folds: Intuition and Steps (named folds use .fold with a summary)
+      local own = d.classes:includes('intuition') and 'intuition' or d.classes:includes('steps') and 'steps'
+      if own then
+        local label = own == 'intuition' and 'Intuition' or 'Steps'
+        local out = List { raw('<details class="fold sub ' .. own .. '"><summary>' .. label .. '</summary>') }
+        out:extend(d.content)
+        out:insert(raw('</details>'))
+        return out
+      end
       if d.classes:includes('why') or d.classes:includes('fold') then
         local label = d.attributes.summary or 'Why'
         local cls = d.classes:includes('why') and 'why' or 'fold'
@@ -350,9 +366,26 @@ local function item_blocks(d, refs)
     out:extend(tail)
     out:insert(raw('</details>'))
   else
+    -- an item with its own folds (`::: intuition`, `::: steps`, named `.fold`s after the
+    -- statement): the statement stays open, the "Uses:" line follows it, then the folds
+    local function is_fold(b) return b.t == 'RawBlock' and b.text:match('^<details class="fold') end
+    local first
+    for i, b in ipairs(head) do if is_fold(b) then first = i; break end end
     out:insert(raw('<div class="item ' .. tag .. '" id="' .. id .. '">'))
-    out:extend(head)
-    if uses_html then out:insert(uses_html) end
+    if first then
+      for i = 1, first - 1 do out:insert(head[i]) end
+      if uses_html then out:insert(uses_html) end
+      for i = first, #head do
+        local b = head[i]
+        if is_fold(b) and not b.text:match('^<details class="fold sub') then
+          b = raw((b.text:gsub('^<details class="fold"', '<details class="fold sub"', 1)))
+        end
+        out:insert(b)
+      end
+    else
+      out:extend(head)
+      if uses_html then out:insert(uses_html) end
+    end
     out:insert(raw('</div>'))
   end
   return out

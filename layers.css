@@ -36,6 +36,9 @@ details.why>summary,details.fold>summary,details.rcode>summary{display:inline-bl
 details.why>summary::before,details.fold>summary::before,details.rcode>summary::before{content:"▸ "}
 details.why[open]>summary::before,details.fold[open]>summary::before,details.rcode[open]>summary::before{content:"▾ "}
 details.why[open],details.fold[open]{border-left:2px solid var(--rule);padding-left:.6em}
+/* an item's own folds (Intuition, Steps, named): one closed line each under the statement */
+details.sub{margin:.15em 0}
+details.sub+details.sub{margin-top:0}
 
 /* the other report's route, under an item or in a pair */
 details.route{margin:.3em 0 .9em 1em;padding:.1em .6em;border:1px dashed var(--rule);border-radius:4px;background:var(--quote-bg)}

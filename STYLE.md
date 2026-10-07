@@ -18,8 +18,16 @@ except where this file says otherwise.
 - **Layered page** (`layered: true` in the YAML header; markup at the top of `layers.lua`):
   - a "Big picture" section with a map of the core items at the top;
   - sections that fold, each with a one-line takeaway (`::: gist`);
-  - items tagged **[core]** or **[side trip]**; the statement stays visible, the numbered steps
-    fold away (`::: more`).
+  - items tagged **[core]** or **[side trip]**; the statement stays visible, and everything else
+    sits in separate closed folds under it, in this order:
+    - **Intuition** (`::: intuition`): what the statement means, a picture, where it fails;
+    - **Steps** (`::: steps`): the derivation, numbered;
+    - **named folds** (`::: {.fold summary="..."}`) for anything else, each labelled with the kind
+      of material it holds: "Why it is needed", "Example", "The paper's version", "Beyond the
+      lecture". Never a generic label such as "Details".
+  - Older pages fold everything after the statement into one block (`::: more`, "steps and
+    details"); the renderer still supports it, and a page moves to the separate folds when it is
+    next reworked.
 - **Item titles** carry a kind word, which colours the title: "**M1. [core] Definition: ...**",
   with Definition, Result, Example, Remark, Figure or Overview. A restated lecture result keeps the
   lecture's own label: "**Lemma 3.38. [core] ...**".
@@ -42,6 +50,18 @@ except where this file says otherwise.
 
 - **Don't simplify; add steps.** Keep definitions and formal statements; where something is hard,
   insert the missing steps.
+- **Understanding, not elegance.** A derivation is written to be understood, not to be short or
+  clever. No trick that merges two steps, no detour through a more general statement. Citing a
+  result that is stated on the page or restated from a lecture is not a detour: it is usually the
+  shortest and the clearest route.
+- **Shortest route first.** Before proving a claim, look for a result already on the page or in a
+  restated lecture result that gives it directly, and cite it instead of proving it again.
+- **No lemmas.** Never introduce a lemma, a general set, a general function or a general
+  statement to prove the case at hand, not even when it would cover two places at once. Write the
+  case's own chain of equations.
+- **A proof is a chain of equations.** Write the equations; add a step only where something is
+  derived, and say there what is used.
+- **Last check.** List the named objects a proof introduces, and delete every one that can go.
 - **Purpose first.** Say why an object is introduced and what a derivation buys before doing it.
 - **Reprint, don't point.** A formula far away is written out again, or cited by a label whose
   preview shows it.
