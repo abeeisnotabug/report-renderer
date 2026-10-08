@@ -56,9 +56,11 @@ except where this file says otherwise.
   shortest and the clearest route.
 - **Shortest route first.** Before proving a claim, look for a result already on the page or in a
   restated lecture result that gives it directly, and cite it instead of proving it again.
-- **No lemmas.** Never introduce a lemma, a general set, a general function or a general
-  statement to prove the case at hand, not even when it would cover two places at once. Write the
-  case's own chain of equations.
+- **No generalising lemmas.** Never introduce a lemma, a general set, a general function or a
+  general statement to prove the case at hand when the case's own chain of equations would do,
+  not even when it would cover two places at once, and never re-prove a result that is already
+  available. A lemma is fine when it states a separate fact that the proof needs and the page does
+  not have yet, such as an inequality for complex numbers inside a limit argument.
 - **A proof is a chain of equations.** Write the equations; add a step only where something is
   derived, and say there what is used.
 - **Last check.** List the named objects a proof introduces, and delete every one that can go.
