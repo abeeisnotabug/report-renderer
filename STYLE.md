@@ -48,6 +48,13 @@ except where this file says otherwise.
 
 ## Writing
 
+- **Say what every piece is.** This rule comes first. For every statement and every step the
+  text says which of these it is: an assumption; a definition; a known result, cited (from the
+  page, another report or a lecture); a reminder of a derivation done elsewhere; a new result; or
+  a known result for new objects, naming what is new. An item that restates an earlier result
+  says so ("known, restated from T4") and never presents it as something to be reached again. An
+  item that proves something again says why and what is new (a stronger statement, another
+  filtration, an instructive tool), and which steps use the earlier result and which do not.
 - **Don't simplify; add steps.** Keep definitions and formal statements; where something is hard,
   insert the missing steps.
 - **Understanding, not elegance.** A derivation is written to be understood, not to be short or
@@ -59,8 +66,8 @@ except where this file says otherwise.
 - **Remind, never re-derive differently.** Redundancy helps: a result from an earlier item or
   another report may be restated with a reminder or summary of its derivation and a link to the
   original, which is the gold standard. A reminder follows the original's steps. Never derive the
-  same result again by another route or with other steps, not even slightly different ones: the
-  reader then has to ask whether the new route is needed or the result differs. Derivations stay
+  same result again by another route or with other steps: the reader then has to ask whether the
+  new route is needed or the result differs. Derivations stay
   consistent across reports.
 - **No generalising lemmas.** Never introduce a lemma, a general set, a general function or a
   general statement to prove the case at hand when the case's own chain of equations would do,
