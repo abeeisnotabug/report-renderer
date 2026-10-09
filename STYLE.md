@@ -56,6 +56,12 @@ except where this file says otherwise.
   shortest and the clearest route.
 - **Shortest route first.** Before proving a claim, look for a result already on the page or in a
   restated lecture result that gives it directly, and cite it instead of proving it again.
+- **Remind, never re-derive differently.** Redundancy helps: a result from an earlier item or
+  another report may be restated with a reminder or summary of its derivation and a link to the
+  original, which is the gold standard. A reminder follows the original's steps. Never derive the
+  same result again by another route or with other steps, not even slightly different ones: the
+  reader then has to ask whether the new route is needed or the result differs. Derivations stay
+  consistent across reports.
 - **No generalising lemmas.** Never introduce a lemma, a general set, a general function or a
   general statement to prove the case at hand when the case's own chain of equations would do,
   not even when it would cover two places at once, and never re-prove a result that is already
@@ -86,6 +92,9 @@ except where this file says otherwise.
     and its last line is pushed to the right edge;
   - factors written side by side outside brackets ("p(a | b) p(c | d)") break between each other,
     after a closing bracket, before anything inside the brackets breaks;
+  - a `\quad` or `\qquad` outside brackets starts a side condition ("..., \qquad r(0)=1",
+    "\quad(i=1,\dots,n)"): it moves to the next line before the formula breaks anywhere else, and
+    its relations do not count towards a chain;
   - a chain, a formula with two or more relations (=, <, ≤, ≥, ≈, ...) outside brackets, always
     gets one line per relation, on every screen; ∈, ⊂, → and ∼ do not count;
   - a right-hand side that has to wrap starts its own line under a short left-hand side;

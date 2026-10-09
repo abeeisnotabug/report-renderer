@@ -9,7 +9,10 @@
 // - a slash (/ or \big/) outside brackets is a break point like + (it starts a new piece);
 // - factors written side by side outside brackets ("p(a | b) p(c | d)"): between them, after a
 //   closing bracket, before any break inside the brackets;
-// - inside brackets: before a conditioning bar first, then after a comma, anywhere else last.
+// - inside brackets: before a conditioning bar first, then after a comma, anywhere else last;
+// - a \quad or \qquad outside brackets starts a side condition ("..., \qquad r(0)=1"): it is its
+//   own block, which goes to the next line before the formula breaks elsewhere, and its relations
+//   do not count towards a chain.
 // Uses an internal KaTeX function (__renderToDomTree): keep KaTeX pinned in package.json.
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
@@ -53,7 +56,10 @@ export function render(tex) {
   // a slash outside brackets ("... dU / f(N | Y)") breaks like a + does
   const slash = a => slashAtom(a) && id.get(a) === -1;
   // cut KaTeX's pieces before such a bar and after such a comma (and its space); the cut is a soft break
-  const soft = new Set(), softBar = new Set(), slashes = new Set(), facs = new Set(), cut = [];
+  const soft = new Set(), softBar = new Set(), slashes = new Set(), facs = new Set(), sides = new Set(), cut = [];
+  // the first \quad or \qquad outside brackets: what follows it is a side condition
+  const quad = a => cls(a).includes('mspace') && /^[12]em$/.test((a.style || {}).marginRight || '') && id.get(a) === -1;
+  let pendingSide = false, sideSeen = false;
   // a factor starts at a non-operator outside brackets right after a bracket that closed to the top level
   let afterTopClose = false;
   const facStart = a => afterTopClose && id.get(a) === -1 && !isOp(a) && !cls(a).includes('mpunct') && !cls(a).includes('mclose') && delta(a) >= 0 && !slash(a) && !/^[.;:!]$/.test(textOf(a));
@@ -63,11 +69,16 @@ export function render(tex) {
     const flush = () => { if (cur.some(a => !blank(a))) { cut.push(cur.length === ch.length ? b : copy(b, cur)); return true; } return false; };
     for (let j = 0; j < ch.length; j++) {
       const a = ch[j];
+      if (pendingSide && !blank(a)) {
+        if (cur.some(x => !blank(x))) { flush(); cur = strut ? [strut] : []; }
+        sides.add(a); pendingSide = false;
+      }
       if (condBar(a) && cur.some(x => !blank(x))) { flush(); cur = strut ? [strut] : []; softBar.add(a); }
       if (slash(a) && cur.some(x => !blank(x))) { flush(); cur = strut ? [strut] : []; slashes.add(a); }
       if (!blank(a) && facStart(a) && cur.some(x => !blank(x))) { flush(); cur = strut ? [strut] : []; facs.add(a); }
       if (!blank(a)) afterTopClose = delta(a) < 0 && id.get(a) === -1;
       cur.push(a);
+      if (!sideSeen && quad(a)) { pendingSide = true; sideSeen = true; }
       if (comma(a) && id.get(a) >= 0 && ch.slice(j + 1).some(x => !blank(x))) {
         while (j + 1 < ch.length && cls(ch[j + 1]).includes('mspace')) cur.push(ch[++j]);
         flush(); cur = strut ? [strut] : []; soft.add(ch[j + 1]);
@@ -91,7 +102,7 @@ export function render(tex) {
     const d0 = depth;
     for (const a of b.children) depth = Math.max(0, depth + delta(a));
     const first = b.children.find(a => !blank(a));
-    return { b, segStart: d0 === 0 && isRel(first), pieceStart: d0 === 0 && (isOp(first) || slashes.has(first)), fac: facs.has(first), bar: softBar.has(first) || condBar(first || {}), soft: soft.has(first) };
+    return { b, segStart: d0 === 0 && isRel(first), pieceStart: d0 === 0 && (isOp(first) || slashes.has(first)), fac: facs.has(first), side: sides.has(first), bar: softBar.has(first) || condBar(first || {}), soft: soft.has(first) };
   });
   // groups: the factors side by side, within them the pieces between conditioning bars inside
   // brackets, and within those the pieces between commas, so a break falls between factors first,
@@ -102,19 +113,21 @@ export function render(tex) {
   const endFac = () => { endGrp(); if (fac.length) piece.push(fac.length > 1 ? wrap('katex-grp', fac) : fac[0]); fac = []; };
   const endPiece = () => { endFac(); if (piece.length) seg.push(piece.length > 1 ? wrap('katex-piece', piece) : piece[0]); piece = []; };
   const endSeg = () => { endPiece(); if (seg.length) segs.push(wrap('katex-seg', seg)); seg = []; };
-  for (const x of info) { if (x.segStart) endSeg(); else if (x.pieceStart) endPiece(); else if (x.fac) endFac(); else if (x.bar) endGrp(); else if (x.soft) endSub(); sub.push(x.b); }
+  let sideBases = null;
+  for (const x of info) { if (sideBases) { sideBases.push(x.b); continue; } if (x.side) { endSeg(); sideBases = [x.b]; continue; } if (x.segStart) endSeg(); else if (x.pieceStart) endPiece(); else if (x.fac) endFac(); else if (x.bar) endGrp(); else if (x.soft) endSub(); sub.push(x.b); }
   endSeg();
   const nest = s => s.length === 1 ? s[0] : wrap('katex-seg', [s[0], nest(s.slice(1))]);
   const firstAtom = n => { for (const ch of (n.children || [])) { if (blank(ch)) continue; return /katex-(base|piece|seg|grp)/.test(cls(ch).join(' ')) ? firstAtom(ch) : ch; } return null; };
   // relations that make a chain: comparisons, not ∈, ⊂, → or ∼
   const chainRel = /^(=|<|>|≤|≥|≈|≡|≠|≔|:|⩽|⩾|≪|≫|≐|≃|≅)/;
+  const side = sideBases ? [wrap('katex-side', sideBases)] : [];
   const eqStarts = segs.map((s, k) => k > 0 && chainRel.test(textOf(firstAtom(s) || {})));
   if (eqStarts.filter(Boolean).length >= 2) {
     const lines = []; let cur = [];
     segs.forEach((s, k) => { if (eqStarts[k]) { lines.push(cur); cur = [s]; } else cur.push(s); });
     lines.push(cur);
-    html.children = [wrap('fx-stack', lines.map((l, k) => wrap(k ? 'fx-rel' : 'fx-lhs', l))), ...other];
-  } else html.children = [...(segs.length > 1 ? [segs[0], nest(segs.slice(1))] : segs), ...other];
+    html.children = [wrap('fx-stack', lines.map((l, k) => wrap(k ? 'fx-rel' : 'fx-lhs', l))), ...side, ...other];
+  } else html.children = [...(segs.length > 1 ? [segs[0], nest(segs.slice(1))] : segs), ...side, ...other];
   return tree.toMarkup();
 }
 // style rules for the regrouped formulas, equation numbers and the faded edge
@@ -124,7 +137,7 @@ export const css = `
 .katex-display>.katex>.katex-html *{text-indent:0}
 .katex-display{container-type:inline-size}
 td .katex-display,th .katex-display{container-type:normal}
-.katex-seg,.katex-piece,.katex-grp{display:inline-block;max-width:calc(100cqw - 1.5em)}
+.katex-seg,.katex-piece,.katex-grp,.katex-side{display:inline-block;max-width:calc(100cqw - 1.5em)}
 /* set by the page script: the rest wrapped beside a short left-hand side, so it starts its own line */
 .katex-html.split>.katex-seg:nth-child(2){display:block;margin-left:1.5em}
 .katex-html>.katex-seg:first-child,.katex-html>.katex-seg:first-child :is(.katex-seg,.katex-piece,.katex-grp),.fx-lhs :is(.katex-seg,.katex-piece,.katex-grp){max-width:100cqw}
