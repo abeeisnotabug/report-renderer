@@ -55,6 +55,10 @@ except where this file says otherwise.
   says so ("known, restated from T4") and never presents it as something to be reached again. An
   item that proves something again says why and what is new (a stronger statement, another
   filtration, an instructive tool), and which steps use the earlier result and which do not.
+  In reports, write it as a status line after the statement, with these words: *Known* (cited,
+  with a link; not shown again), *Reminder* (the steps follow the original's steps), *Known for
+  new objects*, *Second route* (with what it adds), *New here*. State the convention once in the
+  reading notes; an item without a status line is new on the page.
 - **Don't simplify; add steps.** Keep definitions and formal statements; where something is hard,
   insert the missing steps.
 - **Understanding, not elegance.** A derivation is written to be understood, not to be short or
