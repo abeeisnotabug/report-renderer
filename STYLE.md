@@ -59,6 +59,24 @@ except where this file says otherwise.
   with a link; not shown again), *Reminder* (the steps follow the original's steps), *Known for
   new objects*, *Second route* (with what it adds), *New here*. State the convention once in the
   reading notes; an item without a status line is new on the page.
+  - **Paper summaries** (for now only these) also say what is the paper's and what is the
+    report's. Every item that reports the paper has a status line "*Paper, §2.2* (p. 468):
+    defined." The verb says what the paper does with the statement and comes from this closed
+    list:
+    - *assumed*: a model assumption;
+    - *defined*: an object, a model, a notation or a design;
+    - *stated*: claimed without an argument;
+    - *argued*: claimed with an argument shorter than a derivation (say how long);
+    - *quoted* (source): taken from the named source, not derived;
+    - *derived*: derived in the paper;
+    - *found* (simulation or data): a result of the paper's simulation or data analysis;
+    - *judged*: the paper's interpretation, attribution or recommendation;
+    - *described*: data, aims, a plan or an algorithm, with no claim.
+
+    An item that reports several things gives one verb per part. After the verb, *Derived in*
+    links a report that derives the statement, *Explained in* a report that explains what it
+    means without deriving it. Slips in the paper and the report's commentary go in sections of
+    their own; their items' status lines start with *My own*, followed by the five words above.
 - **Don't simplify; add steps.** Keep definitions and formal statements; where something is hard,
   insert the missing steps.
 - **Understanding, not elegance.** A derivation is written to be understood, not to be short or
