@@ -6,6 +6,7 @@
 //   still does not fit breaks before + or × outside brackets, its last line pushed to the right;
 // - a chain (two or more relations =, <, ≤, ≥, ≈ ... outside brackets) always gets one line per
 //   relation;
+// - a slash (/ or \big/) outside brackets is a break point like + (it starts a new piece);
 // - inside brackets: before a conditioning bar first, then after a comma, anywhere else last.
 // Uses an internal KaTeX function (__renderToDomTree): keep KaTeX pinned in package.json.
 import { createRequire } from 'node:module';
@@ -28,6 +29,7 @@ const copy = (b, children) => Object.assign(Object.create(Object.getPrototypeOf(
 const blank = a => cls(a).includes('katex-strut') || cls(a).includes('mspace');
 const bar = a => (cls(a).includes('mrel') || cls(a).includes('mord')) && /^[∣|]$/.test(textOf(a));
 const comma = a => cls(a).includes('mpunct') && textOf(a) === ',';
+const slashAtom = a => cls(a).includes('mord') && textOf(a) === '/';
 export function render(tex) {
   const tree = katex.__renderToDomTree(tex, { displayMode: true, output: 'html', throwOnError: true });
   const html = find(tree, 'katex-html');
@@ -46,8 +48,10 @@ export function render(tex) {
     if (d > 0) for (let k = 0; k < d; k++) stack.push(next++);
   }
   const condBar = a => bar(a) && id.get(a) >= 0 && (textOf(a) === '∣' && cls(a).includes('mrel') || bars.get(id.get(a)) === 1);
+  // a slash outside brackets ("... dU / f(N | Y)") breaks like a + does
+  const slash = a => slashAtom(a) && id.get(a) === -1;
   // cut KaTeX's pieces before such a bar and after such a comma (and its space); the cut is a soft break
-  const soft = new Set(), softBar = new Set(), cut = [];
+  const soft = new Set(), softBar = new Set(), slashes = new Set(), cut = [];
   for (const b of bases) {
     const ch = b.children, strut = ch.find(a => cls(a).includes('katex-strut'));
     let cur = [];
@@ -55,6 +59,7 @@ export function render(tex) {
     for (let j = 0; j < ch.length; j++) {
       const a = ch[j];
       if (condBar(a) && cur.some(x => !blank(x))) { flush(); cur = strut ? [strut] : []; softBar.add(a); }
+      if (slash(a) && cur.some(x => !blank(x))) { flush(); cur = strut ? [strut] : []; slashes.add(a); }
       cur.push(a);
       if (comma(a) && id.get(a) >= 0 && ch.slice(j + 1).some(x => !blank(x))) {
         while (j + 1 < ch.length && cls(ch[j + 1]).includes('mspace')) cur.push(ch[++j]);
@@ -79,7 +84,7 @@ export function render(tex) {
     const d0 = depth;
     for (const a of b.children) depth = Math.max(0, depth + delta(a));
     const first = b.children.find(a => !blank(a));
-    return { b, segStart: d0 === 0 && isRel(first), pieceStart: d0 === 0 && isOp(first), bar: softBar.has(first) || condBar(first || {}), soft: soft.has(first) };
+    return { b, segStart: d0 === 0 && isRel(first), pieceStart: d0 === 0 && (isOp(first) || slashes.has(first)), bar: softBar.has(first) || condBar(first || {}), soft: soft.has(first) };
   });
   // groups: the pieces between conditioning bars inside brackets, and within them the pieces between
   // commas, so a break inside brackets falls before a bar first, then after a comma

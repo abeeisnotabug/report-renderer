@@ -82,8 +82,8 @@ except where this file says otherwise.
 - What the renderer does (`breaks.mjs`):
   - a formula that fits stays on one line, centred;
   - too wide: it breaks before the first = outside brackets, and the lines after it are indented;
-  - a part that still does not fit breaks before + or × outside brackets, and its last line is
-    pushed to the right edge;
+  - a part that still does not fit breaks before +, × or a slash (/ or \big/) outside brackets,
+    and its last line is pushed to the right edge;
   - a chain, a formula with two or more relations (=, <, ≤, ≥, ≈, ...) outside brackets, always
     gets one line per relation, on every screen; ∈, ⊂, → and ∼ do not count;
   - a right-hand side that has to wrap starts its own line under a short left-hand side;
