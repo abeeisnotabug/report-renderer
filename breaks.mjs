@@ -7,6 +7,8 @@
 // - a chain (two or more relations =, <, ≤, ≥, ≈ ... outside brackets) always gets one line per
 //   relation;
 // - a slash (/ or \big/) outside brackets is a break point like + (it starts a new piece);
+// - factors written side by side outside brackets ("p(a | b) p(c | d)"): between them, after a
+//   closing bracket, before any break inside the brackets;
 // - inside brackets: before a conditioning bar first, then after a comma, anywhere else last.
 // Uses an internal KaTeX function (__renderToDomTree): keep KaTeX pinned in package.json.
 import { createRequire } from 'node:module';
@@ -51,7 +53,10 @@ export function render(tex) {
   // a slash outside brackets ("... dU / f(N | Y)") breaks like a + does
   const slash = a => slashAtom(a) && id.get(a) === -1;
   // cut KaTeX's pieces before such a bar and after such a comma (and its space); the cut is a soft break
-  const soft = new Set(), softBar = new Set(), slashes = new Set(), cut = [];
+  const soft = new Set(), softBar = new Set(), slashes = new Set(), facs = new Set(), cut = [];
+  // a factor starts at a non-operator outside brackets right after a bracket that closed to the top level
+  let afterTopClose = false;
+  const facStart = a => afterTopClose && id.get(a) === -1 && !isOp(a) && !cls(a).includes('mpunct') && !cls(a).includes('mclose') && delta(a) >= 0 && !slash(a) && !/^[.;:!]$/.test(textOf(a));
   for (const b of bases) {
     const ch = b.children, strut = ch.find(a => cls(a).includes('katex-strut'));
     let cur = [];
@@ -60,6 +65,8 @@ export function render(tex) {
       const a = ch[j];
       if (condBar(a) && cur.some(x => !blank(x))) { flush(); cur = strut ? [strut] : []; softBar.add(a); }
       if (slash(a) && cur.some(x => !blank(x))) { flush(); cur = strut ? [strut] : []; slashes.add(a); }
+      if (!blank(a) && facStart(a) && cur.some(x => !blank(x))) { flush(); cur = strut ? [strut] : []; facs.add(a); }
+      if (!blank(a)) afterTopClose = delta(a) < 0 && id.get(a) === -1;
       cur.push(a);
       if (comma(a) && id.get(a) >= 0 && ch.slice(j + 1).some(x => !blank(x))) {
         while (j + 1 < ch.length && cls(ch[j + 1]).includes('mspace')) cur.push(ch[++j]);
@@ -84,16 +91,18 @@ export function render(tex) {
     const d0 = depth;
     for (const a of b.children) depth = Math.max(0, depth + delta(a));
     const first = b.children.find(a => !blank(a));
-    return { b, segStart: d0 === 0 && isRel(first), pieceStart: d0 === 0 && (isOp(first) || slashes.has(first)), bar: softBar.has(first) || condBar(first || {}), soft: soft.has(first) };
+    return { b, segStart: d0 === 0 && isRel(first), pieceStart: d0 === 0 && (isOp(first) || slashes.has(first)), fac: facs.has(first), bar: softBar.has(first) || condBar(first || {}), soft: soft.has(first) };
   });
-  // groups: the pieces between conditioning bars inside brackets, and within them the pieces between
-  // commas, so a break inside brackets falls before a bar first, then after a comma
-  const segs = []; let seg = [], piece = [], grp = [], sub = [];
+  // groups: the factors side by side, within them the pieces between conditioning bars inside
+  // brackets, and within those the pieces between commas, so a break falls between factors first,
+  // then before a bar inside brackets, then after a comma
+  const segs = []; let seg = [], piece = [], fac = [], grp = [], sub = [];
   const endSub = () => { if (sub.length) grp.push(sub.length > 1 ? wrap('katex-grp', sub) : sub[0]); sub = []; };
-  const endGrp = () => { endSub(); if (grp.length) piece.push(grp.length > 1 ? wrap('katex-grp', grp) : grp[0]); grp = []; };
-  const endPiece = () => { endGrp(); if (piece.length) seg.push(piece.length > 1 ? wrap('katex-piece', piece) : piece[0]); piece = []; };
+  const endGrp = () => { endSub(); if (grp.length) fac.push(grp.length > 1 ? wrap('katex-grp', grp) : grp[0]); grp = []; };
+  const endFac = () => { endGrp(); if (fac.length) piece.push(fac.length > 1 ? wrap('katex-grp', fac) : fac[0]); fac = []; };
+  const endPiece = () => { endFac(); if (piece.length) seg.push(piece.length > 1 ? wrap('katex-piece', piece) : piece[0]); piece = []; };
   const endSeg = () => { endPiece(); if (seg.length) segs.push(wrap('katex-seg', seg)); seg = []; };
-  for (const x of info) { if (x.segStart) endSeg(); else if (x.pieceStart) endPiece(); else if (x.bar) endGrp(); else if (x.soft) endSub(); sub.push(x.b); }
+  for (const x of info) { if (x.segStart) endSeg(); else if (x.pieceStart) endPiece(); else if (x.fac) endFac(); else if (x.bar) endGrp(); else if (x.soft) endSub(); sub.push(x.b); }
   endSeg();
   const nest = s => s.length === 1 ? s[0] : wrap('katex-seg', [s[0], nest(s.slice(1))]);
   const firstAtom = n => { for (const ch of (n.children || [])) { if (blank(ch)) continue; return /katex-(base|piece|seg|grp)/.test(cls(ch).join(' ')) ? firstAtom(ch) : ch; } return null; };

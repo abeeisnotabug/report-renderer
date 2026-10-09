@@ -84,6 +84,8 @@ except where this file says otherwise.
   - too wide: it breaks before the first = outside brackets, and the lines after it are indented;
   - a part that still does not fit breaks before +, × or a slash (/ or \big/) outside brackets,
     and its last line is pushed to the right edge;
+  - factors written side by side outside brackets ("p(a | b) p(c | d)") break between each other,
+    after a closing bracket, before anything inside the brackets breaks;
   - a chain, a formula with two or more relations (=, <, ≤, ≥, ≈, ...) outside brackets, always
     gets one line per relation, on every screen; ∈, ⊂, → and ∼ do not count;
   - a right-hand side that has to wrap starts its own line under a short left-hand side;
