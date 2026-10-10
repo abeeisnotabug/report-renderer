@@ -98,6 +98,14 @@ except where this file says otherwise.
   not have yet, such as an inequality for complex numbers inside a limit argument.
 - **A proof is a chain of equations.** Write the equations; add a step only where something is
   derived, and say there what is used.
+- **Every likelihood with every factor.** A likelihood is the probability or density of the
+  observed data given the parameters. Write that probability out first with every factor: for
+  censored data, event part × censoring part (× the other parts of the record), with the censoring
+  factors as formulas, such as $S_C(Y)^{\Delta}f_C(Y)^{1-\Delta}$. Then say why a factor goes (it
+  contains no parameter; with latent quantities it is also free of them, so it leaves the integral
+  first), and only then drop it. "$\propto$" or "up to factors without parameters" is not a
+  start. A likelihood written out elsewhere is restated as a reminder with a link, with the full
+  display.
 - **Last check.** List the named objects a proof introduces, and delete every one that can go.
 - **Purpose first.** Say why an object is introduced and what a derivation buys before doing it.
 - **Reprint, don't point.** A formula far away is written out again, or cited by a label whose
