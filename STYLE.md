@@ -59,10 +59,12 @@ except where this file says otherwise.
   with a link; not shown again), *Reminder* (the steps follow the original's steps), *Known for
   new objects*, *Second route* (with what it adds), *New here*. State the convention once in the
   reading notes; an item without a status line is new on the page.
-  - **Paper summaries** (for now only these) also say what is the paper's and what is the
-    report's. Every item that reports the paper has a status line "*Paper, §2.2* (p. 468):
-    defined." The verb says what the paper does with the statement and comes from this closed
-    list:
+  - **Papers.** Every report says what is the paper's and what is the report's. In a paper
+    summary every item that reports the paper has a status line "*Paper, §2.2* (p. 468):
+    defined."; in any other report, every line that prints or reports a paper's statement
+    ("*Paper, Eq. 3* (§2.2, p. 468): defined. As printed:") carries the verb too, and the
+    report states the verbs it uses next to its status-line convention. The verb says what the
+    paper does with the statement and comes from this closed list:
     - *assumed*: a model assumption;
     - *defined*: an object, a model, a notation or a design;
     - *stated*: claimed without an argument;
