@@ -20,6 +20,16 @@ for page in basics/survival basics/gp-ou-crash-course basics/radon-nikodym-repor
   cp "$mlts/$page.html" "$stage/mlts/$page.html"
 done
 
+# Stochastik: the eight Stochastik II companion pages -> stochastik/stochastik2/<page>.html,
+# the Stochastik III crash course -> stochastik/stochastik3/crash-course.html
+stoch="$HOME/Documents/Ausbildung/Mathe/8. Semester/Stochastik Perkowski"
+mkdir -p "$stage/stochastik/stochastik2" "$stage/stochastik/stochastik3"
+for page in course-overview ch0-basics ch1-construction ch2-condexp ch3-martingales ch4-markov \
+            ch5-applications ch6-weak; do
+  cp "$stoch/companion/Stochastik2/$page.html" "$stage/stochastik/stochastik2/$page.html"
+done
+cp "$stoch/notes/Stochastik3/crash-course.html" "$stage/stochastik/stochastik3/crash-course.html"
+
 chmod -R a+rX "$stage"
 rsync -a --delete "$stage/" li53vet@scotty.ads.uni-jena.de:/home/FSUJENA/li53vet/ShinyApps/reports/
 rm -rf "$stage"
