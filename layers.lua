@@ -367,21 +367,29 @@ local function item_blocks(d, refs)
     out:insert(raw('</details>'))
   else
     -- an item with its own folds (`::: intuition`, `::: steps`, named `.fold`s after the
-    -- statement): the statement stays open, the "Uses:" line follows it, then the folds
+    -- statement): the statement stays open, the "Uses:" line follows it (an exercise's opens
+    -- its fold "Solution ..."), then the folds
     local function is_fold(b) return b.t == 'RawBlock' and b.text:match('^<details class="fold') end
     local first
     for i, b in ipairs(head) do if is_fold(b) then first = i; break end end
+    -- an exercise's "Uses:" line opens its fold "Solution (...)" instead, as with `::: more`
+    local spoiler = kind == 'exer'
     out:insert(raw('<div class="item ' .. tag .. '" id="' .. id .. '">'))
     if first then
       for i = 1, first - 1 do out:insert(head[i]) end
-      if uses_html then out:insert(uses_html) end
+      local placed = not uses_html
+      if not placed and not spoiler then out:insert(uses_html); placed = true end
       for i = first, #head do
         local b = head[i]
         if is_fold(b) and not b.text:match('^<details class="fold sub') then
           b = raw((b.text:gsub('^<details class="fold"', '<details class="fold sub"', 1)))
         end
         out:insert(b)
+        if not placed and is_fold(b) and b.text:match('<summary>Solution') then
+          out:insert(uses_html); placed = true
+        end
       end
+      if not placed then out:insert(uses_html) end
     else
       out:extend(head)
       if uses_html then out:insert(uses_html) end
