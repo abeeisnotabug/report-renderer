@@ -30,5 +30,6 @@ git clone https://github.com/abeeisnotabug/report-renderer ~/Documents/Works/rep
 | `breaks.mjs` | Regroups display formulas so the browser breaks them by the rules in STYLE.md. |
 | `layers.lua` | Pandoc filter: folding sections and items, links, "Uses:" lines, routes pages. Markup described at its top. |
 | `layers.css`, `layers.js` | Style and script of layered pages. |
+| `site/index.md`, `site/publish.sh` | The general index of all projects' reports, and the script that renders it and copies it with the listed reports to the group server scotty (`~/ShinyApps/reports/`, VPN needed). |
 
 A change here changes every report the next time it is rendered.
