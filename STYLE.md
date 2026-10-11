@@ -31,8 +31,9 @@ except where this file says otherwise.
 - **Item titles** carry a kind word, which colours the title: "**M1. [core] Definition: ...**",
   with Definition, Result, Example, Remark, Figure or Overview. A restated lecture result keeps the
   lecture's own label: "**Lemma 3.38. [core] ...**".
-- **Links point backward only.** Each item gets a "Uses:" line listing what it uses; it is built
-  from the labels cited in the text. No forward "used in" lists.
+- **"Uses:" lines point backward only.** Each item gets a "Uses:" line listing what it uses; it is
+  built from the labels cited in the text. No forward "used in" lists. Forward pointers in words
+  are fine, in the running text or in a "Why it is needed" fold, and may cite the later item.
 - **Restated results.** Results from lectures or other reports that an item uses are restated on
   the page (`.lec` blocks), so a click shows them.
 - **Overview sections** after the material they summarise, where they fit: what each condition or
