@@ -18,6 +18,11 @@ citations is not affected:
     shows the word as written, everything else sees the English kind. A German word is a
     citation word ("Satz 1.9" links to `lec-1-9`, "Aufgabe 1.4" to `exer-1-4`) only on a page
     whose own item titles begin with it, so "Satz 4.7" in an English page stays plain text.
+  - Other pages: `pages: [appA-masstheorie.md]` in the YAML header. A citation with no entry on
+    this page but an item on a listed page ("Lemma A.5", "Sheet 3, Ex. 3") links to a preview of
+    that item's statement and status line; "Go there" opens the other page at the item, and the
+    citation enters the "Uses:" line. A German word that begins item titles there is a citation
+    word here too. A number written with a non-breaking space ("Lemma\ A.5") stays plain.
   - An exercise's "Uses:" line sits at the top of its folded solution, not under the task, so
     it does not give away the tools.
 
@@ -108,6 +113,17 @@ local item_label = {}   -- item or lecture-entry id -> label shown in "Uses:" li
 -- a cited lecture entry: an item on this page, or a restated result
 local function known(id) return item_index[id] ~= nil or lec_ids[id] ~= nil end
 
+-- items of the other pages listed under `pages:` (id -> {head, title, html}); a citation that
+-- has no entry on this page but one there links to a copy of its statement, `x-<id>`, kept in a
+-- hidden store at the end of this page, whose "Go there" opens the other page
+local ext, ext_used = {}, List()
+local function ext_target(id)
+  if not ext[id] then return nil end
+  local xid = 'x-' .. id
+  if not lec_ids[xid] then lec_ids[xid] = true; ext_used:insert(id) end
+  return xid
+end
+
 -- "2.10(vii):" -> "2.10", "(vii)", ":";  "A.5," -> "A.5", "", ","
 local function split_number(s)
   local num, rest = s:match('^(%u?%d*%.%d+)(.*)$')
@@ -163,15 +179,16 @@ local function linkify(inls, self, refs)
             local post = rest:sub(#sub + 1)
             local sid = sprefix .. sn .. '-' .. en
             local part = sid .. sub:gsub('[()]', '')
-            if sub ~= '' and known(part) then sid = part end
+            if sub ~= '' and (known(part) or ext[part]) then sid = part end
+            local tid = known(sid) and sid or ext_target(sid)
             if sid == self then
               for t = i, i + 6 do out:insert(inls[t]) end
               i, consumed = i + 7, true
-            elseif known(sid) then
+            elseif tid then
               if p0 ~= '' then out:insert(pandoc.Str(p0)) end
-              out:insert(xref(sword .. ' ' .. sn .. ', Ex. ' .. en .. sub, sid, 'xref lecref'))
+              out:insert(xref(sword .. ' ' .. sn .. ', Ex. ' .. en .. sub, tid, 'xref lecref'))
               if post ~= '' then out:insert(pandoc.Str(post)) end
-              if refs then refs:insert(sid) end
+              if refs then refs:insert(tid) end
               i, consumed = i + 7, true
             else
               missing[sid] = sword .. ' ' .. sn .. ', Ex. ' .. en
@@ -213,13 +230,14 @@ local function linkify(inls, self, refs)
           local num, sub, post = split_number(inls[i + 2].text)
           if num then
             local lid = lec_id(word, num)
+            local tid = lid ~= self and (known(lid) and lid or ext_target(lid))
             if lid == self then
               -- a lecture entry's own title: no link
-            elseif known(lid) then
+            elseif tid then
               if p0 ~= '' then out:insert(pandoc.Str(p0)) end
-              out:insert(xref(word .. ' ' .. num .. sub, lid, 'xref lecref'))
+              out:insert(xref(word .. ' ' .. num .. sub, tid, 'xref lecref'))
               if post ~= '' then out:insert(pandoc.Str(post)) end
-              if refs then refs:insert(lid) end
+              if refs then refs:insert(tid) end
               i, consumed = i + 3, true
             else
               missing[lid] = word .. ' ' .. num
@@ -558,6 +576,30 @@ function Pandoc(doc)
     end
   end }
 
+  -- other pages (`pages: [appA.md, ...]`): their items, for citations this page cannot resolve
+  for _, p in ipairs(doc.meta.pages or {}) do
+    local md = stringify(p)
+    local html = md:gsub('%.md$', '') .. '.html'
+    for _, b in ipairs(read_md(md).blocks) do
+      if b.t == 'Div' and b.classes:includes('item') and not item_index[b.identifier] then
+        -- the statement and status line: the blocks before the first fold
+        local head = List()
+        for _, x in ipairs(b.content) do
+          if x.t == 'Div' and (x.classes:includes('more') or x.classes:includes('intuition')
+              or x.classes:includes('steps') or x.classes:includes('fold') or x.classes:includes('why')) then
+            break
+          end
+          head:insert(x)
+        end
+        local title = stringify(b.content[1] or '')
+        ext[b.identifier] = { head = head, html = html }
+        item_label['x-' .. b.identifier] = label_of(b.identifier, title)
+        local w = title:match('^(%a+) %u?%d*%.%d+%.')
+        if w and aliases[w] then own_words[w] = true end
+      end
+    end
+  end
+
   -- pass 2: links, items, folds
   local blocks = List()
   for _, b in ipairs(fold_code(doc.blocks)) do
@@ -629,6 +671,16 @@ function Pandoc(doc)
     for cid in pairs(comp.used) do
       store:insert(raw('<div id="' .. comp.cite .. '-' .. cid .. '" class="ext" data-href="' .. comp.html .. '#' .. cid .. '">'))
       store:extend(folded(comp.items[cid].head))
+      store:insert(raw('</div>'))
+    end
+    store:insert(raw('</div>'))
+    out:extend(store)
+  end
+  if #ext_used > 0 then
+    local store = List { raw('<div id="page-store" hidden>') }
+    for _, id in ipairs(ext_used) do
+      store:insert(raw('<div id="x-' .. id .. '" class="ext" data-href="' .. ext[id].html .. '#' .. id .. '">'))
+      store:extend(folded(ext[id].head))
       store:insert(raw('</div>'))
     end
     store:insert(raw('</div>'))
