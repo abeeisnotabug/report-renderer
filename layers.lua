@@ -13,6 +13,11 @@ citations is not affected:
   - Restated results from elsewhere (`.lec` blocks, e.g. Stochastik I) also enter "Uses:".
   - Items get a class for their kind (definition, result, example, remark, exercise), from the
     first word of the title after the label; layers.css colours the title by it.
+  - German kind words are aliases of the English ones (table `aliases`: Satz = Theorem,
+    Korollar = Corollary, Beispiel = Example, Bemerkung = Remark, Aufgabe = Exercise); the page
+    shows the word as written, everything else sees the English kind. A German word is a
+    citation word ("Satz 1.9" links to `lec-1-9`, "Aufgabe 1.4" to `exer-1-4`) only on a page
+    whose own item titles begin with it, so "Satz 4.7" in an English page stays plain text.
   - An exercise's "Uses:" line sits at the top of its folded solution, not under the task, so
     it does not give away the tools.
 
@@ -81,11 +86,23 @@ local function xref(text, id, cls)
   return pandoc.Link(text, '#' .. id, '', pandoc.Attr('', { cls or 'xref' }))
 end
 
+-- Kind words in another language, each an alias of the English kind word it stands for. Titles
+-- and citations show the word as written; everything that looks at the kind (item classes, CSS,
+-- link targets) sees only the English word, through canon().
+local aliases = { Satz = 'Theorem', Korollar = 'Corollary', Beispiel = 'Example',
+  Bemerkung = 'Remark', Aufgabe = 'Exercise' }
+local function canon(w) return aliases[w] or w end
+
 local lec_words = { Theorem = true, Definition = true, Lemma = true, Example = true,
-  Remark = true, Corollary = true, Proposition = true, Satz = true, Figure = true,
-  Korollar = true, Beispiel = true, Bemerkung = true }
--- Stochastik I words: linked only after "Stoch I,"
-local german = { Satz = true, Korollar = true, Beispiel = true, Bemerkung = true }
+  Remark = true, Corollary = true, Proposition = true, Figure = true }
+-- alias words that begin the titles of this page's own lecture entries ("Satz 1.9."): only
+-- these are linked without "Stoch I," in front, so "Satz 4.7" in an English page stays plain
+local own_words = {}
+-- the id a cited number points to: Figure 3.1 -> fig-3-1, Aufgabe 1.4 -> exer-1-4, else lec-
+local function lec_id(word, num)
+  local k = canon(word)
+  return (k == 'Figure' and 'fig-' or k == 'Exercise' and 'exer-' or 'lec-') .. num:gsub('%.', '-')
+end
 local item_label = {}   -- item or lecture-entry id -> label shown in "Uses:" lines
 
 -- a cited lecture entry: an item on this page, or a restated result
@@ -166,7 +183,7 @@ local function linkify(inls, self, refs)
         -- "Stoch I, Satz 5.12"
         local p0 = x.text:match('^(%(*)Stoch$')
         if p0 and is_str(inls[i + 2], '^I,$') and is_str(inls[i + 4], '^%a+$')
-            and lec_words[inls[i + 4].text] and inls[i + 6] and inls[i + 6].t == 'Str' then
+            and lec_words[canon(inls[i + 4].text)] and inls[i + 6] and inls[i + 6].t == 'Str' then
           local num, sub, post = split_number(inls[i + 6].text)
           if num then
             local lid = 'lec-s1-' .. num:gsub('%.', '-')
@@ -190,11 +207,12 @@ local function linkify(inls, self, refs)
       if not consumed then
         -- "Theorem 3.7(i)"
         local p0, word = x.text:match('^(%(*)(%a+)$')
-        if word and lec_words[word] and not german[word] and inls[i + 1] and inls[i + 1].t == 'Space'
+        local linked_word = word and (aliases[word] and own_words[word] or not aliases[word] and lec_words[word])
+        if linked_word and inls[i + 1] and inls[i + 1].t == 'Space'
             and inls[i + 2] and inls[i + 2].t == 'Str' then
           local num, sub, post = split_number(inls[i + 2].text)
           if num then
-            local lid = (word == 'Figure' and 'fig-' or 'lec-') .. num:gsub('%.', '-')
+            local lid = lec_id(word, num)
             if lid == self then
               -- a lecture entry's own title: no link
             elseif known(lid) then
@@ -279,13 +297,13 @@ local has_side = false
 
 -- "Lemma 3.38. [core] ..." -> "result"; "C4. [core] Exercise in the lecture ..." -> "exercise"
 local kinds = { Definition = 'def', Theorem = 'res', Lemma = 'res', Corollary = 'res',
-  Proposition = 'res', Satz = 'res', Result = 'res', Example = 'ex', Remark = 'rem', Exercise = 'exer',
+  Proposition = 'res', Result = 'res', Example = 'ex', Remark = 'rem', Exercise = 'exer',
   Sheet = 'exer', Tutorial = 'exer', Figure = 'fig', Overview = 'ov' }
 local function item_kind(title)
   local first = title:match('^(%a+)')
-  if first and kinds[first] then return kinds[first] end
+  if first and kinds[canon(first)] then return kinds[canon(first)] end
   local after = title:match('^[^%]]*%]%s*(%a+)')
-  return after and kinds[after] or nil
+  return after and kinds[canon(after)] or nil
 end
 
 -- the label an item or restated result is cited by
@@ -306,6 +324,11 @@ local function label_of(id, title)
   if sn then return 'Tutorial ' .. sn .. ', Ex. ' .. en end
   num = id:match('^fig%-(%d+%-%d+)$')
   if num then return 'Figure ' .. num:gsub('%-', '.') end
+  num = id:match('^exer%-(%u?%d*%-%d+)$')
+  if num then
+    local word = title:match('(%a+) ' .. num:gsub('%-', '%%.')) or 'Exercise'
+    return word .. ' ' .. num:gsub('%-', '.')
+  end
   return id
 end
 
@@ -521,7 +544,11 @@ function Pandoc(doc)
     if b.t == 'Div' and b.classes:includes('item') then
       n = n + 1
       item_index[b.identifier] = n
-      item_label[b.identifier] = label_of(b.identifier, stringify(b.content[1] or ''))
+      local title = stringify(b.content[1] or '')
+      item_label[b.identifier] = label_of(b.identifier, title)
+      -- "Satz 1.9. ..." makes "Satz" a citation word on this page
+      local w = title:match('^(%a+) %u?%d*%.%d+%.')
+      if w and aliases[w] then own_words[w] = true end
     end
   end
   doc:walk { Div = function(d)
