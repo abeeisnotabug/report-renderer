@@ -14,7 +14,8 @@ citations is not affected:
   - Items get a class for their kind (definition, result, example, remark, exercise), from the
     first word of the title after the label; layers.css colours the title by it.
   - German kind words are aliases of the English ones (table `aliases`: Satz = Theorem,
-    Korollar = Corollary, Beispiel = Example, Bemerkung = Remark, Aufgabe = Exercise); the page
+    Korollar = Corollary, Beispiel = Example, Bemerkung = Remark, Aufgabe = Exercise,
+    Abbildung = Figure); the page
     shows the word as written, everything else sees the English kind. A German word is a
     citation word ("Satz 1.9" links to `lec-1-9`, "Aufgabe 1.4" to `exer-1-4`) only on a page
     whose own item titles begin with it, so "Satz 4.7" in an English page stays plain text.
@@ -95,7 +96,7 @@ end
 -- and citations show the word as written; everything that looks at the kind (item classes, CSS,
 -- link targets) sees only the English word, through canon().
 local aliases = { Satz = 'Theorem', Korollar = 'Corollary', Beispiel = 'Example',
-  Bemerkung = 'Remark', Aufgabe = 'Exercise' }
+  Bemerkung = 'Remark', Aufgabe = 'Exercise', Abbildung = 'Figure' }
 local function canon(w) return aliases[w] or w end
 
 local lec_words = { Theorem = true, Definition = true, Lemma = true, Example = true,
@@ -341,7 +342,10 @@ local function label_of(id, title)
   sn, en = id:match('^tut%-(%d+)%-(%d+)$')
   if sn then return 'Tutorial ' .. sn .. ', Ex. ' .. en end
   num = id:match('^fig%-(%d+%-%d+)$')
-  if num then return 'Figure ' .. num:gsub('%-', '.') end
+  if num then
+    local word = title:match('(%a+) ' .. num:gsub('%-', '%%.')) or 'Figure'
+    return word .. ' ' .. num:gsub('%-', '.')
+  end
   num = id:match('^exer%-(%u?%d*%-%d+)$')
   if num then
     local word = title:match('(%a+) ' .. num:gsub('%-', '%%.')) or 'Exercise'
