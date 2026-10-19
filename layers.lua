@@ -6,7 +6,8 @@ citations is not affected:
     "**Lemma 3.38. [core] ...**". "Lemma 3.38" in the text links to it, and it enters the
     "Uses:" line under the label "Lemma 3.38".
   - Exercise-sheet items `::: {#sheet-6-1 .item}`, cited as "Sheet 6, Ex. 1" or "Sheet 6, Ex. 1(b)";
-    tutorial items `::: {#tut-1-2 .item}`, cited as "Tutorial 1, Ex. 2"; an item holding one part
+    tutorial items `::: {#tut-1-2 .item}`, cited as "Tutorial 1, Ex. 2" (a second exercise with the
+    same number: `tut-1-16b`, cited as "Tutorial 1, Ex. 16b"); an item holding one part
     only, `::: {#sheet-12-1d .item}`, is cited as "Sheet 12, Ex. 1(d)".
   - Appendix numbers: "Theorem A.5" links to `lec-A-5`, "Definition C.12" to `lec-C-12`.
   - Unnumbered lecture figures `::: {#fig-3-1 .item}`, cited as "Figure 3.1".
@@ -174,7 +175,8 @@ local function linkify(inls, self, refs)
         local sprefix = sword == 'Tutorial' and 'tut-' or 'sheet-'
         local sn = inls[i + 2] and inls[i + 2].t == 'Str' and inls[i + 2].text:match('^(%d+),$')
         if p0 and sn and is_str(inls[i + 4], '^Ex%.$') and inls[i + 6] and inls[i + 6].t == 'Str' then
-          local en, rest = inls[i + 6].text:match('^(%d+)(.*)$')
+          -- "Ex. 16b": a letter right after the number is part of the exercise's name (tut-1-16b)
+          local en, rest = inls[i + 6].text:match('^(%d+%l?)(.*)$')
           if en then
             local sub = rest:match('^%(%l+%)') or ''
             local post = rest:sub(#sub + 1)
@@ -339,7 +341,7 @@ local function label_of(id, title)
   end
   local sn, en, part = id:match('^sheet%-(%d+)%-(%d+)(%l?)$')
   if sn then return 'Sheet ' .. sn .. ', Ex. ' .. en .. (part ~= '' and '(' .. part .. ')' or '') end
-  sn, en = id:match('^tut%-(%d+)%-(%d+)$')
+  sn, en = id:match('^tut%-(%d+)%-(%d+%l?)$')
   if sn then return 'Tutorial ' .. sn .. ', Ex. ' .. en end
   num = id:match('^fig%-(%d+%-%d+)$')
   if num then
