@@ -45,7 +45,9 @@ except where this file says otherwise.
   to the report's own version, with a term-by-term map of the notation.
 - **Paper summaries** take the same form.
 - **No exercises, hints or solutions** in reports. (Lecture companions have them; reports do not.)
-- **R code** folds away; it uses the native pipe `|>` and ggplot2 for every figure.
+- **R code** folds away; it uses the native pipe `|>` and ggplot2 for every figure. The renderer colours
+  code by token. A block meant to be read on the page, such as two scripts compared line by line, stays
+  open: fence it as `{.r .open}`.
 
 ## Writing
 

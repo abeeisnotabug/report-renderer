@@ -265,13 +265,13 @@ local function linkify_block(blk, self, refs)
   }
 end
 
--- R code blocks and their "#>" output, folded
+-- R code blocks and their "#>" output, folded; a block fenced {.r .open} stays open
 local function fold_code(blocks)
   local out = List()
   local i = 1
   while i <= #blocks do
     local b = blocks[i]
-    if b.t == 'CodeBlock' and b.classes:includes('r') then
+    if b.t == 'CodeBlock' and b.classes:includes('r') and not b.classes:includes('open') then
       out:insert(raw('<details class="rcode"><summary>R code</summary>'))
       out:insert(b)
       i = i + 1

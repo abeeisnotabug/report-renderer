@@ -47,9 +47,9 @@ kcss = kcss.replace(/src:url\((fonts\/[^)]+\.woff2)\) format\("woff2"\)(,url\([^
 // Light mode white, dark mode dark grey. Phones: 17 px text over the full width; wider screens:
 // 20 px text in a column of 40em (800 px).
 const css = `
-:root{--bg:#fff;--fg:#1a1a1a;--muted:#5f6368;--rule:#dadce0;--quote-bg:#f4f5f7;--quote-bar:#9aa0a6;--code-bg:#f2f3f5;--link:#1f5f8b}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#17181a;--fg:#e6e3db;--muted:#a19d93;--rule:#3a3a3c;--quote-bg:#222326;--quote-bar:#8a826b;--code-bg:#26272a;--link:#7fb6e0}}
-:root[data-theme="dark"]{--bg:#17181a;--fg:#e6e3db;--muted:#a19d93;--rule:#3a3a3c;--quote-bg:#222326;--quote-bar:#8a826b;--code-bg:#26272a;--link:#7fb6e0}
+:root{--bg:#fff;--fg:#1a1a1a;--muted:#5f6368;--rule:#dadce0;--quote-bg:#f4f5f7;--quote-bar:#9aa0a6;--code-bg:#f2f3f5;--link:#1f5f8b;--c-fn:#0b5394;--c-str:#2b6e2f;--c-num:#a34a12;--c-kw:#7a2e8e;--c-attr:#775c00;--c-com:#5f6368}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#17181a;--fg:#e6e3db;--muted:#a19d93;--rule:#3a3a3c;--quote-bg:#222326;--quote-bar:#8a826b;--code-bg:#26272a;--link:#7fb6e0;--c-fn:#7fb6e0;--c-str:#94c98a;--c-num:#e3a870;--c-kw:#c9a3e6;--c-attr:#d3c078;--c-com:#a19d93}}
+:root[data-theme="dark"]{--bg:#17181a;--fg:#e6e3db;--muted:#a19d93;--rule:#3a3a3c;--quote-bg:#222326;--quote-bar:#8a826b;--code-bg:#26272a;--link:#7fb6e0;--c-fn:#7fb6e0;--c-str:#94c98a;--c-num:#e3a870;--c-kw:#c9a3e6;--c-attr:#d3c078;--c-com:#a19d93}
 html{-webkit-text-size-adjust:100%}
 body{background:var(--bg);color:var(--fg);font-family:"KaTeX_Main",Georgia,"Times New Roman",serif;font-size:17px;line-height:1.5;margin:0;padding:12px 16px 48px;max-width:40em;margin-inline:auto;overflow-wrap:break-word}
 @media (min-width:700px){body{font-size:20px;padding-top:24px}}
@@ -65,6 +65,13 @@ code{font-family:"DejaVu Sans Mono",Menlo,monospace;font-size:.82em;background:v
 a{color:var(--link)}
 pre{white-space:pre-wrap;overflow-wrap:anywhere;background:var(--code-bg);padding:.45em .6em;border-radius:3px;font-size:.92em;line-height:1.35}
 pre code{background:none;padding:0}
+code span.fu,code span.bu{color:var(--c-fn)}
+code span.st,code span.ch,code span.vs,code span.ss{color:var(--c-str)}
+code span.dv,code span.bn,code span.fl,code span.cn{color:var(--c-num)}
+code span.kw,code span.cf,code span.im,code span.pp{color:var(--c-kw)}
+code span.at,code span.dt{color:var(--c-attr)}
+code span.co,code span.do,code span.an,code span.cv,code span.in{color:var(--c-com);font-style:italic}
+code span.al,code span.er{font-weight:bold}
 img{max-width:100%;height:auto}
 figure{margin:1em 0}figcaption{font-size:.9em;color:var(--muted)}
 table{border-collapse:collapse;font-size:.88em;margin:.8em 0;display:block;overflow-x:auto;max-width:100%}th,td{padding:.25em .45em;border-bottom:1px solid var(--rule);vertical-align:top}
