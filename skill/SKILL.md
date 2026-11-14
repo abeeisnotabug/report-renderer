@@ -24,6 +24,26 @@ stay consistent across reports (STYLE.md, "Remind, never re-derive differently")
 W4. Example report: pending. RMB chooses one from the Sørensen (2026) comparison of November 2026;
 until then, follow `STYLE.md` alone.
 
+## Long reports
+
+R1. A report that takes more than one session (a long paper, many sections) is a big task: read
+`~/.agent-skills-shared/big-tasks/SKILL.md` first and ask RMB for the cast before anything
+starts (its S1). Effort is high at most.
+
+R2. The contract is the statement layer. One architect session writes it for the whole report:
+every section's gist, every item's statement and status line, the notation map and the labels.
+Equations are first transcribed once from the page images (big-tasks Co2).
+
+R3. Workers then fill one section each, in fresh sessions: Intuition, Steps and named folds, then
+the plain-words fold last (L3 below). A worker reads the contract and its own section's sources
+only. It writes each step out where it is needed, and points elsewhere only to a labelled
+statement, never into another section's folds. It may not change a statement, symbol or label;
+if one is wrong, it reports this instead.
+
+R4. A fresh reader then reads the whole page once (big-tasks T6) and lists contradictions,
+repeated derivations and broken references. The render and phone check (B1, B2) are run by a
+script, not by a model.
+
 ## Levels in a report
 
 L1. A report holds every level at once, as layers (table in `STYLE.md`, "Levels are layers"):
