@@ -74,6 +74,11 @@ details.route[open]>summary{margin-bottom:.3em;border-bottom:1px solid var(--rul
 /* core only (screen only; the PDF always has everything) */
 @media screen{html.core-only .side{display:none}}
 
+/* a section's plain-words layer (L1), and "Plain words only" */
+details.plain{margin:.3em 0 .6em}
+details.plain[open]{background:var(--quote-bg);border-left-color:var(--accent);border-radius:0 4px 4px 0;padding:.1em .6em}
+@media screen{html.plain-only details.sec>:not(summary):not(details.plain){display:none}}
+
 /* contents */
 #toc{font-size:.9em;margin:.5em 0 1em}
 #toc .toc-title{font-weight:bold;margin:.2em 0}

@@ -7,6 +7,9 @@
   // (and show side trips again if "Core only" would hide the target)
   const openTo = el => {
     if (el.closest('.side') && document.documentElement.classList.contains('core-only')) setCore(false);
+    // (and leave "Plain words only" if it hides the target)
+    if (document.documentElement.classList.contains('plain-only') && el.closest('details.sec')
+        && !el.closest('details.plain') && !el.closest('details.sec > summary')) setPlain(false);
     for (let d = el; d; d = d.parentElement) if (d.tagName === 'DETAILS') d.open = true;
   };
 
@@ -24,6 +27,25 @@
   if (core) {
     try { if (localStorage.getItem('layers-core-only') === '1') setCore(true); } catch (e) {}
     core.onchange = () => setCore(core.checked);
+  }
+
+  // "Plain words only" exists only on pages with plain-words folds: it opens them and the
+  // sections that hold them, and CSS hides everything else inside folding sections
+  const plain = $('#tb-plain');
+  const setPlain = on => {
+    if (!plain) return;
+    document.documentElement.classList.toggle('plain-only', on);
+    plain.checked = on;
+    if (on) document.querySelectorAll('details.plain').forEach(d => {
+      d.open = true;
+      const sec = d.closest('details.sec');
+      if (sec) sec.open = true;
+    });
+    try { localStorage.setItem('layers-plain-only', on ? '1' : '0'); } catch (e) {}
+  };
+  if (plain) {
+    try { if (localStorage.getItem('layers-plain-only') === '1') setPlain(true); } catch (e) {}
+    plain.onchange = () => setPlain(plain.checked);
   }
 
   // preview panel

@@ -53,6 +53,11 @@ Markup (Pandoc fenced divs):
   ::: {.fold summary="Example"}     and named folds whose label says what kind they are
   :::
 
+  ## W. Title {#sec-w .fold}        a section's plain-words layer (level L1): one closed fold
+  ::: gist                          "In plain words", right after the gist, at the top level
+  ::: plain                         of the section (not inside an item). Everyday words, an
+  :::                               example or analogy, almost no notation.
+
   ::: why                           inside a step: the justification, folded under "Why"
   ::: {.fold summary="Tools"}       any other folded block, with its own summary text
   ::: {#lec-3-7 .lec}               a restated lecture result (target of lecture links)
@@ -65,6 +70,8 @@ Automatic:
   - R code blocks (and their #> output) fold under "R code".
   - A contents list (a side bar on wide screens) and a toolbar are added after the title.
     "Core only" appears only if something is tagged as a side trip.
+    "Plain words only" appears only if the page has `::: plain` folds: it shows the opening,
+    the section titles, their takeaways and the plain-words folds (opened), and hides the rest.
   - `uses: false` in the YAML header turns the "Uses:" lines off.
 
 Two routes: a routes page lists pairs of items that reach the same conclusion in two
@@ -288,9 +295,19 @@ local function fold_code(blocks)
   return out
 end
 
+local has_plain = false
+
 local function fold_divs(blk)
   return blk:walk {
     Div = function(d)
+      -- a section's plain-words layer (L1)
+      if d.classes:includes('plain') then
+        has_plain = true
+        local out = List { raw('<details class="fold plain"><summary>In plain words</summary>') }
+        out:extend(d.content)
+        out:insert(raw('</details>'))
+        return out
+      end
       -- an item's own folds: Intuition and Steps (named folds use .fold with a summary)
       local own = d.classes:includes('intuition') and 'intuition' or d.classes:includes('steps') and 'steps'
       if own then
@@ -635,7 +652,9 @@ function Pandoc(doc)
       blocks:extend(out)
     else
       local self = (b.t == 'Div' and b.classes:includes('lec')) and b.identifier or nil
-      blocks:insert(fold_divs(linkify_block(b, self, nil)))
+      -- wrapped, so that a fold at the top level of a section (`::: plain`, `::: {.fold}`)
+      -- folds too: a walk does not visit the block it starts from
+      blocks:extend(folded({ linkify_block(b, self, nil) }))
     end
   end
 
@@ -699,6 +718,7 @@ function Pandoc(doc)
     .. '<button class="tb" id="tb-open">Open all</button>'
     .. '<button class="tb" id="tb-close">Close all</button>'
     .. (has_side and '<label class="tb"><input type="checkbox" id="tb-core"> Core only</label>' or '')
+    .. (has_plain and '<label class="tb"><input type="checkbox" id="tb-plain"> Plain words only</label>' or '')
     .. '</div>')
   local final = List()
   local placed = false

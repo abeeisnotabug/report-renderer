@@ -3,7 +3,10 @@
 Rules for every report rendered with this folder. A project's own notes may add to them, never
 replace them. The model for form, style, language and links is a lecture companion built with
 this renderer (its chapter on discrete-time martingales was the worked example); reports follow it
-except where this file says otherwise.
+except where this file says otherwise. That model predates the plain-words layer and the
+STE rules below; a new example report, with both, replaces it once RMB has chosen one (pending:
+the Sørensen 2026 comparison, November 2026). The workflow for writing a report is the skill in
+`skill/SKILL.md`.
 
 ## Reading
 
@@ -28,6 +31,29 @@ except where this file says otherwise.
   - Older pages fold everything after the statement into one block (`::: more`, "steps and
     details"); the renderer still supports it, and a page moves to the separate folds when it is
     next reworked.
+- **Levels are layers.** A report holds every level of explanation at once, each in its own
+  layer, so the reader picks the level by what they open. The levels are those of the
+  explanation-levels skill:
+
+  | Level | Layer |
+  | --- | --- |
+  | L1, plain words | a section's **plain-words fold** (`::: plain`, "In plain words") |
+  | L2, conceptual | the section's takeaway (`::: gist`) and the items' **Intuition** folds |
+  | L3, technical | the visible statement with its status line |
+  | L4, rigorous | the **Steps** fold, with "Why" folds inside the steps |
+  | L5, full depth | **named folds** and side trips: proofs of invoked results, subtleties, counterexamples, limits, connections |
+
+  - **Plain-words fold**, one per folding section, at the section's top level right after the
+    gist: what the section does and why, in everyday words, with a concrete example or an
+    analogy and almost no notation. It is written for a reader who has not read the section,
+    and it may say where the analogy fails. It never replaces a definition; the section still
+    states everything precisely. "Plain words only" in the toolbar then shows only the opening,
+    the section titles, their takeaways and these folds, so the whole report reads in a few
+    minutes as a way in.
+  - **A report fixes its levels itself.** Writing a report never asks for a level, and its
+    text is not limited to one question. Material beyond the report's scope (the paper's or
+    the request's) does not go into the text: list it at the end as possible additions, one
+    line each.
 - **Item titles** carry a kind word, which colours the title: "**M1. [core] Definition: ...**",
   with Definition, Result, Example, Remark, Figure or Overview. A restated lecture result keeps the
   lecture's own label: "**Lemma 3.38. [core] ...**".
@@ -82,6 +108,21 @@ except where this file says otherwise.
     links a report that derives the statement, *Explained in* a report that explains what it
     means without deriving it. Slips in the paper and the report's commentary go in sections of
     their own; their items' status lines start with *My own*, followed by the five words above.
+- **Plain technical English** (inspired by ASD-STE100 Simplified Technical English; its
+  controlled vocabulary is not enforced, and nothing here claims compliance). For every level
+  and every layer:
+  - short, direct sentences; one main idea or one logical step per sentence;
+  - one term per concept, kept the whole way: no synonyms for variety;
+  - active voice where it makes clear who or what acts;
+  - assumptions before the conclusions drawn from them;
+  - logical connections said out loud: because, so, if, then, therefore;
+  - a specialised term defined by simpler concepts when it first appears, while established
+    mathematical terms stay as they are;
+  - no needless nominalisations ("the estimation of" → "estimating"), no long subordinate
+    clauses, no abstract academic phrasing.
+
+  Simple language never simplifies the mathematics, and a concise argument is not split into
+  trivial steps to satisfy these rules.
 - **Don't simplify; add steps.** Keep definitions and formal statements; where something is hard,
   insert the missing steps.
 - **Understanding, not elegance.** A derivation is written to be understood, not to be short or

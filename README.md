@@ -31,6 +31,7 @@ git clone https://github.com/abeeisnotabug/report-renderer ~/Documents/Works/rep
 | `layers.lua` | Pandoc filter: folding sections and items, links, "Uses:" lines, routes pages. Markup described at its top. |
 | `layers.css`, `layers.js` | Style and script of layered pages. |
 | `phone-check.js` | Opens a rendered page in WebKit at 393 px with every fold open and lists page width, scrolling formulas, dead anchors and cross-page links: `node phone-check.js /abs/path/report.html`. Needs Playwright (Homebrew's global npm). |
+| `skill/SKILL.md` | The report-writing skill: the workflow around STYLE.md (read, write the layers, render, check). Linked into Claude's skills as `~/.claude/skills/report-writing` (`ln -sfn ~/Documents/Works/report-renderer/skill ~/.claude/skills/report-writing`). |
 | `site/index.md`, `site/publish.sh` | The general index of all projects' reports, and the script that renders it and copies it with the listed reports to the group server scotty (`~/ShinyApps/reports/`, VPN needed). |
 
 A change here changes every report the next time it is rendered.
