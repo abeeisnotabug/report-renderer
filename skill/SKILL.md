@@ -64,7 +64,9 @@ really does.
 
 B1. Render: `~/Documents/Works/report-renderer/render.sh path/to/report.md`, which writes
 `report.html` next to it. R Markdown is first knitted to `.md` with `knitr::knit()`, run from the
-report's folder. Fix every warning about missing links or lecture entries.
+report's folder. Fix every warning about missing links or lecture entries, and every warning that
+a wrapped line starts a list (move the line break so that no line inside a paragraph starts with
+"1." or "-").
 
 B2. Phone check: `NODE_PATH=$(npm root -g) node ~/Documents/Works/report-renderer/phone-check.js
 /absolute/path/report.html`. It opens the page in WebKit at 393 px with every fold open. Fix

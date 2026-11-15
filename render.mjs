@@ -11,11 +11,14 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const katex = require('katex');
 import * as breaks from './breaks.mjs';
+import { check as listCheck } from './listcheck.mjs';
 
 const md = path.resolve(process.argv[2]);
 const base = md.replace(/\.md$/, '');
 const pandoc = process.env.PANDOC || 'pandoc';
 const here = path.dirname(fileURLToPath(import.meta.url));
+// Wrapped lines that would start a list by accident (listcheck.mjs): a warning, not an error
+for (const w of listCheck(fs.readFileSync(md, 'utf8'))) console.warn('warning: ' + path.basename(md) + ', ' + w);
 // layers.lua folds sections, items and R code, but only in documents with `layered: true`
 let body = execFileSync(pandoc, ['-f', 'markdown', '-t', 'html5', '--math-method=katex', '--wrap=none',
   '--lua-filter', path.join(here, 'layers.lua'), md], { encoding: 'utf8' });
