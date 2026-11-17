@@ -26,9 +26,13 @@ const layered = body.includes('id="layer-toolbar"');
 
 const unesc = s => s.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, '&');
 let nMath = 0;
-body = body.replace(/<span class="math (inline|display)">([\s\S]*?)<\/span>/g, (m, kind, tex) => {
+// Punctuation right after an inline formula (. , ; : ! ? ) ]) is rendered as text inside the
+// formula, so it stays on the line of the formula's last piece; the formula can still break
+// after = or + inside it. Without this the browser may start a line with the comma.
+body = body.replace(/<span class="math (inline|display)">([\s\S]*?)<\/span>([.,;:!?)\]]*)/g, (m, kind, tex, punct) => {
   nMath++;
-  return kind === 'display' ? breaks.render(unesc(tex)) : katex.renderToString(unesc(tex), { throwOnError: true, output: 'html' });
+  if (kind === 'display') return breaks.render(unesc(tex)) + punct;
+  return katex.renderToString(unesc(tex) + (punct ? `\\text{${punct}}` : ''), { throwOnError: true, output: 'html' });
 });
 if (/class="math /.test(body)) throw new Error('unrendered math left');
 
