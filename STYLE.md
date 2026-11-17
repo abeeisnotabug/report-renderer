@@ -8,6 +8,14 @@ STE rules below; a new example report, with both, replaces it once RMB has chose
 the Sørensen 2026 comparison, November 2026). The workflow for writing a report is the skill in
 `skill/SKILL.md`.
 
+There are two types of report. A **paper companion** follows this file alone. A **topic
+introduction**, which reads like a textbook chapter, follows this file and
+`skill/topic-introduction.md`, which overrides this file where they differ (status lines,
+plain-words folds, generalising statements, known results).
+
+Links to lectures are RMB's choice per report, never a rule: without a request, a restated result
+names no lecture, course or theorem number.
+
 ## Reading
 
 - The product is one self-contained HTML page per report, read in Safari on a phone (393 px wide)

@@ -6,9 +6,17 @@ description: Write, rework or extend a report rendered with RMB's shared report 
 # Writing a report
 
 The rules for how reports look and are written are in `STYLE.md` in the renderer folder. That
-file is the only authority; this skill is the workflow around it and repeats none of its rules.
+file, with `topic-introduction.md` in this folder for topic introductions (Ty1), is the only
+authority; this skill is the workflow around it and repeats none of its rules.
 If the renderer folder is missing (a fresh cloud session), clone it first:
 `git clone https://github.com/abeeisnotabug/report-renderer ~/Documents/Works/report-renderer`.
+
+## Two types of report
+
+Ty1. A **paper companion** retells a paper with added explanations and steps: `STYLE.md` alone.
+A **topic introduction** introduces a topic, usually framed by a question, and reads like a
+textbook chapter: `STYLE.md` plus `topic-introduction.md` in this folder, which overrides
+`STYLE.md` where they differ. If a request does not make the type clear, ask RMB.
 
 ## Before writing
 
