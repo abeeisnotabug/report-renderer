@@ -100,10 +100,7 @@ names no lecture, course or theorem number.
     text, which is set in the same Computer Modern, and centres it. Draw it 7 to 8 cm wide: then
     it fills a phone's width, and about half the column on a laptop. A wider figure shrinks on
     the phone, and its labels with it.
-  - Dark mode: the renderer inverts a TikZ figure's lightness and keeps its hues, so black lines
-    turn light and white fills turn the page's dark grey. Draw on a transparent background, with
-    colours that read in both themes, and name colours in the caption by hue only ("the orange
-    arrow"), never "black" or "white".
+  - Dark mode: see "Dark mode" below.
 - **Plots: vector graphics from svglite.** Set `knitr::opts_chunk$set(dev = "svglite")` in the
   setup chunk. Maths in axis labels and legends uses R's plotmath (`expression()`, `bquote()`);
   heavier notation goes into the caption, which KaTeX typesets. No tikzDevice: it needs LaTeX at
@@ -116,8 +113,12 @@ names no lecture, course or theorem number.
   the size with no visible gain. The renderer warns about every image over 500 KB. (Measured in
   WebKit, November 2026: below 500 KB a vector plot loads as fast as a rasterised one, and is
   about as small.)
-- **Plots stay on white** in dark mode, so their colours stay as the caption names them. Never a
-  dark plot background.
+- **Dark mode.** The renderer inverts the lightness of every TikZ figure and svglite plot and
+  keeps the hues, so black lines and text turn light, and white backgrounds and fills turn the
+  page's dark grey. (PNG images stay on a white box.) So draw on a white or transparent
+  background, never a dark one, and use colours that read in both themes. A caption tells marks
+  apart by hue ("orange"), by shape ("diamonds") or as "grey", never by "black" or "white",
+  which swap in dark mode.
 
 ## Writing
 
