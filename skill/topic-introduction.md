@@ -160,7 +160,8 @@ E3. **Examples:** one running example, reused through the text, chosen for a pro
 lacks, and introduced where its concept is introduced. A numerical example is woven into the
 sections whose results it checks, not collected in a section of its own.
 
-E4. **R code** for figures and number checks folds away (`STYLE.md`).
+E4. **R code** for plots and number checks folds away. How figures (TikZ) and plots (svglite,
+rasterised above 500 KB) are made: `STYLE.md`, "Figures and plots".
 
 ## Length and side trips
 

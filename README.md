@@ -29,6 +29,7 @@ git clone https://github.com/abeeisnotabug/report-renderer ~/Documents/Works/rep
 | `render.mjs` | Markdown to HTML with pandoc, maths with KaTeX, page style, embedded figures. |
 | `breaks.mjs` | Regroups display formulas so the browser breaks them by the rules in STYLE.md. |
 | `listcheck.mjs` | Warns, at every render, about a wrapped line inside a list item that starts with a list marker ("1. ", "- ") after a line that stops mid-sentence: pandoc would start a nested list there and cut the sentence. |
+| `tikz2svg.sh` | Turns a TikZ figure (`fig.tex`, a standalone document) into `fig.svg` next to it, with the text as outlines: `tikz2svg.sh fig.tex`. Needs latex and dvisvgm. |
 | `layers.lua` | Pandoc filter: folding sections and items, links, "Uses:" lines, routes pages. Markup described at its top. |
 | `layers.css`, `layers.js` | Style and script of layered pages. |
 | `phone-check.js` | Opens a rendered page in WebKit at 393 px with every fold open and lists page width, scrolling formulas, dead anchors and cross-page links: `node phone-check.js /abs/path/report.html`. Needs Playwright (Homebrew's global npm). |

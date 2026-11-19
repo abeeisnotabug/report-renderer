@@ -42,6 +42,9 @@ body = body.replace(/<img([^>]*?) src="([^"]+)"/g, (m, pre, src) => {
   const f = path.resolve(path.dirname(md), decodeURI(src));
   const mime = { '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.svg': 'image/svg+xml' }[path.extname(f).toLowerCase()];
   if (!mime || !fs.existsSync(f)) throw new Error('image not found or unknown type: ' + src);
+  // STYLE.md, "Figures and plots": a plot over 500 KB gets its heavy layer rasterised
+  const kb = fs.statSync(f).size / 1024;
+  if (kb > 500) console.warn(`warning: ${path.basename(md)}, image ${src} is ${Math.round(kb)} KB (over 500 KB): rasterise its heavy layer, ggrastr::rasterise(..., dpi = 220)`);
   return `<img${pre} src="data:${mime};base64,${fs.readFileSync(f).toString('base64')}"`;
 });
 
@@ -80,6 +83,7 @@ code span.at,code span.dt{color:var(--c-attr)}
 code span.co,code span.do,code span.an,code span.cv,code span.in{color:var(--c-com);font-style:italic}
 code span.al,code span.er{font-weight:bold}
 img{max-width:100%;height:auto}
+figure img{background:#fff;border-radius:3px}
 figure{margin:1em 0}figcaption{font-size:.9em;color:var(--muted)}
 table{border-collapse:collapse;font-size:.88em;margin:.8em 0;display:block;overflow-x:auto;max-width:100%}th,td{padding:.25em .45em;border-bottom:1px solid var(--rule);vertical-align:top}
 .katex{font-size:1.02em}

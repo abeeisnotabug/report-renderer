@@ -130,4 +130,3 @@ td .katex,th .katex{white-space:nowrap}
 .diagram{margin:1em 0;text-align:center}
 .diagram svg{max-width:100%;height:auto}
 .diagram .cap{font-size:.9em;color:var(--muted);text-align:left}
-figure img{background:#fff;border-radius:3px}

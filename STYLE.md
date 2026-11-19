@@ -79,9 +79,39 @@ names no lecture, course or theorem number.
   to the report's own version, with a term-by-term map of the notation.
 - **Paper summaries** take the same form.
 - **No exercises, hints or solutions** in reports. (Lecture companions have them; reports do not.)
-- **R code** folds away; it uses the native pipe `|>` and ggplot2 for every figure. The renderer colours
+- **R code** folds away; it uses the native pipe `|>` and ggplot2 for every plot. The renderer colours
   code by token. A block meant to be read on the page, such as two scripts compared line by line, stays
   open: fence it as `{.r .open}`.
+
+## Figures and plots
+
+- **Two kinds, made two ways.** A *figure* draws a structure whose positions are chosen by hand:
+  nodes and arrows, sets, a timeline, the dependencies of a model. A *plot* shows numbers that code
+  computes. The test: if the numbers changed, would the picture change? Then it is a plot. On the
+  page both are "Figure n", in one numbering.
+- **Figures: TikZ, compiled ahead.** Each figure is a standalone document next to the report,
+  `fig-name.tex`, starting `\documentclass[tikz,border=2pt]{standalone}`. The renderer's
+  `tikz2svg.sh fig-name.tex` turns it into `fig-name.svg`, with the text as outlines. Commit both.
+  The report includes the SVG, so knitting and rendering never need LaTeX: in R Markdown,
+  `knitr::include_graphics("fig-name.svg")` in a chunk with `echo=FALSE` and the caption in
+  `fig.cap`; in Markdown, `![caption](fig-name.svg)`. The drawing's code stays off the page.
+  - Labels are LaTeX maths in the page's notation.
+  - Size: at most 9 cm wide, 10 pt text. The page shows an SVG at its natural size, at most the
+    column's width, so the labels read at about caption size on a phone.
+- **Plots: vector graphics from svglite.** Set `knitr::opts_chunk$set(dev = "svglite")` in the
+  setup chunk. Maths in axis labels and legends uses R's plotmath (`expression()`, `bquote()`);
+  heavier notation goes into the caption, which KaTeX typesets. No tikzDevice: it needs LaTeX at
+  every knit and is slow, for nothing but the typesetting of labels.
+- **Rasterise the heavy layer of a plot over 500 KB.** A vector plot grows with its marks, about
+  140 bytes per scatter point and 13 bytes per line vertex; a raster layer does not grow. If a
+  plot's SVG is over 500 KB (roughly 3,500 scatter points, or 37,000 line vertices), wrap only
+  the heavy layer in `ggrastr::rasterise(geom, dpi = 220)`; axes, text and the other layers stay
+  vector. 220 dpi is enough for a phone at three pixels per point; 300 dpi adds 40 to 50 % to
+  the size with no visible gain. The renderer warns about every image over 500 KB. (Measured in
+  WebKit, November 2026: below 500 KB a vector plot loads as fast as a rasterised one, and is
+  about as small.)
+- **Light background.** The renderer puts every figure on white, so lines stay visible in dark
+  mode. Draw on a white or transparent background, never a dark one.
 
 ## Writing
 
