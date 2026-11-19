@@ -272,13 +272,17 @@ local function linkify_block(blk, self, refs)
   }
 end
 
--- R code blocks and their "#>" output, folded; a block fenced {.r .open} stays open
+-- R code blocks and their "#>" output, folded; a block fenced {.r .open} stays open.
+-- A folded block is marked .folded, because a top-level block passes here twice (pass 2 folds
+-- the document's blocks, then `folded` walks each one again).
 local function fold_code(blocks)
   local out = List()
   local i = 1
   while i <= #blocks do
     local b = blocks[i]
-    if b.t == 'CodeBlock' and b.classes:includes('r') and not b.classes:includes('open') then
+    if b.t == 'CodeBlock' and b.classes:includes('r') and not b.classes:includes('open')
+        and not b.classes:includes('folded') then
+      b.classes:insert('folded')
       out:insert(raw('<details class="rcode"><summary>R code</summary>'))
       out:insert(b)
       i = i + 1
