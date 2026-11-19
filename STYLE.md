@@ -95,9 +95,15 @@ names no lecture, course or theorem number.
   The report includes the SVG, so knitting and rendering never need LaTeX: in R Markdown,
   `knitr::include_graphics("fig-name.svg")` in a chunk with `echo=FALSE` and the caption in
   `fig.cap`; in Markdown, `![caption](fig-name.svg)`. The drawing's code stays off the page.
-  - Labels are LaTeX maths in the page's notation.
-  - Size: at most 9 cm wide, 10 pt text. The page shows an SVG at its natural size, at most the
-    column's width, so the labels read at about caption size on a phone.
+  - Labels are LaTeX maths in the page's notation, 10 pt (standalone's default).
+  - Size: the renderer scales a TikZ figure so that its 10 pt labels show at the size of the
+    text, which is set in the same Computer Modern, and centres it. Draw it 7 to 8 cm wide: then
+    it fills a phone's width, and about half the column on a laptop. A wider figure shrinks on
+    the phone, and its labels with it.
+  - Dark mode: the renderer inverts a TikZ figure's lightness and keeps its hues, so black lines
+    turn light and white fills turn the page's dark grey. Draw on a transparent background, with
+    colours that read in both themes, and name colours in the caption by hue only ("the orange
+    arrow"), never "black" or "white".
 - **Plots: vector graphics from svglite.** Set `knitr::opts_chunk$set(dev = "svglite")` in the
   setup chunk. Maths in axis labels and legends uses R's plotmath (`expression()`, `bquote()`);
   heavier notation goes into the caption, which KaTeX typesets. No tikzDevice: it needs LaTeX at
@@ -110,8 +116,8 @@ names no lecture, course or theorem number.
   the size with no visible gain. The renderer warns about every image over 500 KB. (Measured in
   WebKit, November 2026: below 500 KB a vector plot loads as fast as a rasterised one, and is
   about as small.)
-- **Light background.** The renderer puts every figure on white, so lines stay visible in dark
-  mode. Draw on a white or transparent background, never a dark one.
+- **Plots stay on white** in dark mode, so their colours stay as the caption names them. Never a
+  dark plot background.
 
 ## Writing
 
