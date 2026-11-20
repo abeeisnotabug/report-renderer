@@ -106,7 +106,11 @@ fragments so far (knit, render, phone check) and fixes its own findings, then wr
 `notes-N.md` last (at most 300 words: what it could not follow, errors it found in the source or
 in an earlier part, which it reports and does not fix, and links to later parts). The first
 writer also writes the "Known results" section, because the others cite its boxes. The script
-stops when a writer leaves no notes file or ends with an error (a usage limit).
+stops when a writer leaves no notes file or ends with an error. At a usage limit it does not
+stop: it writes `limit.txt`, the main session asks RMB, and the answer in `decision.txt` (wait,
+move, restart) decides (big-tasks Co5a–Co5c; how: the comments at the top of
+`templates/run-stage.sh`, which needs `templates/logstate.py` in the work folder). The main
+session's wait on the run also ends when `limit.txt` appears.
 
 Ti6. **Stage 3, assembler.** One fresh session joins the parts, moves "Known results" to the
 end, settles each writer's note (`plan.md` decides between parts; where it is silent, the
