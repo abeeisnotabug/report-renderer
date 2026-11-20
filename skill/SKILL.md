@@ -58,10 +58,12 @@ contract; it is made as in the next section.
 
 ## Making a topic introduction
 
-Recorded from the first run (the Kalman introduction, 2026-11-17, approved by RMB). Its briefs,
-scripts, outline, plan and notes are kept in the MLTS Count and Survival project,
-`lit/sorensen-2026/kalman-intro-briefs/`; adapt them rather than writing briefs from nothing.
-Cost of that run: big-tasks, the cost records of 2026-11-17.
+Recorded from the first run (the Kalman introduction, 2026-11-17, approved by RMB). Write the
+briefs from the templates in `templates/` in this folder (`brief-outline.md`, `brief-writer.md`,
+`brief-assembler.md`, and `run-stage.sh` to run them): fill their placeholders from the request
+and the sources. Do not read an earlier run's briefs or outline to write new ones: their
+topic-specific details (number of parts, section letters, notation) carry over into an unrelated
+report. Cost of that run: big-tasks, the cost records of 2026-11-17.
 
 Ti1. **Source first.** The run rewrote a checked report on the same topic (a paper companion,
 its R checks and the paper) into the new form. The content was fixed by the source: a rewrite of
@@ -71,8 +73,8 @@ first.
 
 Ti2. **Work folder.** An ignored folder next to the report (e.g. `.work/<name>/`) with
 `sources/`: copies of the source report, the paper (text and PDF), the R check scripts, and the
-project's notes on the reader and on reports. Each stage runs headless (`claude -p`, flags in
-`run-writers.sh` of the example) in that folder. Every brief limits it to the folder and the
+project's notes on the reader and on reports. Each stage runs headless in that folder
+(`templates/run-stage.sh`). Every brief limits it to the folder and the
 renderer: write only in the folder, no git, no memory files, no subagents or web search, the
 project's data rules, final reply three lines. Accounts and models: big-tasks (the run used Opus,
 effort high, throughout).
