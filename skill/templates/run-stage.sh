@@ -19,11 +19,14 @@
 #   restart   start the stage fresh on OTHER_CFG (later stages stay there)
 # By day (DAY_START to DAY_END) the script waits for decision.txt; at night it waits for the reset
 # and resumes, unless decision.txt arrives first. It never restarts a stage on the same account.
-# Tested 2026-11-20 on the normal path (CCFA topic introduction); the limit path is untested in
-# this script (the same watchdog and resume logic worked in CCFA agent-runs/cc-setup/run.sh).
+# To resume a stopped stage by hand (for example after the runner gave up):
+#   CFG_OVERRIDE="$HOME/.claude" RESUME_STAGE=<stage> ./run-stage.sh ...   (stages before it are skipped)
+# Tested 2026-11-20 on the normal path; 2026-11-21 the limit path with "move" (CCFA example
+# rework): the move itself worked (the resumed session had its full context), but the first
+# resume failed with "Not logged in" because CLAUDE_CONFIG_DIR was set to ~/.claude; fixed above.
 cd "${0:A:h}" || exit 1
 D="$PWD"
-CFG="$HOME/.claude-second"        # account the stages start on
+CFG="${CFG_OVERRIDE:-$HOME/.claude-second}"   # account the stages start on
 OTHER_CFG="$HOME/.claude"         # account offered at a usage limit
 DAY_START=8 DAY_END=22            # daytime hours: pause for RMB's decision
 STATE="$D/logstate.py"
@@ -33,7 +36,10 @@ RESUME_MSG='You were interrupted (a usage limit). Continue the task of your brie
 
 claude_run() {  # claude_run <log name> <session args...>; the message comes on standard input
   local log=$1; shift
-  env CLAUDE_CONFIG_DIR="$CFG" claude -p --model claude-opus-5-5 --effort high \
+  # The first account works only with CLAUDE_CONFIG_DIR unset: set explicitly to ~/.claude,
+  # claude reports "Not logged in" (seen 2026-11-21).
+  local envset=(CLAUDE_CONFIG_DIR="$CFG"); [[ "$CFG" == "$HOME/.claude" ]] && envset=(-u CLAUDE_CONFIG_DIR)
+  env "${envset[@]}" claude -p --model claude-opus-5-5 --effort high \
     --setting-sources "" --strict-mcp-config --disable-slash-commands \
     --tools "Read,Write,Edit,Glob,Grep,Bash" --permission-mode auto \
     --add-dir "$D" --add-dir "$HOME/Documents/Works/report-renderer" \
@@ -85,8 +91,12 @@ on_limit() {  # on_limit <stage> <reset epoch>; changes sid, fresh, CFG of run_s
 run_stage() {  # run_stage <name> <brief file> <done file>
   local name=$1 brief=$2 donefile=$3
   if [[ -s "$donefile" ]]; then echo "[$name] already done ($donefile exists)"; return 0; fi
-  local sid; sid=$(uuidgen | tr 'A-Z' 'a-z'); echo "$sid" > "$name.session-id"
+  local sid; sid=$(uuidgen | tr 'A-Z' 'a-z')
   local attempt=1 fresh=1 log pid st
+  if [[ "$name" == "${RESUME_STAGE:-}" && -s "$name.session-id" ]]; then
+    sid=$(cat "$name.session-id"); fresh=0; attempt=3   # resume the stopped session
+  fi
+  echo "$sid" > "$name.session-id"
   while (( attempt <= MAX_ATTEMPTS )); do
     log="$name"; (( attempt > 1 )) && log="$name.r$attempt"
     echo "[$name] attempt $attempt on $CFG: $(date)"
