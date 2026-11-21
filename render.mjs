@@ -21,7 +21,7 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 for (const w of listCheck(fs.readFileSync(md, 'utf8'))) console.warn('warning: ' + path.basename(md) + ', ' + w);
 // layers.lua folds sections, items and R code, but only in documents with `layered: true`
 let body = execFileSync(pandoc, ['-f', 'markdown', '-t', 'html5', '--math-method=katex', '--wrap=none',
-  '--lua-filter', path.join(here, 'layers.lua'), md], { encoding: 'utf8' });
+  '--lua-filter', path.join(here, 'layers.lua'), md], { encoding: 'utf8', maxBuffer: 512 * 1024 * 1024 });  // long pages exceed the default buffer
 const layered = body.includes('id="layer-toolbar"');
 
 const unesc = s => s.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, '&');
