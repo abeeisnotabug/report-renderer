@@ -20,15 +20,21 @@ for page in basics/survival basics/gp-ou-crash-course basics/radon-nikodym-repor
   cp "$mlts/$page.html" "$stage/mlts/$page.html"
 done
 
-# Stochastik: the eight Stochastik II companion pages -> stochastik/stochastik2/<page>.html,
-# the Stochastik III crash course -> stochastik/stochastik3/crash-course.html
+# Stochastik: the eight Stochastik II companion pages (2025/26, now in archive/) ->
+# stochastik/stochastik2/<page>.html, the Stochastik III crash course (built on the 2022/23
+# lecture) -> stochastik/stochastik3/crash-course.html
 stoch="$HOME/Documents/Ausbildung/Mathe/8. Semester/Stochastik Perkowski"
 mkdir -p "$stage/stochastik/stochastik2" "$stage/stochastik/stochastik3"
 for page in course-overview ch0-basics ch1-construction ch2-condexp ch3-martingales ch4-markov \
             ch5-applications ch6-weak; do
-  cp "$stoch/companion/Stochastik2/$page.html" "$stage/stochastik/stochastik2/$page.html"
+  cp "$stoch/archive/companion/Stochastik2/$page.html" "$stage/stochastik/stochastik2/$page.html"
 done
-cp "$stoch/notes/Stochastik3/crash-course.html" "$stage/stochastik/stochastik3/crash-course.html"
+cp "$stoch/companion/22-23-stoch3-crash-course.html" "$stage/stochastik/stochastik3/crash-course.html"
+
+# CCFA and LST-R: the topic introduction -> ccfa/cc-in-lstr.html
+ccfa="$HOME/Documents/Works/FSU Jena/Projekte/Tobi/CCFA and LST-R/reports"
+mkdir -p "$stage/ccfa"
+cp "$ccfa/cc-in-lstr/cc-in-lstr.html" "$stage/ccfa/cc-in-lstr.html"
 
 chmod -R a+rX "$stage"
 rsync -a --delete "$stage/" li53vet@scotty.ads.uni-jena.de:/home/FSUJENA/li53vet/ShinyApps/reports/

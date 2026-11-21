@@ -16,6 +16,7 @@ reads on a phone; within a project the pages link to each other.
 - [Stochastik](#stochastik)
   - [Stochastik II companion](#stochastik-ii)
   - [Stochastik III](#stochastik-iii)
+- [CCFA and LST-R](#ccfa)
 
 ## MLTS count and survival {#mlts}
 
@@ -72,3 +73,13 @@ overviews.
 
 - [Crash course](stochastik/stochastik3/crash-course.html): stochastic calculus without proofs,
   each result with an intuition, and the bridge to continuous-time MLTS models.
+
+## CCFA and LST-R {#ccfa}
+
+Background for the paper "A Latent State–Trait Perspective on Cross-Classified Factor Analysis"
+(with Tobias Koch).
+
+- [The cross-classified model inside LST-R theory](ccfa/cc-in-lstr.html): how the CC factor
+  model must be defined inside revised latent state–trait theory, the restrictions R1–R5 it
+  adds, and where trait change, autoregression and noninvariance go; with a running example
+  computed in R.
