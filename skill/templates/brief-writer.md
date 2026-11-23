@@ -42,11 +42,15 @@ listed in `plan.md`. Nothing else is new. This is a rewrite of form and order: k
 of a derivation that the source has, unless the outline cuts it.
 
 D3. **Form.** The rules in `topic-introduction.md`, in particular: the outline's paragraph jobs,
-each paragraph's first sentence stating its move (M5); a section opens with what it adds (M2)
+each paragraph's first sentence stating its move (M5); a section opens with a "So far." recap
+and then what it adds (M2)
 and ends with its hand-over (M3), the plan's **fixed** sentences word for word; prose and items
 take turns (P1); the one-word status in the item title (P4); references written for a human
-reader (P3); "we" and "let's", never "I" (P6); plain technical English (P7); reasons over
-relation signs where the source has them (F2), no display for a step done at a glance (F3);
+reader (P3); "we" and "let's", never "I" (P6); plain technical English, with each display's
+reading in an "In words" fold (P7); reasons at the reader's level, routine ones in a Why fold
+after the chain (F2), no display for a step done at a glance (F3); derivations in the general
+objects, claims read off formulas, numbers in "Example: the numbers" folds (F6, F7, E3);
+computations by hand in "The computation in full" folds and no R code on the page (F8, E4);
 known results cited from the "Known results" boxes (K1). Lecture links: <none, or as RMB asked
 for this report (K2)>. Side-trip folds and sections as the plan names them.
 

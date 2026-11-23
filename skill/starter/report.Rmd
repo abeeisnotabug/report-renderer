@@ -1,0 +1,39 @@
+---
+title: ""
+author: ""
+date: ""
+layered: true
+---
+
+<!-- Starter for a topic introduction (skill/topic-introduction.md). Copy this file into the
+project, rename it, and fill it from RMB's request and the approved outline (H1). It fixes no
+structure: the sections between "Notation" and "Known results" come from the outline alone.
+Markup of each device: skill/demo/demo.md. A page without plots can be plain Markdown (.md):
+then drop the setup chunk.
+
+Build, from the report's folder:
+Rscript -e 'knitr::knit("report.Rmd")'
+~/Documents/Works/report-renderer/render.sh report.md
+NODE_PATH=$(npm root -g) node ~/Documents/Works/report-renderer/phone-check.js "$PWD/report.html"
+-->
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(dev = "svglite", echo = FALSE, comment = "#>", collapse = TRUE)
+```
+
+<!-- Opening (M1): one prose paragraph, then the route as a short tree. -->
+
+## Notation {#sec-notation .fold}
+
+::: gist
+:::
+
+| Symbol | Name | What it is | Defined in |
+|---|---|---|---|
+
+<!-- The sections of the outline go here. -->
+
+## Known results {#sec-known .fold}
+
+::: gist
+:::

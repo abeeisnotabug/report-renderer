@@ -19,6 +19,18 @@ textbook chapter: `STYLE.md` plus `topic-introduction.md` in this folder, which 
 `STYLE.md` where they differ; how one is made: "Making a topic introduction" below. If a
 request does not make the type clear, ask RMB.
 
+## Start
+
+St1. **Structure comes from RMB.** A report's structure, its parts, the number and kind of its
+sections, and its framing come from RMB's request and the outline RMB approves. Nothing in
+`starter/`, `demo/` or an earlier report is a model for them.
+
+St2. **A topic introduction starts from `starter/report.Rmd`** in this folder: copy it into the
+project and rename it. It holds the header, the Notation section and the Known results section,
+and nothing in between. `demo/demo.md` (rendered: `demo/demo.html`) shows the markup of each
+device of `topic-introduction.md` once, with placeholders; copy a device's markup, never its
+text or its place on the page. Do not open earlier reports as models; the one exception is W3.
+
 ## Before writing
 
 W1. Read `~/Documents/Works/report-renderer/STYLE.md` in full, every time. It changes.
@@ -28,7 +40,8 @@ items, plain-words folds, Intuition, Steps, named folds, restated results, links
 
 W3. Read the project's own notes on reports (its CLAUDE.md and its memory notes). They add to
 `STYLE.md` and never replace it. Read the report the new one builds on, if any, so derivations
-stay consistent across reports (STYLE.md, "Remind, never re-derive differently").
+stay consistent across reports (STYLE.md, "Remind, never re-derive differently"): for its
+notation and derivations only, never for its structure (St1).
 
 W4. Example report: pending. RMB chooses one from the Sørensen (2026) comparison of November 2026;
 until then, follow `STYLE.md` alone.

@@ -41,7 +41,8 @@ D2b. per section: its title, its contribution to its part (one sentence), its pa
 in order, one short line each, with the items it states (label, one-word status, kind, one line),
 and the hand-over to the next section (M3);
 
-D2c. the running example and where each piece of it appears (E3);
+D2c. the examples (one running example, or one per line of thought), their variants with the
+property each changes, and where each piece appears (E3, E6);
 
 D2d. the figures, each with the reason of rule E1 it meets and one sentence on what to see;
 
@@ -57,8 +58,9 @@ material for them (item labels and line ranges in `sources/<source report>`);
 
 D3b. the shared notation (keep the source's), the labels and the section letters;
 
-D3c. which R chunks of the source move where (figures and checks), and which numbers of the
-check scripts each part quotes;
+D3c. which R chunks of the source move where (plots only, with `echo = FALSE`: no R code on the
+page, E4), which numbers of the check scripts each part quotes, and which computations are
+written out by hand in "The computation in full" folds (F8);
 
 D3d. the hand-overs between parts, word for word where the first sentence of a part depends on
 the last of the one before (mark these **fixed**);
