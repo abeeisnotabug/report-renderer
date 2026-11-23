@@ -138,7 +138,7 @@ writers() {
   for n in $(seq 1 "${1:?number of writers}"); do
     cat brief-writer.md brief-writer-$n.md > writer-$n.brief
     run_stage writer-$n writer-$n.brief notes-$n.md || { echo "stopping after writer $n"; return 1; }
-    ls -la part-$n.Rmd notes-$n.md
+    ls -la part-$n.Rmd notes-$n.md 2>/dev/null || true   # a listing only: never a failure
   done
 }
 
