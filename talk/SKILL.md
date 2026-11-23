@@ -10,8 +10,7 @@ formulas rendered at build time, opens in any browser. It is versioned with the 
 
 ## Start
 
-St1. **Start from `starter/` only.** Copy it to the talk's place (for example `lit/<topic>/<talk-name>/`
-in the project) and replace all of its placeholder content. Do not open earlier talks' deck
+St1. **Start from `starter/` only.** Copy it to a folder in the project, named after the talk, and replace all of its placeholder content. Do not open earlier talks' deck
 folders as models unless RMB names one: their slide-specific pieces carry over into an unrelated
 talk.
 
@@ -127,10 +126,8 @@ Sg4. Fill the templates' placeholders from the request and the sources. Do not r
 talk's briefs. Run each stage headless in an ignored work folder next to the talk, with
 `~/Documents/Works/report-renderer/skill/templates/run-stage.sh`.
 
-Sg5. Measured costs (list prices, Opus, effort high, second account), for a talk of about 45
-minutes and 35 slides: from a checked report, outline 4.3, two builders 9.0 each, reader 1.2 USD;
-rebuilt from an existing deck for another audience, outline 3.1, build 9.4, reader 1.6 USD;
-adding live controls to ten slides 9.4 USD; turning spoken notes into bullets 1.0 USD.
+Sg5. Costs of earlier runs: big-tasks, its measured facts. Log each new run's costs there
+(big-tasks Co6).
 
 ## Publishing
 
