@@ -13,6 +13,7 @@ reads on a phone; within a project the pages link to each other.
   - [Basics](#mlts-basics)
   - [Henderson, Diggle & Dobson (2000)](#mlts-henderson)
   - [Wang & Zhong (2025)](#mlts-wang-zhong)
+  - [Sørensen (2026)](#mlts-sorensen)
 - [Stochastik](#stochastik)
   - [Stochastik II companion](#stochastik-ii)
   - [Stochastik III](#stochastik-iii)
@@ -42,6 +43,14 @@ Background for extending multilevel latent time series models to count and event
 - [The joint likelihood](mlts/wang-zhong-2025/wz-likelihood.html): the paper's Eq. 8 derived,
   the nonparametric likelihood, and a Stan fit.
 - [Summary of the paper](mlts/wang-zhong-2025/wang-zhong-2025.html).
+
+### Sørensen (2026) {#mlts-sorensen}
+
+- [The Kalman filter, and how Sørensen (2026) marginalises a DSEM](mlts/sorensen-2026/kalman-intro.html):
+  what the filter computes, why it gives the marginal likelihood exactly, and how the paper gives
+  a DSEM the filter's shape.
+- [Talk: the same story in about 45 minutes](mlts/sorensen-2026/kalman-talk.html): animated
+  slides; arrow keys step, S opens the presenter view with the talk text.
 
 ## Stochastik {#stochastik}
 
