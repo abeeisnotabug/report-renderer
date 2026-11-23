@@ -1,23 +1,26 @@
 ---
 name: report-writing
-description: Write, rework or extend a report rendered with RMB's shared report renderer (~/Documents/Works/report-renderer): a layered HTML page about a paper, a method, a derivation or a lecture topic. Use when the user asks for a report, a paper summary, a background report, or changes to an existing report (.md or .Rmd rendered with render.sh). Covers which rules to read, how the explanation levels L1 to L5 map onto the page's layers, and how to build and check the page. Not for answers in chat; those follow the explanation-levels skill.
+description: Write, rework or extend a report rendered with RMB's shared report renderer (~/Documents/Works/report-renderer): a layered HTML page of one of three types: a paper companion, a topic introduction (a topic or method framed by a question), or a lecture companion (a lecture's notes with the exercises). Use when the user asks for a report, a paper summary, a background report, or changes to an existing report (.md or .Rmd rendered with render.sh). Covers which rules to read, how the explanation levels L1 to L5 map onto the page's layers, and how to build and check the page. Not for answers in chat; those follow the explanation-levels skill.
 ---
 
 # Writing a report
 
-The rules for how reports look and are written are in `STYLE.md` in the renderer folder. That
-file, with `topic-introduction.md` in this folder for topic introductions (Ty1), is the only
-authority; this skill is the workflow around it and repeats none of its rules.
+The rules for how reports look and are written are in `STYLE.md` in the renderer folder, for
+every report, and in one type file in this folder for each type (Ty1). These files are the only
+authority; this skill is the workflow around them and repeats none of their rules.
 If the renderer folder is missing (a fresh cloud session), clone it first:
 `git clone https://github.com/abeeisnotabug/report-renderer ~/Documents/Works/report-renderer`.
 
-## Two types of report
+## Three types of report
 
-Ty1. A **paper companion** retells a paper with added explanations and steps: `STYLE.md` alone.
-A **topic introduction** introduces a topic, usually framed by a question, and reads like a
-textbook chapter: `STYLE.md` plus `topic-introduction.md` in this folder, which overrides
-`STYLE.md` where they differ; how one is made: "Making a topic introduction" below. If a
-request does not make the type clear, ask RMB.
+Ty1. Each type follows `STYLE.md` and its own type file in this folder, which holds only what
+differs for that type (`STYLE.md`, "Types"):
+- **paper companion**: `paper-companion.md`;
+- **topic introduction**: `topic-introduction.md`; how one is made: "Making a topic
+  introduction" below;
+- **lecture companion**: `lecture-companion.md`.
+
+If a request does not make the type clear, ask RMB.
 
 ## Start
 
@@ -25,15 +28,17 @@ St1. **Structure comes from RMB.** A report's structure, its parts, the number a
 sections, and its framing come from RMB's request and the outline RMB approves. Nothing in
 `starter/`, `demo/` or an earlier report is a model for them.
 
-St2. **A topic introduction starts from `starter/report.Rmd`** in this folder: copy it into the
-project and rename it. It holds the header, the Notation section and the Known results section,
-and nothing in between. `demo/demo.md` (rendered: `demo/demo.html`) shows the markup of each
-device of `topic-introduction.md` once, with placeholders; copy a device's markup, never its
-text or its place on the page. Do not open earlier reports as models; the one exception is W3.
+St2. **A report starts from `starter/report.Rmd`** in this folder: copy it into the project and
+rename it. It holds the header, the Notation section and an empty final section, and nothing in
+between; the type file names the final section and anything the opening adds. `demo/demo.md`
+(rendered: `demo/demo.html`) shows the markup of each device of `STYLE.md`, "Teaching", once,
+with placeholders; copy a device's markup, never its text or its place on the page. Do not open
+earlier reports as models; the one exception is W3.
 
 ## Before writing
 
-W1. Read `~/Documents/Works/report-renderer/STYLE.md` in full, every time. It changes.
+W1. Read `~/Documents/Works/report-renderer/STYLE.md` and the type file in full, every time. They
+change.
 
 W2. Read the markup description at the top of `layers.lua` in the same folder: sections, gists,
 items, plain-words folds, Intuition, Steps, named folds, restated results, links.
@@ -42,9 +47,6 @@ W3. Read the project's own notes on reports (its CLAUDE.md and its memory notes)
 `STYLE.md` and never replace it. Read the report the new one builds on, if any, so derivations
 stay consistent across reports (STYLE.md, "Remind, never re-derive differently"): for its
 notation and derivations only, never for its structure (St1).
-
-W4. Example report: pending. RMB chooses one from the Sørensen (2026) comparison of November 2026;
-until then, follow `STYLE.md` alone.
 
 ## Long reports
 
@@ -57,7 +59,7 @@ every section's gist, every item's statement and status line, the notation map a
 Equations are first transcribed once from the page images (big-tasks Co2).
 
 R3. Workers then fill one section each, in fresh sessions: Intuition, Steps and named folds, then
-the plain-words fold last (L3 below). A worker reads the contract and its own section's sources
+a paper companion's plain-words fold last (L3 below). A worker reads the contract and its own section's sources
 only. It writes each step out where it is needed, and points elsewhere only to a labelled
 statement, never into another section's folds. It may not change a statement, symbol or label;
 if one is wrong, it reports this instead.
@@ -66,20 +68,20 @@ R4. A fresh reader then reads the whole page once (big-tasks T6) and lists contr
 repeated derivations and broken references. The render and phone check (B1, B2) are run by a
 script, not by a model.
 
-R1 to R4 are for paper companions. A topic introduction has no statement layer to serve as a
-contract; it is made as in the next section.
+R1 to R4 are for paper and lecture companions: the source's statements, transcribed once, are
+the contract. A topic introduction has no statement layer to serve as a contract; it is made as
+in the next section.
 
 ## Making a topic introduction
 
-Recorded from the first run (the Kalman introduction, 2026-11-17, approved by RMB). Write the
-briefs from the templates in `templates/` in this folder (`brief-outline.md`, `brief-writer.md`,
+Agreed with RMB on 2026-11-17. Write the briefs from the templates in `templates/` in this folder (`brief-outline.md`, `brief-writer.md`,
 `brief-assembler.md`, and `run-stage.sh` to run them): fill their placeholders from the request
 and the sources. Do not read an earlier run's briefs or outline to write new ones: their
 topic-specific details (number of parts, section letters, notation) carry over into an unrelated
-report. Cost of that run: big-tasks, the cost records of 2026-11-17.
+report. Costs of earlier runs: big-tasks, its measured facts.
 
-Ti1. **Source first.** The run rewrote a checked report on the same topic (a paper companion,
-its R checks and the paper) into the new form. The content was fixed by the source: a rewrite of
+Ti1. **Source first.** The content comes from a checked source (for example a checked report on
+the topic, its R checks and the paper it is based on), and the topic introduction rewrites its
 form and order, with new claims only where a node of the outline needs a link the source lacks,
 listed in the plan. If no checked source exists, ask RMB whether to write and check the content
 first.
@@ -89,21 +91,20 @@ Ti2. **Work folder.** An ignored folder next to the report (e.g. `.work/<name>/`
 project's notes on the reader and on reports. Each stage runs headless in that folder
 (`templates/run-stage.sh`). Every brief limits it to the folder and the
 renderer: write only in the folder, no git, no memory files, no subagents or web search, the
-project's data rules, final reply three lines. Accounts and models: big-tasks (the run used Opus,
-effort high, throughout).
+project's data rules, final reply three lines. Accounts and models: big-tasks.
 
 Ti3. **Stage 1, outline.** One fresh session. The brief states the question and its parts in
-RMB's words (rule H2 of `topic-introduction.md`). It reads `topic-introduction.md`, `STYLE.md`,
+RMB's words (rule H2 of `STYLE.md`). It reads `topic-introduction.md`, `STYLE.md`,
 this file, the markup in `layers.lua`, the notes and the source, and writes two files:
 
 Ti3a. `outline.md`, for RMB, about 1,500 words at most: the question and its parts, the opening
 tree (M1); per section its contribution, its paragraphs' jobs in order with the items they state
-(label, one-word status, one line) and its hand-over (M3); the running example (E3); the figures
+(label, one-word status, one line) and its hand-over (M3); the examples and their variants (E3); the figures
 with the reason each earns its place (E1); the known-results boxes (K1); and a "Cut" list of
 source material no node needs.
 
 Ti3b. `plan.md`, for the writers: the split into parts, one writer each, with each part's
-sections and its sources (labels and line ranges); notation, labels and section letters; which R
+sections and its sources (labels and line ranges); notation, labels and section letters; which plot
 chunks and which numbers go where; the hand-over sentences between parts, word for word where a
 part's first sentence depends on the last one before it; additions to the content (Ti1); rules
 found unclear and how the plan resolves them; a check list for the assembler.
@@ -111,7 +112,7 @@ found unclear and how the plan resolves them; a check list for the assembler.
 Ti4. **RMB approves the outline** (render it as a page) before any writer starts. RMB's changes
 go into `outline.md` and `plan.md`.
 
-Ti5. **Stage 2, writers.** One fresh session per part (three for the Kalman page), **one after
+Ti5. **Stage 2, writers.** One fresh session per part, **one after
 another**, each reading the parts already written so that the page keeps one voice and cites
 earlier items instead of repeating them. One common brief plus a paragraph per writer naming its
 part. Each writer writes its fragment (`part-N.Rmd`, no YAML header), builds a test page from the
@@ -134,15 +135,15 @@ phone-checks the page, and writes `assembly-report.md` (at most 400 words: fixes
 left open, word count).
 
 Ti7. **Last, in the main session:** move the page next to the reports it links to, build and
-check it again (B1, B2), commit, and give it to RMB. Open points from the assembly report (in
-the Kalman run, a gap the source shared) go to RMB as decisions. RMB's vetoes and fixes are
+check it again (B1, B2), commit, and give it to RMB. Open points from the assembly report go to RMB
+as decisions. RMB's vetoes and fixes are
 made in the main session.
 
 ## Levels in a report
 
 L1. A report holds every level at once, as layers (table in `STYLE.md`, "Levels are layers"):
-L1 plain-words fold per section, L2 gist and Intuition, L3 statement and status line, L4 Steps,
-L5 named folds and side trips. The reader picks the level by what they open.
+L1 "In words" folds (and a paper companion's plain-words folds), L2 gist, recap and Intuition,
+L3 statement and status, L4 Steps, L5 named folds and side trips. The reader picks the level by what they open.
 
 L2. The explanation-levels skill governs answers in chat. Two of its rules do not apply to a
 report. A report never asks for a level, since it holds all of them. A report is not limited to
@@ -151,9 +152,8 @@ at the end as possible additions. Its writing style (ASD-STE100-inspired) and it
 (central idea first, no nontrivial claim passed off as obvious, simple deductions shown and
 substantial theorems named) apply to every layer of a report; `STYLE.md` has the style rules.
 
-L3. Write the plain-words fold of a section after the section itself, so it says what the section
-really does. Topic introductions have no plain-words folds; their L1 layer is the "In words"
-folds after displays (`topic-introduction.md`, P7).
+L3. A paper companion's plain-words fold is written after its section, so it says what the
+section really does (`paper-companion.md`, Pc6).
 
 ## Building and checking
 

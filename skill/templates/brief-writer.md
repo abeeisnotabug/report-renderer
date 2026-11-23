@@ -10,7 +10,8 @@ not apply, and delete this comment. -->
 W1. `sources/<source report>` is a checked report on <topic>[, a companion to <paper>
 (`sources/<paper>.txt`, page images in `sources/<paper>.pdf`)]. Its reader, RMB
 (`sources/notes/<reader notes>`), wants it rewritten as a **topic introduction**: a page that
-reads like a textbook chapter. The rules of that type are in
+reads like a textbook chapter. The rules for every report are in
+`~/Documents/Works/report-renderer/STYLE.md`; what differs for this type is in
 `~/Documents/Works/report-renderer/skill/topic-introduction.md`.
 
 W2. An earlier session wrote the outline (`outline.md`, approved by RMB, with RMB's changes) and
@@ -23,8 +24,7 @@ match their voice, and refer back to their items rather than repeating them.
 
 ## What you read
 
-R1. In full: `topic-introduction.md` (it overrides `STYLE.md` where they differ),
-`~/Documents/Works/report-renderer/STYLE.md`, the markup description at the top of
+R1. In full: `~/Documents/Works/report-renderer/STYLE.md`, `topic-introduction.md`, the markup description at the top of
 `~/Documents/Works/report-renderer/layers.lua`, `outline.md`, `plan.md`, every note in
 `sources/notes/`, and the parts already written in this folder.
 
@@ -41,11 +41,11 @@ D2. **Content.** Every claim, formula and number comes from the source or from t
 listed in `plan.md`. Nothing else is new. This is a rewrite of form and order: keep every step
 of a derivation that the source has, unless the outline cuts it.
 
-D3. **Form.** The rules in `topic-introduction.md`, in particular: the outline's paragraph jobs,
+D3. **Form.** The rules in `STYLE.md` and `topic-introduction.md`, in particular: the outline's paragraph jobs,
 each paragraph's first sentence stating its move (M5); a section opens with a "So far." recap
 and then what it adds (M2)
 and ends with its hand-over (M3), the plan's **fixed** sentences word for word; prose and items
-take turns (P1); the one-word status in the item title (P4); references written for a human
+take turns (P1); the one-word status in the item title (Tq3); references written for a human
 reader (P3); "we" and "let's", never "I" (P6); plain technical English, with each display's
 reading in an "In words" fold (P7); reasons at the reader's level, routine ones in a Why fold
 after the chain (F2), no display for a step done at a glance (F3); derivations in the general

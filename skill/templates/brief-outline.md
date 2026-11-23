@@ -10,8 +10,9 @@ the topic comes from the placeholders. -->
 W1. `sources/<source report>` is a checked report on <topic>[, a companion to <paper>
 (`sources/<paper>.txt`, page images in `sources/<paper>.pdf`)]. [Its numbers are checked by
 `sources/<check script>`.] Its reader, RMB (`sources/notes/<reader notes>`), wants it rewritten
-as a **topic introduction**: a report that reads like a textbook chapter. The rules for that type
-are in `~/Documents/Works/report-renderer/skill/topic-introduction.md`.
+as a **topic introduction**: a report that reads like a textbook chapter. The rules for every
+report are in `~/Documents/Works/report-renderer/STYLE.md`; what differs for this type is in
+`~/Documents/Works/report-renderer/skill/topic-introduction.md`.
 
 W2. The report answers one question in <n> parts, one at a time (rule H2). RMB's words:
 "<RMB's question, verbatim>".
@@ -25,12 +26,10 @@ and a final session assembles the page. RMB approves your outline before they st
 
 ## What you do
 
-D1. Read in full: `topic-introduction.md` (its hierarchy rules H1 to H4 come first),
-`~/Documents/Works/report-renderer/STYLE.md`, `skill/SKILL.md` in the same folder, the markup
+D1. Read in full: `~/Documents/Works/report-renderer/STYLE.md` (its hierarchy rules H1 to H4
+come first), `topic-introduction.md`, `skill/SKILL.md` in the same folder, the markup
 description at the top of `~/Documents/Works/report-renderer/layers.lua`, every note in
-`sources/notes/`, and `sources/<source report>`. Skim
-`~/Documents/Works/report-renderer/skill/drafts/textbook-style-notes.md` [and the paper where the
-source cites it].
+`sources/notes/`, and `sources/<source report>` [and the paper where the source cites it].
 
 D2. Write `outline.md`, the document RMB reads and approves. It is the tree of rule H1, and it
 must itself be easy to read (about 1,500 words at most):
@@ -67,8 +66,8 @@ the last of the one before (mark these **fixed**);
 
 D3e. additions: any link a node needs that the source lacks (D4), with its justification;
 
-D3f. anything in `topic-introduction.md` you found unclear or in conflict with `STYLE.md` when
-applying it, and how the plan resolves it;
+D3f. any rule of `STYLE.md` or `topic-introduction.md` you found unclear or in conflict
+when applying it, and how the plan resolves it;
 
 D3g. a check list for the final session: order of the parts, the fixed hand-overs, old labels
 that must not remain, and anything else the assembler should verify.

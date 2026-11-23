@@ -5,10 +5,11 @@ date: ""
 layered: true
 ---
 
-<!-- Starter for a topic introduction (skill/topic-introduction.md). Copy this file into the
-project, rename it, and fill it from RMB's request and the approved outline (H1). It fixes no
-structure: the sections between "Notation" and "Known results" come from the outline alone.
-Markup of each device: skill/demo/demo.md. A page without plots can be plain Markdown (.md):
+<!-- Starter for every type of report (STYLE.md, "Types"). Copy this file into the project,
+rename it, and fill it from RMB's request, the source and the approved outline (H1). It fixes no
+structure: the sections between "Notation" and the final section come from the outline alone.
+The type file names the final section (K1) and what the opening adds. Markup of each device:
+skill/demo/demo.md. A page without plots can be plain Markdown (.md):
 then drop the setup chunk.
 
 Build, from the report's folder:
@@ -21,7 +22,8 @@ NODE_PATH=$(npm root -g) node ~/Documents/Works/report-renderer/phone-check.js "
 knitr::opts_chunk$set(dev = "svglite", echo = FALSE, comment = "#>", collapse = TRUE)
 ```
 
-<!-- Opening (M1): one prose paragraph, then the route as a short tree. -->
+<!-- Opening (M1): one prose paragraph, then the route as a short tree; then what the type file
+adds to the opening. -->
 
 ## Notation {#sec-notation .fold}
 
@@ -33,7 +35,7 @@ knitr::opts_chunk$set(dev = "svglite", echo = FALSE, comment = "#>", collapse = 
 
 <!-- The sections of the outline go here. -->
 
-## Known results {#sec-known .fold}
+## [Final section: title from the type file] {#sec-known .fold}
 
 ::: gist
 :::

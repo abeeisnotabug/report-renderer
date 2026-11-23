@@ -8,8 +8,8 @@ Fill every <...>, delete text in [...] that does not apply, and delete this comm
 W1. <n> writers have written one part each of a topic introduction (a report that reads like a
 textbook chapter) on <topic>: `part-1.Rmd` to `part-<n>.Rmd` in this folder, with their notes
 `notes-1.md` to `notes-<n>.md`. The contract they followed is `outline.md` (approved by RMB, the
-reader) and `plan.md`; the rules of this report type are in
-`~/Documents/Works/report-renderer/skill/topic-introduction.md`. Their source is
+reader) and `plan.md`; the rules are in `~/Documents/Works/report-renderer/STYLE.md`, and what
+differs for this type in `~/Documents/Works/report-renderer/skill/topic-introduction.md`. Their source is
 `sources/<source report>`, a checked report.
 
 W2. You make the parts one page and check it. Writers working one after another drift: in
@@ -18,7 +18,7 @@ bottom, and every element must serve its node of the outline (rule H3).
 
 ## What you read
 
-R1. In full: `topic-introduction.md`, `~/Documents/Works/report-renderer/STYLE.md`, the markup
+R1. In full: `~/Documents/Works/report-renderer/STYLE.md`, `topic-introduction.md`, the markup
 description at the top of `~/Documents/Works/report-renderer/layers.lua`, `outline.md`,
 `plan.md` (its check list is for you), the notes, the parts, and the notes in `sources/notes/`.
 Parts of `sources/<source report>` where you need to check a claim.

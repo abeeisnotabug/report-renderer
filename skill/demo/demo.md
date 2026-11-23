@@ -5,13 +5,13 @@ date: ""
 layered: true
 ---
 
-<!-- This page shows the markup of each device of skill/topic-introduction.md once, with
+<!-- This page shows the markup of each device of STYLE.md, "Teaching", once, with
 placeholders. Its order, its section titles, its number of sections and its words are not a
 model: a report's structure comes from RMB's request and the approved outline (H1). Copy a
 device's markup, never its text or its place on this page.
 Build: ~/Documents/Works/report-renderer/render.sh demo.md -->
 
-This page shows the markup of each device of a topic introduction once, with placeholders: symbols $A$, $B$, $C$ and slots in square brackets. Its order and its section titles are not a model for a report; each section shows one device.
+This page shows the markup of each teaching device of a report once, with placeholders: symbols $A$, $B$, $C$ and slots in square brackets. Its order and its section titles are not a model for a report; each section shows one device.
 
 [Opening paragraph (M1): the problem, what its answer gives, what it costs, and the route.]
 
@@ -38,7 +38,7 @@ Every symbol used outside the section that defines it: what it is as a mathemati
 [Sentence that says what this section adds, often by naming what the text cannot yet do (M2).]
 
 ::: {#A1 .item}
-**A1. [defined] Definition: [name of the object].** [The objects it is built from.] The **[new term]** is
+**A1. [core] Definition: [name of the object].** [The objects it is built from.] The **[new term]** is
 
 $$A:=[\text{definition}].$$
 
@@ -64,7 +64,7 @@ $$A:=[\text{definition}].$$
 [What this section adds.]
 
 ::: {#B1 .item}
-**B1. [derived] Result: [title].** [Assumption, with its reason.] Then
+**B1. [core] Result: [title].** [Assumption, with its reason.] Then
 
 $$\begin{aligned}A&=B\\ &=C.\end{aligned}$$
 
@@ -107,7 +107,7 @@ b. [Claim (b), and the part of the formula it reads off.]
 :::
 
 ::: {#C1 .item}
-**C1. [defined] Example: [name of the example].** [Chosen because it has or lacks the property ... (E3).] [The example's model, in full, once:]
+**C1. [core] Example: [name of the example].** [Chosen because it has or lacks the property ... (E3).] [The example's model, in full, once:]
 
 $$B=[\text{model}].$$
 
@@ -117,7 +117,7 @@ $$B=[\text{model}].$$
 :::
 
 ::: {#C2 .item}
-**C2. [defined] Example: [variant name].** As C1, except that [the one property that changes, and only that].
+**C2. [core] Example: [variant name].** As C1, except that [the one property that changes, and only that].
 :::
 
 | | [assumption 1] | [assumption 2] |
@@ -145,7 +145,7 @@ $$B=[\text{model}].$$
 **E1. [side trip] Remark: [title].** [Material that serves the question but not the main line (L2).]
 :::
 
-## Known results {#sec-known .fold}
+## [Final section: title from the type file] {#sec-known .fold}
 
 ::: gist
 General results the text uses without proof (K1).
