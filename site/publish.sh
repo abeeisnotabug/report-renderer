@@ -16,7 +16,7 @@ mlts="$HOME/Documents/Works/FSU Jena/Projekte/MLTS Count and Survival/lit"
 for page in basics/survival basics/gp-ou-crash-course basics/radon-nikodym-report \
             henderson-2000/hdd-background henderson-2000/henderson-2000 \
             wang-zhong-2025/wz-likelihood wang-zhong-2025/wang-zhong-2025 \
-            sorensen-2026/kalman-intro sorensen-2026/kalman-talk-RMB; do
+            sorensen-2026/kalman-intro sorensen-2026/kalman-talk-RMB sorensen-2026/kalman-talk-group; do
   mkdir -p "$stage/mlts/$(dirname "$page")"
   cp "$mlts/$page.html" "$stage/mlts/$page.html"
 done
