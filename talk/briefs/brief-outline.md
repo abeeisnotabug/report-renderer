@@ -7,7 +7,12 @@ the topic comes from the placeholders. -->
 ## Why this task exists
 
 W1. RMB gives a talk of <minutes> minutes on <topic> to <audience>. <What the audience knows,
-and what it does not know; what it should take home.>
+and what it does not know.>
+
+W1a. The structure: <the structure RMB's request gives, in RMB's words: what the talk does and
+in what order; parts only if RMB asks for them>. Follow it; where it leaves something open,
+choose what fits the content and say why in your notes. Nothing in the kit's `starter/` or
+`demo/` is a model for the structure.
 
 W2. The content comes from <sources in `sources/`: a checked report, a paper, an earlier deck>.
 [Its numbers are checked by `sources/<check script>`.] The talk adds no claim that is not in the
@@ -25,9 +30,9 @@ every source.
 
 D2. Write `outline.md`:
 
-D2a. the question the talk answers, in one sentence, and the route (parts, one line each);
+D2a. the structure of W1a, in a few lines;
 
-D2b. per slide: number, part, title (the slide's message as a sentence), what is on the slide
+D2b. per slide: number, [part,] title (the slide's message as a sentence), what is on the slide
 at each state, the picture (what it shows, what changes per step) and any live control (what
 moves, what the audience should see change), the planned minutes, and in one line what the notes
 say;

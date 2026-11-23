@@ -19,8 +19,9 @@ comments at the top of `kit/engine.js`, `kit/live.js` and `kit/lib.js`, `outline
 and the sources it names.
 
 D2. Build every slide as the outline says: title, states, pictures, live controls, notes
-(SKILL.md N1 to N7), colours by the outline's colour map (C1 to C3). Replace all placeholder
-content of the starter.
+(SKILL.md N1 to N7), colours by the outline's colour map (C1 to C3), in the outline's order and
+structure. Take markup for each mechanism from `talk/demo/`, never its text, order or slide
+kinds.
 
 D3. Numbers and formulas exactly as `plan.md` gives them. [Write `test-numbers.mjs`: it
 recomputes every live number independently and compares (SKILL.md P2).]

@@ -1,0 +1,12 @@
+{
+  "title": "Demo deck",
+  "kicker": "Demo",
+  "shortTitle": "Demo deck",
+  "author": "R. Maximilian Bee",
+  "affiliation": "Psychological Methods Division, Institute for Psychology, Friedrich Schiller University Jena",
+  "date": "Date",
+  "lang": "en",
+  "minutes": 5,
+  "parts": { "A": "Part label A" },
+  "colors": { "wave": "b", "crest": "a" }
+}

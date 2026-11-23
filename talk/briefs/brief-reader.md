@@ -20,7 +20,7 @@ D2. Check, slide by slide: the slide does what the outline says; every number an
 with the sources; text and formulas are readable and nothing overflows or overlaps, in both
 themes; the notes follow SKILL.md N3 to N5 and match what is on the slide at that state; the
 level fits the audience. Then the whole: the titles alone tell the story; the planned minutes add
-up to <minutes> and fit the notes; the parts hand over to each other.
+up to <minutes> and fit the notes; the deck follows the structure of `outline.md`.
 
 D3. Fix only what is clearly wrong and local: a number or formula that differs from the sources,
 overflow, a typo, a broken step or control. List everything else; do not rewrite slides or notes.

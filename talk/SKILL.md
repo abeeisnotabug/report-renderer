@@ -10,15 +10,20 @@ formulas rendered at build time, opens in any browser. It is versioned with the 
 
 ## Start
 
-St1. **Start from `starter/` only.** Copy it to a folder in the project, named after the talk, and replace all of its placeholder content. Do not open earlier talks' deck
-folders as models unless RMB names one: their slide-specific pieces carry over into an unrelated
-talk.
+St1. **Structure comes from RMB.** The talk's structure, length, number of slides, parts (if
+any) and framing come from RMB's request and the outline RMB approves. Nothing in `starter/`,
+`demo/` or an earlier talk is a model for them.
 
-St2. The kit (`kit/`) is shared by every talk. A talk never edits it; a talk's own styles go in
+St2. **Copy `starter/`**, which holds an empty `config.json` and an empty title slide, to a
+folder in the project named after the talk. Read `demo/` for markup only: each of its slides
+shows one mechanism and has no content; copy a mechanism's markup, never its text or order. Do
+not open earlier talks' deck folders unless RMB names one.
+
+St3. The kit (`kit/`) is shared by every talk. A talk never edits it; a talk's own styles go in
 its `style.css`. A change to the kit is a change for all future talks: ask RMB first, then
-rebuild `starter/` and run all checks on it.
+rebuild `demo/` and run all checks on it.
 
-St3. Before a talk of more than a few slides, read `~/.agent-skills-shared/big-tasks/SKILL.md`
+St4. Before a talk of more than a few slides, read `~/.agent-skills-shared/big-tasks/SKILL.md`
 and ask RMB for the cast (its S1). The stages are below (Stages).
 
 ## The deck folder
@@ -30,7 +35,8 @@ D1. `config.json`: `title` (browser tab), `kicker`, `shortTitle` (footer), `subt
 D2. `slides*.html`, read in file-name order (several files let several workers write in
 parallel). The slide markup, steps, pictures and keys are described at the top of
 `kit/engine.js`; the live controls at the top of `kit/live.js`; the drawing helpers at the top of
-`kit/lib.js`. `starter/slides.html` shows each mechanism once.
+`kit/lib.js`. `demo/` shows each mechanism once. Part slides (class `divider`) and `data-part`
+are optional; a part slide's route takes any number of items.
 
 D3. `anim-*.js` (pictures), `live-*.js` (live controls), optional `style.css` and `assets/`
 (files used as `asset:NAME`).
@@ -111,7 +117,8 @@ Delete the `*-shots-*` folders afterwards.
 
 ## Stages
 
-Sg1. **Outline.** One session writes the storyboard: per slide the title, what is on it per
+Sg1. **Outline.** One session writes the storyboard in the structure RMB's request gives (St1):
+per slide the title, what is on it per
 state, the pictures and controls, the planned minutes, and the notes' content in a line.
 Template: `briefs/brief-outline.md`. RMB approves it before anything is built.
 

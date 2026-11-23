@@ -1,119 +1,14 @@
-<!-- slides.html: the starter deck. Placeholder content only: it shows each kind of slide and
-     each mechanism once. Replace all of it. -->
-
-<section class="slide title" data-steps="0" data-min="0.5" data-part="0">
+<section class="slide title" data-steps="0" data-min="0">
   <div class="wordmark"></div>
-  <header><div class="kicker" data-config="kicker"></div><h1>Title of the talk, as a short sentence</h1></header>
+  <header><div class="kicker" data-config="kicker"></div><h1></h1></header>
   <div class="stripe-wide bleed"></div>
   <div class="meta">
-    <div class="subtitle">Subtitle, or the source the talk is about</div>
+    <div class="subtitle"></div>
     <div class="author" data-config="author"></div>
     <div class="affil" data-config="affiliation"></div>
     <div class="date" data-config="date"></div>
   </div>
   <aside class="notes">
-    <ul data-step="0"><li>greeting</li><li>the one question of the talk</li><li>the route: two parts</li></ul>
-  </aside>
-</section>
-
-<section class="slide divider" data-steps="0" data-min="0.3" data-part="I">
-  <div class="panel bleed"><div class="part">I</div><h1>Name of part I</h1></div>
-  <ol class="route">
-    <li class="on"><div class="what">I. What part I asks</div><div class="sub">slides <b>3 to 5</b></div></li>
-    <li><div class="what">II. What part II asks</div><div class="sub">later</div></li>
-  </ol>
-  <aside class="notes">
-    <ul data-step="0"><li>part I: what it answers</li><li>part II: what it builds on</li></ul>
-  </aside>
-</section>
-
-<section class="slide" data-steps="3" data-min="1.2" data-part="I">
-  <header><div class="kicker">Part I · text and steps</div><h1>Each slide title states the slide's message as a sentence.</h1></header>
-  <div class="body cols">
-    <div class="col">
-      <ul class="b">
-        <li>A first point, visible from the start.</li>
-        <li data-show="1">A second point, from state 1 on.</li>
-        <li data-show="2"><span data-strike="3">A third point, struck through at state 3.</span></li>
-      </ul>
-      <div class="legend" data-show="1"><span><span class="sw" style="--sw: var(--c-a)"></span>slot a</span>
-        <span><span class="sw" style="--sw: var(--c-b)"></span>slot b</span><span><span class="sw" style="--sw: var(--c-c)"></span>slot c</span>
-        <span><span class="sw" style="--sw: var(--c-d)"></span>slot d</span><span><span class="sw" style="--sw: var(--c-e)"></span>slot e</span>
-        <span><span class="sw" style="--sw: var(--c-f)"></span>slot f</span></div>
-    </div>
-    <div class="col">
-      <div class="card">
-        <div class="card-head"><span class="tag">tag</span>A card with a formula</div>
-        $$\ca{x} + \cb{y} + \cc{z} = \cd{u} + \ce{v} + \cf{w}$$
-        <p data-hl="2">Text in the colour of an object: <span class="c-a">the object in slot a</span>,
-          <span class="c-d">the object in slot d</span>.</p>
-      </div>
-      <div class="stack">
-        <p data-hide="3">Two texts in one place: this one until state 2,</p>
-        <p data-show="3">and this one from state 3 on.</p>
-      </div>
-    </div>
-  </div>
-  <aside class="notes">
-    <ul data-step="0"><li>first point</li><li>why it matters</li></ul>
-    <ul data-step="1"><li>second point</li><li>colours: one per object</li></ul>
-    <ul data-step="2"><li>third point</li><li>the highlighted line</li></ul>
-    <ul data-step="3"><li>the third point no longer holds</li><li>the replaced sentence</li></ul>
-  </aside>
-</section>
-
-<section class="slide" data-steps="4" data-min="1.2" data-part="I">
-  <header><div class="kicker">Part I · a picture</div><h1>A picture changes with the steps, and every state can be reached directly.</h1></header>
-  <div class="body cols">
-    <div class="col">
-      <p>Each bar appears in its own step.</p>
-      <p data-show="4">Then an arrow is drawn.</p>
-    </div>
-    <div class="anim" data-anim="shapes" data-anim-opts="shapes-main" style="--w:1000px;--h:760px">
-      <span class="lbl" data-lbl="bar0">$\ca{u}$</span>
-      <span class="lbl" data-lbl="bar1">$\cb{v}$</span>
-      <span class="lbl" data-lbl="bar2">$\cc{w}$</span>
-    </div>
-  </div>
-  <aside class="notes">
-    <ul data-step="0"><li>the empty frame</li><li>what will appear</li></ul>
-    <ul data-step="1"><li>first bar</li></ul>
-    <ul data-step="2"><li>second bar</li></ul>
-    <ul data-step="3"><li>third bar</li></ul>
-    <ul data-step="4"><li>the arrow: from first to last</li><li>takeaway in one phrase</li></ul>
-  </aside>
-</section>
-
-<section class="slide" data-steps="2" data-min="1.3" data-part="I" data-live="wave">
-  <header><div class="kicker">Part I · live controls</div><h1>At its last state a slide can offer sliders and points to drag.</h1></header>
-  <div class="body cols">
-    <div class="col">
-      <p>The curve: $\wave{A \sin(f x)}$.</p>
-      <p data-show="2">Its first <span class="c-crest">crest</span> sits at height $A$.</p>
-      <p data-show="2" data-ro-after>Position of the crest:</p>
-    </div>
-    <div class="anim" data-anim="wave" data-anim-opts="wave-main" style="--w:1000px;--h:560px">
-      <span class="lbl" data-lbl="crest">$\crest{\text{crest}}$</span>
-    </div>
-  </div>
-  <aside class="notes">
-    <ul data-step="0"><li>the axes</li><li>what the curve will show</li></ul>
-    <ul data-step="1"><li>the curve, drawn left to right</li></ul>
-    <ul data-step="2"><li>the crest at height A</li><li>Try: frequency slider; drag the crest</li><li>any move of the deck resets</li></ul>
-  </aside>
-</section>
-
-<section class="slide" data-steps="0" data-min="0.5" data-part="end">
-  <header><div class="kicker">End</div><h1>The last slide repeats the answer to the talk's question.</h1></header>
-  <div class="body">
-    <table class="num">
-      <tr><th>item</th><th>value</th></tr>
-      <tr><td>first</td><td>1</td></tr>
-      <tr><td>second</td><td>2</td></tr>
-    </table>
-    <p>Closing sentence.</p>
-  </div>
-  <aside class="notes">
-    <ul data-step="0"><li>the answer, in one sentence</li><li>what stays open</li><li>thanks; questions</li></ul>
+    <ul data-step="0"><li></li></ul>
   </aside>
 </section>
