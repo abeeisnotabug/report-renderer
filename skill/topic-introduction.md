@@ -48,7 +48,7 @@ Prevents: a reader who does not know why a section is there, or where the argume
 
 M1. **Opening:** a prose paragraph with the problem, what its answer gives, what it costs (what is
 hard), and the route; then the same route as a short tree for scanning. The tree is the
-outline's top levels (H1), in plain sentences.
+outline's top levels (H1), in plain sentences. This replaces `STYLE.md`'s "Big picture" section.
 
 M2. **A section opens with a short recap, then with what it adds.** The recap, a paragraph that
 starts "**So far.**", says what the text has shown that this section needs, with the formulas
@@ -156,8 +156,9 @@ general definitions; the example's special values are stated once, before the de
 enter only where the step needs them. The definitions the derivation uses are written into it.
 
 F7. **Claims are read off formulas.** A claim follows a displayed formula and says what it reads
-off it. Concrete numbers never carry a claim in the main line: they go into the example fold
-(E3). A later item that needs the same fact cites the formula with its label instead of redoing
+off it. A number never stands in for the formula. A number that is the pay-off of a displayed
+formula, the point the formula leads to, may follow it in the main line; all other numbers go
+into the example fold (E3). A later item that needs the same fact cites the formula with its label instead of redoing
 the computation.
 
 F8. **The computation in full.** A computation the reader may want to check, but that would

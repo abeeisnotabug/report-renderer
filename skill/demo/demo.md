@@ -11,7 +11,7 @@ model: a report's structure comes from RMB's request and the approved outline (H
 device's markup, never its text or its place on this page.
 Build: ~/Documents/Works/report-renderer/render.sh demo.md -->
 
-This page shows the markup of each device of a topic introduction once, with placeholders: symbols such as $X$, $Y$, $Z$ and slots in square brackets. Its order and its section titles are not a model for a report; each section shows one device.
+This page shows the markup of each device of a topic introduction once, with placeholders: symbols $A$, $B$, $C$ and slots in square brackets. Its order and its section titles are not a model for a report; each section shows one device.
 
 [Opening paragraph (M1): the problem, what its answer gives, what it costs, and the route.]
 
@@ -26,9 +26,8 @@ Every symbol used outside the section that defines it: what it is as a mathemati
 
 | Symbol | Name | What it is | Defined in |
 |---|---|---|---|
-| $X$, $Y$ | [name] | [random variables on the probability space of A1] | A1 |
-| $Z$ | [name] | [random variable $f(X)+g(Y)$] | A1 |
-| $f$, $g$ | [name] | [measurable functions] | A1 |
+| $A$ | [name] | [what it is as a mathematical object] | A1 |
+| $B$ | [name] | [what it is as a mathematical object] | [label] |
 
 ## A. Device: a definition with its reading in words {#sec-a .fold}
 
@@ -39,12 +38,12 @@ Every symbol used outside the section that defines it: what it is as a mathemati
 [Sentence that says what this section adds, often by naming what the text cannot yet do (M2).]
 
 ::: {#A1 .item}
-**A1. [defined] Definition: [name of the object].** Let $X$ and $Y$ be [what they are]. The **[new term]** is the random variable
+**A1. [defined] Definition: [name of the object].** [The objects it is built from.] The **[new term]** is
 
-$$Z:=f(X)+g(Y).$$
+$$A:=[\text{definition}].$$
 
 ::: {.fold summary="In words"}
-[The display said as a sentence, with every object named: $Z$ is the sum of ...]
+[The display said as a sentence, with every object named.]
 :::
 
 ::: intuition
@@ -60,17 +59,17 @@ $$Z:=f(X)+g(Y).$$
 [Claim.]
 :::
 
-**So far.** [What the text has shown that this section needs, with the formulas it uses written out (M2):] Section A defined $Z=f(X)+g(Y)$ (A1). Symbols: [Notation](#sec-notation).
+**So far.** [What the text has shown that this section needs, with the formulas it uses written out (M2):] Section A defined $A$ as [the definition, written out] (A1). Symbols: [Notation](#sec-notation).
 
 [What this section adds.]
 
 ::: {#B1 .item}
 **B1. [derived] Result: [title].** [Assumption, with its reason.] Then
 
-$$\begin{aligned}\mathbb E(Z\mid X)&=\mathbb E\big(f(X)+g(Y)\mid X\big)\\ &=f(X)+\mathbb E\,g(Y).\end{aligned}$$
+$$\begin{aligned}A&=B\\ &=C.\end{aligned}$$
 
 ::: why
-[One sentence per move, for moves the reader supplies at once (F2):] $f(X)$ is known given $X$, and $g(Y)$ is independent of $X$, so its conditional mean is its mean (Lemma K.1).
+[One sentence per move, for moves the reader supplies at once (F2):] [reason for the first move] (Lemma K.1). [Reason for the second move.]
 :::
 
 ::: {.fold summary="In words"}
@@ -83,7 +82,7 @@ a. [Claim (a), and the part of the formula it reads off.]
 b. [Claim (b), and the part of the formula it reads off.]
 
 ::: steps
-1. [A step that uses something, with what it uses: the equation written out, the label after it as a link, e.g. "inserting $Z=f(X)+g(Y)$ (A1)".]
+1. [A step that uses something, with what it uses: the equation written out, the label after it as a link, e.g. "inserting [the equation of A1] (A1)".]
 2. [Next step.]
 :::
 
@@ -110,7 +109,7 @@ b. [Claim (b), and the part of the formula it reads off.]
 ::: {#C1 .item}
 **C1. [defined] Example: [name of the example].** [Chosen because it has or lacks the property ... (E3).] [The example's model, in full, once:]
 
-$$Z=X+Y,\qquad X,Y\ \text{[distribution]}.$$
+$$B=[\text{model}].$$
 
 ::: {.fold summary="In words"}
 [The model said as a sentence.]
@@ -132,9 +131,9 @@ $$Z=X+Y,\qquad X,Y\ \text{[distribution]}.$$
 [Claim.]
 :::
 
-[The sentence the figure supports cites it (E2): $Z$ depends on $X$ only through $f$ (Figure 1).]
+[The sentence the figure supports cites it (E2): [claim] (Figure 1).]
 
-![**Figure 1.** [The claim, in the first sentence.] [Walk through the parts in order, repeating the notation: $Z$ is built from $X$ through $f$ and from $Y$ through $g$.]](fig-demo.svg)
+![**Figure 1.** [The claim, in the first sentence.] [Walk through the parts in order, repeating the notation.]](fig-demo.svg)
 
 ## E. Device: a side trip {#sec-e .fold .side}
 
@@ -153,5 +152,5 @@ General results the text uses without proof (K1).
 :::
 
 ::: {#lec-K-1 .lec}
-**Lemma K.1 ([name]).** [Statement as a formula, e.g.: if $W$ is independent of $X$, then $\mathbb E(W\mid X)=\mathbb E\,W$.]
+**Lemma K.1 ([name]).** [Statement as a formula.]
 :::

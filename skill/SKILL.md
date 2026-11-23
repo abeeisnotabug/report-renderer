@@ -152,7 +152,8 @@ at the end as possible additions. Its writing style (ASD-STE100-inspired) and it
 substantial theorems named) apply to every layer of a report; `STYLE.md` has the style rules.
 
 L3. Write the plain-words fold of a section after the section itself, so it says what the section
-really does.
+really does. Topic introductions have no plain-words folds; their L1 layer is the "In words"
+folds after displays (`topic-introduction.md`, P7).
 
 ## Building and checking
 

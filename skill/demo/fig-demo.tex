@@ -1,10 +1,10 @@
 \documentclass[tikz,border=2pt]{standalone}
 \begin{document}
 \begin{tikzpicture}[box/.style={draw,minimum width=1.6cm,minimum height=0.9cm}]
-  \node[box] (x) at (0,0) {$X$};
-  \node[box] (y) at (0,-1.6) {$Y$};
-  \node[box] (z) at (5.5,-0.8) {$Z$};
-  \draw[->] (x) -- node[above,sloped] {$f$} (z);
-  \draw[->] (y) -- node[below,sloped] {$g$} (z);
+  \node[box] (a) at (0,0) {$A$};
+  \node[box] (b) at (0,-1.6) {$B$};
+  \node[box] (c) at (5.5,-0.8) {$C$};
+  \draw[->] (a) -- (c);
+  \draw[->] (b) -- (c);
 \end{tikzpicture}
 \end{document}
