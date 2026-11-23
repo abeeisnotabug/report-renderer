@@ -62,7 +62,8 @@ names no lecture, course or theorem number. (A lecture companion cites its own l
     the request's) does not go into the text: list it at the end as possible additions, one
     line each.
 - **Item titles** carry a kind word, which colours the title: "**M1. [core] Definition: ...**",
-  with Definition, Result, Example, Remark, Figure or Overview. A restated lecture result keeps the
+  with Definition, Result, Example, Remark, Figure or Overview (and Exercise in lecture
+  companions). A restated lecture result keeps the
   lecture's own label: "**Lemma 3.38. [core] ...**".
 - **"Uses:" lines point backward only.** Each item gets a "Uses:" line listing what it uses; it is
   built from the labels cited in the text. No forward "used in" lists. Forward pointers in words
@@ -138,7 +139,8 @@ case.)
 M8. **End** with a short conclusion: what the text has answered, what it has left open, and where
 that is treated.
 
-M9. **Notation table.** A section "Notation" right after the opening lists every symbol and
+M9. **Notation table.** A section "Notation", right after the opening and what the type file
+adds to it, lists every symbol and
 named assumption that the text uses outside the section that defines it, in the order of the
 text: the symbol, its name, what it is as a mathematical object (a random variable, a number, a
 σ-algebra, an equation), and a link to the item that defines it. Each recap (M2) links to it.

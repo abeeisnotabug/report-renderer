@@ -17,7 +17,7 @@ notation.
 Pc4. **Status lines.** After each statement, a line that says what it is ("Say what every piece
 is" in `STYLE.md`), with these words: *Known* (cited, with a link; not shown again), *Reminder*
 (the steps follow the original's steps), *Known for new objects*, *Second route* (with what it
-adds), *New here*. The convention is stated once in the reading notes; an item without a status
+adds), *New here*. The convention is stated once in the opening; an item without a status
 line is new on the page.
 
 Pc5. **What is the paper's.** Every report says what is the paper's and what is the report's. In
