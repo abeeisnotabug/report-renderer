@@ -1,0 +1,251 @@
+/* style.css: the slide frame and the general pieces. Colours come from theme.css.
+   asset:NAME is replaced by build.mjs with a data: URL of NAME, looked up in the deck's
+   assets/ folder first and then in the kit's. A deck's own style.css is loaded after this file.
+   Slides are 1920 x 1080 px; the content area is x 96..1824, y 40..1000 (shoot.mjs checks it).
+   Elements with class "bleed" may leave the content area. */
+
+@font-face { font-family: "RC"; font-weight: 300; font-style: normal; src: url("asset:RobotoCondensed-Light.ttf") format("truetype"); }
+@font-face { font-family: "RC"; font-weight: 400; font-style: normal; src: url("asset:RobotoCondensed-Regular.ttf") format("truetype"); }
+@font-face { font-family: "RC"; font-weight: 700; font-style: normal; src: url("asset:RobotoCondensed-Bold.ttf") format("truetype"); }
+@font-face { font-family: "RC"; font-weight: 400; font-style: italic; src: url("asset:RobotoCondensed-RegularItalic.ttf") format("truetype"); }
+
+:root {
+  /* the FSU stripe: the same in both themes */
+  --foot-bar: #345980;
+  --stripe: linear-gradient(90deg, var(--foot-bar) 0 50%,
+    #573D91 50% 52.5%, #8571B1 52.5% 55%, #8A1978 55% 57.5%, #A9619D 57.5% 60%,
+    #B9075E 60% 62.5%, #CA6388 62.5% 65%, #CB1C2A 65% 67.5%, #E18271 67.5% 70%,
+    #DC6511 70% 72.5%, #ECA66E 72.5% 75%, #DC9801 75% 77.5%, #E8B75B 77.5% 80%,
+    #559E30 80% 82.5%, #92B86A 82.5% 85%, #0A7836 85% 87.5%, #699865 87.5% 90%,
+    #007A8B 90% 92.5%, #439CAB 92.5% 95%, #368DBC 95% 97.5%, #7DABD0 97.5% 100%);
+}
+
+html, body { margin: 0; padding: 0; background: var(--bg); width: 100%; height: 100%; overflow: hidden; }
+body { font-family: "RC", "Roboto Condensed", sans-serif; color: var(--dark); }
+
+/* ---------- stage and slide frame ---------- */
+#stage { position: absolute; left: 50%; top: 50%; width: 1920px; height: 1080px; transform-origin: 50% 50%; overflow: hidden; background: var(--bg); }
+.slide { position: absolute; inset: 0; display: none; box-sizing: border-box; padding: 40px 96px 80px 96px;
+         font-size: 34px; line-height: 1.35; font-weight: 400; background: var(--bg); }
+.slide.current { display: flex; flex-direction: column; }
+.slide > header { flex: none; margin-bottom: 30px; }
+.slide > header::before { content: ""; display: block; width: 72px; height: 6px; background: var(--dark); margin-bottom: 14px; }
+.kicker { font-size: 24px; color: var(--medium); letter-spacing: 0.02em; margin-bottom: 4px; }
+h1 { font-size: 54px; font-weight: 700; line-height: 1.12; margin: 0; color: var(--dark); max-width: 1728px; }
+h2.side { font-size: 36px; margin: 0 0 12px; font-weight: 700; }
+.body { flex: 1 1 auto; min-height: 0; position: relative; }
+.cols { display: flex; gap: 56px; align-items: flex-start; }
+.col { flex: 1 1 0; min-width: 0; }
+.col.narrow { flex: 0 0 auto; }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+.three { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 32px; }
+.center { text-align: center; }
+p { margin: 0 0 18px 0; }
+b, strong { font-weight: 700; }
+em { font-style: italic; }
+.small { font-size: 30px; }
+.cite { font-size: 26px; color: var(--medium); }
+.muted { color: var(--c-muted-text); }
+
+/* bullets: square, in the accent colour; a nested list is smaller */
+ul.b { list-style: none; padding: 0; margin: 0; }
+ul.b > li { position: relative; padding-left: 40px; margin-bottom: 14px; }
+ul.b > li::before { content: ""; position: absolute; left: 4px; top: 0.5em; width: 14px; height: 14px; background: var(--accent); }
+ul.b ul.b > li { font-size: 30px; }
+ul.b ul.b > li::before { background: var(--c-muted); width: 11px; height: 11px; }
+
+/* ---------- card and tag ---------- */
+.card { background: var(--card-bg); padding: 24px 28px; margin-bottom: 24px; }
+.card > :last-child, .card > :last-child > :last-child, .col > :last-child { margin-bottom: 0; }
+.card-head { font-size: 24px; color: var(--medium); margin-bottom: 12px; }
+.card-head .katex { font-size: 1.17em; }
+.card-head .tag { margin-right: 14px; vertical-align: 3px; }
+.tag { display: inline-block; font-weight: 700; font-size: 18px; text-transform: uppercase; letter-spacing: 0.06em;
+       padding: 6px 14px; line-height: 1.2; border-radius: 3px; box-sizing: border-box;
+       background: var(--dark); color: var(--bg); }
+.tag.outline { background: var(--bg); border: 2px solid var(--medium); color: var(--medium); padding: 4px 12px; }
+.tag.accent  { background: var(--accent); color: var(--on-strong); }
+.tag.soft    { background: var(--hl-bg); color: var(--dark); }
+
+/* ---------- colours in text ----------
+   Formulas use the macros \ca … \cf (and one per alias of config.json "colors"); HTML uses the
+   classes c-a … c-f (and c-ALIAS, written by build.mjs). A legend swatch:
+   <span class="sw" style="--sw: var(--c-a)"></span> */
+.c-a { color: var(--c-a); } .c-b { color: var(--c-b); } .c-c { color: var(--c-c); }
+.c-d { color: var(--c-d); } .c-e { color: var(--c-e); } .c-f { color: var(--c-f); }
+.c-muted { color: var(--c-muted); }
+.sw { display: inline-block; width: 30px; height: 18px; margin-right: 10px; vertical-align: 0; border-radius: 2px;
+      border: 3px solid var(--sw); background: color-mix(in srgb, var(--sw) 22%, transparent); }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 28px; font-size: 28px; margin-bottom: 22px; }
+
+/* ---------- steps ---------- */
+[data-show], [data-hide] { transition: opacity 250ms ease, visibility 250ms; }
+.step-off { opacity: 0 !important; visibility: hidden !important; }
+.hl { background: var(--hl-bg); box-shadow: 0 0 0 8px var(--hl-bg); transition: background 250ms, box-shadow 250ms; }
+.card .hl, .hl .hl { background: var(--hl-inner); box-shadow: 0 0 0 8px var(--hl-inner); }
+.struck { position: relative; }
+.struck::after { content: ""; position: absolute; left: 0; right: 0; top: 50%; border-top: 3px solid var(--struck); }
+.slide.instant *, .slide.instant { transition: none !important; }
+.stack { display: grid; }
+.stack > * { grid-area: 1 / 1; align-self: start; }
+
+/* ---------- formulas ---------- */
+.katex { font-size: 1.1em; }
+.katex-display { margin: 10px 0; padding: 0 4px 6px 0; } /* glyphs overhang their boxes by a few px */
+.katex-display > .katex { text-align: left; }
+.eq-c .katex-display > .katex { text-align: center; }
+p:has(.mfrac) { padding-bottom: 10px; }
+
+/* ---------- pictures ---------- */
+.anim { position: relative; width: var(--w, 860px); height: var(--h, 720px); flex: none; }
+.anim > svg.anim-svg { position: absolute; left: 0; top: 0; overflow: visible; }
+.anim .lbl { position: absolute; left: 0; top: 0; white-space: nowrap; font-size: 28px; line-height: 1.2; pointer-events: none; }
+.anim .lbl.s { font-size: 24px; }
+.anim .lbl.big { font-size: 48px; font-weight: 700; }
+.lbl.box { background: var(--lbl-box-bg); padding: 2px 10px; }
+.anim-svg .axis { stroke: var(--c-muted); stroke-width: 2; fill: none; }
+.anim-svg .tick { font-family: "RC", sans-serif; font-size: 26px; fill: var(--c-ink); }
+.anim-svg text { font-family: "RC", sans-serif; }
+
+/* ---------- tables ---------- */
+table.num { border-collapse: collapse; font-size: 32px; }
+table.num th, table.num td { padding: 8px 22px; text-align: center; border-bottom: 1px solid var(--rule); }
+table.num th { font-weight: 400; color: var(--medium); font-size: 28px; }
+table.num td:first-child { text-align: left; }
+table.num + p { margin-top: 22px; }
+
+/* ---------- footer ---------- */
+.foot { position: absolute; left: 0; right: 0; bottom: 0; height: 69px; }
+.foot .stripe { height: 5px; background: var(--stripe); }
+.foot-row { height: 64px; border-top: 1px solid var(--rule); box-sizing: border-box; display: grid;
+            grid-template-columns: 1fr auto 1fr; align-items: center; padding: 0 96px; background: var(--bg); }
+.wordmark { width: 116px; height: 40px; background: url("asset:UniJena_Wortmarke_blue.png") left center / contain no-repeat;
+            filter: var(--wordmark-filter); }
+.foot .short { font-size: 22px; color: var(--medium); }
+.foot .pg { font-size: 22px; color: var(--medium); text-align: right; }
+
+/* ---------- title slide ---------- */
+.slide.title { padding: 64px 96px 0 96px; }
+.slide.title > header::before { display: none; }
+.slide.title .wordmark { width: 184px; height: 64px; margin-bottom: 120px; }
+.slide.title .kicker { font-size: 30px; margin-bottom: 14px; }
+.slide.title h1 { font-size: 76px; line-height: 1.08; max-width: 1500px; }
+.slide.title .stripe-wide { position: absolute; left: 0; right: 0; top: 600px; height: 10px; background: var(--stripe); }
+.slide.title .meta { position: absolute; left: 96px; top: 660px; right: 96px; }
+.slide.title .subtitle { font-size: 30px; color: var(--medium); margin-bottom: 36px; }
+.slide.title .author { font-size: 36px; font-weight: 700; }
+.slide.title .affil, .slide.title .date { font-size: 28px; color: var(--medium); }
+
+/* ---------- part slides: a panel with the part number, the route on the right ---------- */
+.slide.divider { padding: 0; }
+.slide.divider > header::before { display: none; }
+.divider .panel { position: absolute; left: 0; top: 0; bottom: 69px; width: 38%; background: var(--panel-bg);
+                  box-sizing: border-box; padding: 300px 64px 0 96px; }
+.divider .panel .part { font-size: 120px; font-weight: 700; color: var(--accent); line-height: 1; margin-bottom: 30px; }
+.divider .panel h1 { font-size: 56px; }
+.divider .route { position: absolute; left: calc(38% + 96px); right: 96px; top: 230px; list-style: none; margin: 0; padding: 0; }
+.divider .route > li { color: var(--c-muted-text); margin-bottom: 52px; }
+.divider .route > li .what { font-size: 40px; font-weight: 700; line-height: 1.2; }
+.divider .route > li .sub { font-size: 30px; margin-top: 10px; }
+.divider .route > li.on { color: var(--dark); }
+.divider .route > li.on .sub b { color: var(--accent-text); }
+
+/* ---------- notes, presenter view, overview ---------- */
+.slide aside.notes { display: none; }
+#presenter, #overview { display: none; }
+body.mode-presenter { overflow: hidden; background: var(--bg); }
+body.mode-presenter #stage { display: none; }
+body.mode-presenter #presenter { display: grid; grid-template-columns: 58fr 42fr; gap: 24px; height: 100vh;
+                                 box-sizing: border-box; padding: 20px; }
+.p-left, .p-right { display: flex; flex-direction: column; min-height: 0; }
+.p-label { font-size: 18px; color: var(--medium); margin-bottom: 6px; }
+.p-frame { position: relative; width: 100%; aspect-ratio: 16 / 9; border: 1px solid var(--rule); flex: none; }
+.p-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.p-clock { display: flex; gap: 48px; margin-top: 24px; cursor: pointer; }
+.p-clock span { display: block; font-size: 56px; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; }
+.p-clock small { font-size: 18px; color: var(--medium); }
+.p-clock.late .p-el { color: var(--c-f); }
+.p-notes { flex: 1 1 auto; overflow-y: auto; margin-top: 16px; padding-right: 10px; font-size: 22px; line-height: 1.45; }
+.p-notes h2 { font-size: 22px; font-weight: 700; margin: 0 0 12px 0; }
+/* one bullet list per state; the current one is marked "now" by the engine */
+.p-notes ul[data-step] { color: var(--c-muted-text); margin: 0 0 14px 0; padding: 6px 0 6px 34px; position: relative;
+                         font-size: 24px; line-height: 1.35; list-style: none; border-left: 4px solid transparent; }
+.p-notes ul[data-step]::before { content: attr(data-step); position: absolute; left: 6px; top: 8px; font-weight: 700; font-size: 18px; }
+.p-notes ul[data-step] > li { position: relative; padding-left: 20px; margin: 0 0 3px 0; }
+.p-notes ul[data-step] > li::before { content: "–"; position: absolute; left: 0; }
+.p-notes ul.now { color: var(--dark); border-left-color: var(--accent); background: var(--card-bg); }
+body.overview { overflow: hidden; }
+body.overview #stage { display: none; }
+body.overview #overview { display: block; position: fixed; inset: 0; overflow-y: auto; padding: 20px 40px; background: var(--bg); box-sizing: border-box; }
+#overview h2 { font-size: 22px; color: var(--medium); margin: 18px 0 8px; font-weight: 700; }
+.ov-grid { display: flex; flex-wrap: wrap; gap: 16px; }
+.ov-cell { position: relative; overflow: hidden; border: 2px solid var(--rule); cursor: pointer; box-sizing: content-box; }
+.ov-cell.sel { border-color: var(--light); outline: 3px solid var(--light); }
+.ov-scale { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; }
+.ov-scale > .slide { display: flex; }
+
+/* the slide number being typed (digits, then Enter) */
+#slide-jump { position: fixed; left: 14px; bottom: 12px; z-index: 60; display: none; padding: 4px 12px; border-radius: 6px;
+              font: 700 20px "RC", sans-serif; color: var(--medium); background: var(--bg); border: 1px solid var(--rule); }
+#slide-jump.on { display: block; }
+body.mode-embed #slide-jump { display: none; }
+
+/* ---------- live controls (live.js): panel, sliders, readouts, drag handles ---------- */
+.live-panel { position: absolute; z-index: 5; box-sizing: border-box; padding: 10px 18px 12px; background: var(--bg);
+              border: 2px solid var(--rule); border-radius: 8px; font-size: 24px; line-height: 1.3; color: var(--dark);
+              display: grid; grid-template-columns: 1fr auto; column-gap: 28px; align-items: end;
+              opacity: 0; visibility: hidden; transition: opacity 250ms, visibility 250ms; }
+.slide.live-on .live-panel { opacity: 1; visibility: visible; }
+.lv-ros { grid-column: 1 / -1; margin-bottom: 4px; font-size: 28px; }
+.lv-ros:empty { display: none; }
+.live-panel > .lv-rows { grid-column: 1; display: grid; row-gap: 2px; column-gap: 40px; }
+.lv-cols-2 > .lv-rows { grid-template-columns: 1fr 1fr; }
+.lv-cols-3 > .lv-rows { grid-template-columns: 1fr 1fr 1fr; }
+.lv-row { display: grid; grid-template-columns: max-content minmax(120px, 1fr) max-content; align-items: center; column-gap: 16px; color: var(--lv-c); }
+.lv-row .lv-lab { font-size: 24px; white-space: nowrap; }
+.lv-row .lv-val { font-size: 28px; font-weight: 700; min-width: 2.4em; text-align: right; color: var(--lv-c); font-variant-numeric: tabular-nums; }
+.lv-hint { grid-column: 1 / -1; font-size: 24px; color: var(--medium); }
+.lv-foot { grid-column: 2; display: flex; justify-content: flex-end; padding-bottom: 2px; }
+.lv-reset { font: 700 24px "RC", sans-serif; color: var(--dark); background: var(--card-bg); border: 2px solid var(--rule);
+            border-radius: 6px; padding: 3px 16px; cursor: pointer; }
+.live-panel.moved .lv-reset { border-color: var(--dark); }
+.lv-reset:focus { outline: none; }
+/* narrow panel: one column; label and value on a line, the slider under them */
+.lv-narrow { padding: 8px 12px 10px; grid-template-columns: 1fr; }
+.lv-narrow > .lv-foot { grid-column: 1; margin-top: 6px; }
+.lv-narrow .lv-row { grid-template-columns: 1fr max-content; column-gap: 8px; margin-bottom: 4px; }
+.lv-narrow .lv-row .lv-lab { grid-column: 1 / -1; grid-row: 1; white-space: normal; line-height: 1.15; }
+.lv-narrow .lv-row .lv-val { grid-column: 2; grid-row: 2; min-width: 0; }
+.lv-narrow .lv-row input { grid-column: 1; grid-row: 2; }
+.lv-narrow .lv-dragrow .lv-gap { display: none; }
+.lv-narrow .lv-dragrow .lv-val { grid-column: 1 / -1; grid-row: 2; text-align: left; }
+/* sliders in the colour of the object they move */
+.live-panel input[type=range] { -webkit-appearance: none; appearance: none; width: 100%; height: 36px; margin: 0;
+                                background: transparent; cursor: pointer; }
+.live-panel input[type=range]:focus { outline: none; }
+.live-panel input[type=range]::-webkit-slider-runnable-track { height: 6px; border-radius: 3px; background: var(--rule); }
+.live-panel input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 28px; height: 28px; margin-top: -11px;
+                                                      border-radius: 50%; background: var(--lv-c); border: 3px solid var(--bg); box-sizing: border-box; }
+.live-panel input[type=range]::-moz-range-track { height: 6px; border-radius: 3px; background: var(--rule); }
+.live-panel input[type=range]::-moz-range-thumb { width: 22px; height: 22px; border-radius: 50%; background: var(--lv-c); border: 3px solid var(--bg); }
+/* readouts */
+.lv-ro { display: none; color: var(--lv-c); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.slide.live-on .lv-ro { display: inline-block; }
+.slide.live-on .lv-ro-line { display: block; }
+span.lv-ro { margin-left: 16px; padding-left: 12px; border-left: 4px solid var(--lv-c); line-height: 1.15; }
+div.lv-ro-line:not(.live-panel *) { margin-top: 2px; padding-left: 12px; border-left: 4px solid var(--lv-c); }
+.lv-ros .lv-ro-line { padding: 0; border: 0; }
+/* formula-like HTML in KaTeX's fonts (no KaTeX at run time) */
+.lvm { font-family: KaTeX_Main, "Times New Roman", serif; font-size: 1.1em; white-space: nowrap; font-style: normal; font-weight: 400; }
+.lvm i { font-family: KaTeX_Math, "Times New Roman", serif; font-style: italic; }
+.lvm sub, .lvm sup { font-size: 0.7em; line-height: 0; }
+.lvm sub { vertical-align: -0.25em; }
+.lvm sup { vertical-align: 0.45em; }
+.lv-row .lvm, .lv-lab .lvm { font-size: 1.05em; }
+/* points that can be dragged: a dashed ring, at the last state only */
+.lv-handle { position: absolute; left: 0; top: 0; width: 64px; height: 64px; margin: -32px 0 0 -32px; box-sizing: border-box;
+             border-radius: 50%; border: 2px dashed var(--c-data); opacity: 0.5; cursor: grab; display: none;
+             touch-action: none; z-index: 3; }
+.slide.live-on .lv-handle { display: block; }
+.lv-handle:hover, .lv-handle.on { opacity: 1; border-style: solid; }
+.lv-handle.on { cursor: grabbing; }

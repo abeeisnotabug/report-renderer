@@ -1,3 +1,6 @@
 node_modules/
 .DS_Store
 site/index.html
+talk/starter.html
+*-shots-light/
+*-shots-dark/

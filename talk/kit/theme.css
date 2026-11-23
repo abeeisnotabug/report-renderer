@@ -1,0 +1,85 @@
+/* theme.css: the two colour themes, light and dark. The only place where colours that change
+   with the theme are defined. theme.js switches between them (key D).
+
+   A theme is a block of custom properties on [data-theme="light"] or [data-theme="dark"];
+   theme.js sets data-theme on <html>. Both blocks list every property. The palette is fixed:
+   change a value only when RMB asks for it.
+
+   STRUCTURE
+     --bg            page, slide, footer, and every fill that hides what lies behind
+     --dark          main text, rules
+     --medium        secondary text
+     --light         selection frame (overview)
+     --on-strong     text on a strong colour
+     --accent        bullets, part numbers, current notes; --accent-text for text in it
+     --card-bg, --hl-bg, --hl-inner, --panel-bg, --rule, --lbl-box-bg, --struck
+     --wordmark-filter  turns the blue wordmark white on dark
+
+   PICTURE AND TEXT COLOURS (read by lib.js into lib.COLORS, by build.mjs for the formula macros)
+     --c-bg          the pictures' background
+     --c-ink         lines and text in a picture that carry no colour of their own
+     --c-muted       inactive lines; --c-muted-text inactive text
+     --c-data        observed data points; --c-data-fill their fill
+     --c-box         a box behind a picture element
+     --c-a … --c-f   the six palette slots; --c-X-fill a translucent fill of slot X
+
+   Rule: text that names a picture object has the same colour as the object. There are no
+   separate, darker text shades. A talk assigns its objects to slots (config.json "colors").
+
+   Light: FSU faculty colours on white. a Recht magenta, b Sowi sky, c Physik orange,
+   d Mathe teal-green, e Theo blue, f Wiwi amber; accent FSU pink.
+   Dark: a very dark FSU blue; the slots lifted for the dark (pink, light blue, orange, green,
+   aqua, yellow). */
+
+:root, [data-theme="light"] {
+  color-scheme: light;
+  --bg: #FFFFFF; --dark: #012F5D; --medium: #334F73; --light: #3DA3CC; --on-strong: #FFFFFF;
+  --lbl-box-bg: rgba(255, 255, 255, 0.88); --wordmark-filter: none;
+  --accent: #CD0067; --accent-text: #CD0067;
+  --card-bg: #EEF7FB; --hl-bg: #E0F0F7; --hl-inner: #FFFFFF; --panel-bg: #E3F1F8; --rule: #BFDDEB;
+  --struck: rgba(218, 138, 0, 0.55);
+  --c-bg: #FFFFFF; --c-ink: #012F5D; --c-box: #EEF7FB;
+  --c-muted: #8E98B7; --c-muted-text: #5F6987;
+  --c-data: #012F5D; --c-data-fill: #E6E4F5;
+  --c-a: #B800A3; --c-a-fill: #F1CCEC;
+  --c-b: #3DA3CC; --c-b-fill: rgba(61, 163, 204, 0.22);
+  --c-c: #E64D00; --c-c-fill: rgba(230, 77, 0, 0.12);
+  --c-d: #00AC8A; --c-d-fill: rgba(0, 172, 138, 0.15);
+  --c-e: #3326FF; --c-e-fill: rgba(51, 38, 255, 0.12);
+  --c-f: #DA8A00; --c-f-fill: rgba(218, 138, 0, 0.15);
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #061D36; --dark: #E8EEF6; --medium: #A8BCD4; --light: #4FA8E8; --on-strong: #061D36;
+  --lbl-box-bg: rgba(6, 29, 54, 0.88); --wordmark-filter: brightness(0) invert(1);
+  --accent: #FF7AB8; --accent-text: #FF7AB8;
+  --card-bg: #0E2B4A; --hl-bg: #163657; --hl-inner: #061D36; --panel-bg: #0E2B4A; --rule: #2B4A6E;
+  --struck: rgba(255, 224, 102, 0.55);
+  --c-bg: #061D36; --c-ink: #E8EEF6; --c-box: #0E2B4A;
+  --c-muted: #55627F; --c-muted-text: #93A1BD;
+  --c-data: #E8EEF6; --c-data-fill: #24456B;
+  --c-a: #FF7AB8; --c-a-fill: rgba(255, 122, 184, 0.26);
+  --c-b: #4FA8E8; --c-b-fill: rgba(79, 168, 232, 0.26);
+  --c-c: #FF9A45; --c-c-fill: rgba(255, 154, 69, 0.16);
+  --c-d: #3FD37E; --c-d-fill: rgba(63, 211, 126, 0.18);
+  --c-e: #5CE1E6; --c-e-fill: rgba(92, 225, 230, 0.16);
+  --c-f: #FFE066; --c-f-fill: rgba(255, 224, 102, 0.16);
+}
+
+/* ---------- the chooser (theme.js): hidden; shown after D, or while the corner is hovered ---------- */
+#theme-hot { position: fixed; right: 0; bottom: 0; width: 250px; height: 100px; z-index: 50; }
+#theme-chooser { position: absolute; right: 14px; bottom: 34px; display: flex; gap: 8px; align-items: center;
+                 padding: 8px 10px; background: var(--bg); border: 1px solid var(--rule); border-radius: 6px;
+                 font: 700 15px "RC", sans-serif; color: var(--dark); opacity: 0; visibility: hidden; transition: opacity 150ms; }
+body.theme-open #theme-chooser, #theme-hot:hover #theme-chooser { opacity: 1; visibility: visible; }
+#theme-chooser .tc-h { font-weight: 400; color: var(--medium); margin-right: 2px; }
+#theme-chooser .tc-sep { width: 1px; align-self: stretch; background: var(--rule); margin: 0 2px; }
+#theme-chooser button { all: unset; cursor: pointer; width: 64px; height: 34px; border-radius: 4px; box-sizing: border-box;
+                        display: flex; align-items: flex-end; justify-content: center; padding-bottom: 1px;
+                        font: 700 14px "RC", sans-serif; border: 2px solid var(--rule);
+                        background: linear-gradient(135deg, var(--c-a) 0 33%, var(--bg) 33% 67%, var(--c-b) 67% 100%); }
+#theme-chooser button span { background: var(--bg); color: var(--dark); border-radius: 3px; padding: 0 4px; line-height: 16px; }
+/* each button carries its own theme, so currentColor is that theme's text colour */
+#theme-chooser button.on { border-color: currentColor; outline: 2px solid currentColor; outline-offset: 1px; }
+body.mode-embed #theme-hot { display: none; }

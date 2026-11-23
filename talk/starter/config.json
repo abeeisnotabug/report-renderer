@@ -1,0 +1,12 @@
+{
+  "title": "Starter deck",
+  "kicker": "Talk",
+  "shortTitle": "Starter deck",
+  "author": "R. Maximilian Bee",
+  "affiliation": "Psychological Methods Division, Institute for Psychology, Friedrich Schiller University Jena",
+  "date": "Month Year",
+  "lang": "en",
+  "minutes": 5,
+  "parts": { "0": "Opening", "I": "Part I", "end": "End" },
+  "colors": { "wave": "b", "crest": "a" }
+}
