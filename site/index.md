@@ -95,3 +95,7 @@ Background for the paper "A Latent State–Trait Perspective on Cross-Classified
   model must be defined inside revised latent state–trait theory, the restrictions R1–R5 it
   adds, and where trait change, autoregression and noninvariance go; with a running example
   computed in R.
+- [Talk for Tobias Koch: the setup in 30 minutes](ccfa/cc-lstr-setup-talk.html): the setup
+  for CC models inside LST-R, from the definitions and assumptions to the results, the comparison
+  with the draft and the choices left open; slides tagged "not yet reviewed" rest on parts not yet
+  checked. Arrow keys step, S opens the presenter view, D switches light and dark.

@@ -32,10 +32,12 @@ for page in course-overview ch0-basics ch1-construction ch2-condexp ch3-martinga
 done
 cp "$stoch/companion/22-23-stoch3-crash-course.html" "$stage/stochastik/stochastik3/crash-course.html"
 
-# CCFA and LST-R: the topic introduction -> ccfa/cc-in-lstr.html
+# CCFA and LST-R: the topic introduction -> ccfa/cc-in-lstr.html, the talk for TK ->
+# ccfa/cc-lstr-setup-talk.html
 ccfa="$HOME/Documents/Works/FSU Jena/Projekte/Tobi/CCFA and LST-R/reports"
 mkdir -p "$stage/ccfa"
 cp "$ccfa/cc-in-lstr/cc-in-lstr.html" "$stage/ccfa/cc-in-lstr.html"
+cp "$ccfa/../talks/cc-lstr-setup/cc-lstr-setup-talk.html" "$stage/ccfa/cc-lstr-setup-talk.html"
 
 chmod -R a+rX "$stage"
 rsync -a --delete "$stage/" li53vet@scotty.ads.uni-jena.de:/home/FSUJENA/li53vet/ShinyApps/reports/
