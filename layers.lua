@@ -9,6 +9,8 @@ citations is not affected:
     tutorial items `::: {#tut-1-2 .item}`, cited as "Tutorial 1, Ex. 2" (a second exercise with the
     same number: `tut-1-16b`, cited as "Tutorial 1, Ex. 16b"); an item holding one part
     only, `::: {#sheet-12-1d .item}`, is cited as "Sheet 12, Ex. 1(d)".
+  - The lecture's own exercises `::: {#exer-1-4 .item}`, cited as "Exercise 1.4" (English pages;
+    German pages: "Aufgabe 1.4", see below).
   - Appendix numbers: "Theorem A.5" links to `lec-A-5`, "Definition C.12" to `lec-C-12`.
   - Unnumbered lecture figures `::: {#fig-3-1 .item}`, cited as "Figure 3.1".
   - Restated results from elsewhere (`.lec` blocks, e.g. Stochastik I) also enter "Uses:".
@@ -108,7 +110,7 @@ local aliases = { Satz = 'Theorem', Korollar = 'Corollary', Beispiel = 'Example'
 local function canon(w) return aliases[w] or w end
 
 local lec_words = { Theorem = true, Definition = true, Lemma = true, Example = true,
-  Remark = true, Corollary = true, Proposition = true, Figure = true }
+  Remark = true, Corollary = true, Proposition = true, Figure = true, Exercise = true }
 -- alias words that begin the titles of this page's own lecture entries ("Satz 1.9."): only
 -- these are linked without "Stoch I," in front, so "Satz 4.7" in an English page stays plain
 local own_words = {}
