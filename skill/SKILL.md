@@ -63,8 +63,9 @@ source-specific details (number of parts, labels, page ranges) carry over into a
 report. A template that lacks something every run needs is extended in the renderer.
 
 R3. **Waste check before the launch.** Every runner starts only after the waste check of
-big-tasks (Wc1 to Wc5) has seen its briefs, the runner and its config; the runner refuses
-otherwise (`waste_gate` in `templates/runlib.sh`).
+big-tasks (Wc1 to Wc5) has run on the run's current shape (runner, config, brief names,
+sources); the runner refuses otherwise (`waste_gate` in `templates/runlib.sh`). Small runs get the
+script check only; a template that changed gets one `--full` review (Wc4).
 
 ## Making a companion
 

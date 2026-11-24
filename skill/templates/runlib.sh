@@ -31,13 +31,16 @@ WASTE="$HOME/.agent-skills-shared/big-tasks/scripts/waste_check.sh"
 MAX_ATTEMPTS=12
 RESUME_MSG='You were interrupted (a usage limit). Continue the task of your brief from where you stopped: look at what is already in this folder and do not redo finished work.'
 
-waste_gate() {  # waste_gate <runner file>: no start unless the waste check saw these exact files
-  # (big-tasks Wc1-Wc5). A resume with unchanged files passes.
+waste_gate() {  # waste_gate <runner file>: no start unless the waste check saw this run's shape
+  # (big-tasks Wc1-Wc5): runner, run.conf, brief names, sources. Rewording a brief keeps the shape;
+  # the free script check runs again here, so a reworded brief cannot slip past it.
   if [[ ! -s "$D/waste-check.sha" ]] || ! diff -q <("$WASTE" --hashes "$D" "$1") "$D/waste-check.sha" >/dev/null; then
-    echo "No current waste check: a brief, the runner or run.conf changed since it ran, or it never ran."
+    echo "No current waste check: the run's shape (runner, run.conf, briefs, sources) changed, or it never ran."
     echo "Run: $WASTE \"$D\" ${1:t} \"<launch command>\", fix what it finds, then start again."
     return 1
   fi
+  local lint; lint=$(python3 -I "${WASTE:h}/waste_lint.py" "$D" "${1:t}") || {
+    print -r -- "$lint" | grep '(error)'; echo "Script check failed: fix the briefs, then start again."; return 1; }
   echo "waste check: $(head -1 "$D/waste-check.md")"
 }
 
