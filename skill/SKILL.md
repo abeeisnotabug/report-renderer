@@ -81,10 +81,11 @@ solutions). Every brief limits its session to the folder and the renderer: write
 folder, no git, no memory files, no subagents or web search, final reply three lines.
 
 Mc2. **Stage 1, transcription: its own cheap stage.** Page images are read once, by Sonnet
-sessions of about 10 to 15 pages each, side by side, into text in the format the template
-fixes; every later stage reads text only, never a PDF page or an image. A source that already
-has a transcript (a course folder's `transcripts/`) is copied into `sources/`, and its chunk is
-left out of `run.conf`.
+sessions of at most about 20 pages each, side by side, into `sources/transcripts/` in the format
+the template fixes (the same as a course folder's `transcripts/`); every later stage reads text
+only, never a PDF page or an image. A source that a course folder's `transcripts/` already covers
+(its file's `source` comment names the PDF and the pages) is copied into `sources/transcripts/`
+unchanged, and gets no chunk in `run.conf`.
 
 Mc3. **Stage 2, contract: one session per page.** Its statement layer (every item's id, title,
 status line and where its statement stands in a transcript; sections, gists, recaps, hand-overs;

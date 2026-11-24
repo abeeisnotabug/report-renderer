@@ -22,7 +22,7 @@ R1. `~/Documents/Works/report-renderer/STYLE.md` and `skill/<lecture | paper>-co
 the same folder, `contract-<PAGE>.md` (its check list is for you), `items-<PAGE>.txt` (every numbered statement
 of the source and its item), the writers' notes
 `notes-<PAGE>-*.md`, the build output `build-<PAGE>.out` (renderer warnings and the phone check),
-and the knitted page `page-<PAGE>.md`, top to bottom, once. Transcripts in `sources/` only to
+and the knitted page `page-<PAGE>.md`, top to bottom, once. Transcripts in `sources/transcripts/` only to
 check a statement or formula that looks wrong, and only that passage (Grep, then Read with offset
 and limit). No PDF, no image.
 

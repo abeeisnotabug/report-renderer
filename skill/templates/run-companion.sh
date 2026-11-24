@@ -7,7 +7,7 @@
 #
 # Stages, chained without the conductor (every stage writes its done file last):
 #   1 transcribe  one session per chunk, in parallel     brief-transcribe.md + brief-transcribe-<t>.md
-#                 -> sources/transcript-<t>.md, done-transcribe-<t>.md   (skipped when TRANSCRIBE=())
+#                 -> sources/transcripts/*.md, done-transcribe-<t>.md   (skipped when TRANSCRIBE=())
 #   2 contracts   one session per page, in PAGES order   brief-contract.md + brief-contract-<p>.md
 #                 -> contract-<p>.md, header-<p>.Rmd, done-contract-<p>.md
 #   3 per page (pages side by side when PARALLEL_PAGES=1):

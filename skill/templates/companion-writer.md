@@ -35,7 +35,7 @@ top of `~/Documents/Works/report-renderer/layers.lua` (up to the first function)
 `contract-<PAGE>-<K>.md`, `header-<PAGE>.Rmd`, and the parts of this page already written
 (`part-<PAGE>-<j>.Rmd` for every j below <K>; none if <K> is 1).
 
-R2. From the transcripts in `sources/`: only the passages your part needs, as the contract
+R2. From the transcripts in `sources/transcripts/`: only the passages your part needs, as the contract
 places them (find them with Grep on the label or the `[p. N]` marker, then Read with offset and
 limit). Statements are copied from there verbatim. Read no PDF and no image: a passage that looks
 wrong in the transcript is reported in your notes, not checked on the page.

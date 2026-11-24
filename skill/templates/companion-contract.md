@@ -22,7 +22,7 @@ fresh sessions. Each writer gets only the shared part of your contract and its o
 runner cuts the file at its `## Part` headings), its own sources and the parts already written.
 Whatever a writer needs from another part must therefore be in the shared part.
 
-W3. Every source is already text: the transcripts in `sources/` (format: `[p. N]` page markers,
+W3. Every source is already text: the transcripts in `sources/transcripts/` (format: `[p. N]` page markers,
 statements verbatim, `[slip? ...]` and `[unclear: ...]` marks). Read no PDF and no image. Where a
 transcript is unclear, record it in your done file; do not guess.
 
@@ -102,7 +102,7 @@ L3. Final reply: three lines.
 
 ## Your page
 <!-- In brief-contract-<page>.md, one paragraph: "Page `<tag>`: <file name>, <what it covers:
-the sections, or the paper's sections>. Transcripts: `sources/transcript-<chunk>.md` [, ...].
+the sections, or the paper's sections>. Transcripts: `sources/transcripts/<name>.md` [, ...].
 [Other sources and what to take from them.] Writers: <n>; split: Part 1 = <sections>, Part 2 =
 <sections>, ... (change a split only if a section's size makes it necessary; say why in the done
 file). [Contract that comes before: `contract-<tag>.md` (its shared part only).] [Other pages
