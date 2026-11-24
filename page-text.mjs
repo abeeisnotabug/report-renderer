@@ -7,11 +7,23 @@
 // its formulas are matched, in document order, to the formulas of the page. If the .md is missing
 // or the counts differ, a warning goes to stderr and the formulas come out as KaTeX's text.
 //   node page-text.mjs /abs/path/report.html [out.txt]      (without out.txt: to the screen)
+// Links: every link to an anchor of the page gets its target id after the link text:
+//   "Lemma K.6 [→ lec-K-6]". Links to other pages or the web are left as they are.
+// With out.txt (stem = out.txt without its extension) two more outputs are written next to it:
+//   <stem>-fig-<n>.png   a screenshot of figure n (an img, or an inline svg that is a figure; KaTeX
+//                        and icon svgs are not figures); in the text the figure stands as one line
+//                        "[FIGURE <n>: <caption or alt>; image: <stem>-fig-<n>.png]" (its figcaption
+//                        is then left out of the text, being in that line)
+//   <stem>-targets.txt   one block per id that a link points to: "## <id>" and the target's text as
+//                        in the dump (an item or box: its statement block without its folds; a
+//                        section: its heading and gist). Blocks are separated by a line "----".
+// Without out.txt no image and no targets file are written, and a figure is dumped as the old
+// line "[figure: alt]".
 // Needs Playwright with WebKit, installed globally with Homebrew's npm (as phone-check.js).
 import { createRequire } from 'node:module';
 import { writeFileSync, existsSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
-import { resolve, dirname, join } from 'node:path';
+import { resolve, dirname, join, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
 const require = createRequire(import.meta.url);
 const { webkit } = require('/opt/homebrew/lib/node_modules/playwright');
@@ -29,18 +41,27 @@ if (existsSync(md)) {
     .map(m => ({ display: m[1] === 'display', tex: unesc(m[2]).trim(), punct: m[3] }));
 }
 const b = await webkit.launch();
-const p = await b.newPage({ viewport: { width: 1280, height: 900 } });
+const p = await b.newPage({ viewport: { width: 1280, height: 900 }, deviceScaleFactor: 2 });
+p.on('console', m => console.error(m.text()));
 await p.goto('file://' + resolve(page_)); await p.waitForTimeout(1500);
 await p.evaluate(() => document.querySelectorAll('details').forEach(d => d.open = true));
 await p.waitForTimeout(500);
-const text = await p.evaluate(tex => {
-  const SKIP = 'script,style,nav#toc,#layer-toolbar,.peek-bar,.katex-html,.katex-mathml math > *:not(semantics),svg,noscript';
+const stem = out ? resolve(out).replace(/\.[^./]*$/, '') : null;
+const images = !!out;
+const { text, targets, nfig } = await p.evaluate(({ tex, images, prefix }) => {
+  const figName = k => prefix + '-fig-' + k + '.png';
+  const SKIP = 'script,style,nav#toc,#layer-toolbar,.peek-bar,.katex-html,.katex-mathml math > *:not(semantics),noscript';
   const BLOCK = /^(P|DIV|UL|OL|LI|TABLE|TR|H[1-6]|BLOCKQUOTE|PRE|SECTION|ARTICLE|HEADER|FIGURE|FIGCAPTION|DL|DT|DD|HR|BODY|MAIN|ASIDE)$/;
   const clean = s => s.replace(/\s+/g, ' ').trim();
   let buf = '';
   const maths = [...document.querySelectorAll('.katex')].filter(k => !k.parentElement.closest('.katex'));
   if (tex && tex.length !== maths.length) { console.warn('page-text: ' + maths.length + ' formulas in the page, ' + tex.length + ' in the .md; TeX not used'); tex = null; }
   const texOf = new Map(maths.map((k, i) => [k, i]));
+  let skipFolds = false, collecting = true;
+  const linked = new Set(), figs = new Map();
+  const isFigSvg = n => !n.closest('.katex,button,a,summary,#layer-toolbar') &&
+    (n.closest('figure') || n.getAttribute('role') === 'img' || (() => { const r = n.getBoundingClientRect(); return r.width >= 48 && r.height >= 48; })());
+  const sub = f => { const keep = buf; buf = ''; f(); const r = buf; buf = keep; return r; };
   const nl = () => { if (!buf.endsWith('\n')) buf += '\n'; };
   const blank = () => { nl(); if (!buf.endsWith('\n\n')) buf += '\n'; };
   function walk(n) {
@@ -50,6 +71,18 @@ const text = await p.evaluate(tex => {
     const cs = getComputedStyle(n);
     if (cs.display === 'none') return;
     const tag = n.tagName;
+    if (tag === 'FIGCAPTION' && images) return;   // its text stands in the FIGURE line
+    if (tag === 'svg' || tag === 'IMG') {
+      if (tag === 'svg' && !isFigSvg(n)) return;
+      if (!images) { if (tag === 'IMG') buf += '[figure' + (n.alt ? ': ' + clean(n.alt) : '') + ']'; return; }
+      if (!figs.has(n)) { figs.set(n, figs.size + 1); n.setAttribute('data-pt-fig', figs.size); }
+      const fc = n.closest('figure') && n.closest('figure').querySelector('figcaption');
+      let cap = fc ? clean(sub(() => { for (const c of fc.childNodes) walk(c); })) : '';
+      if (!cap) cap = clean(n.getAttribute('alt') || n.getAttribute('aria-label') || '') || '(no caption)';
+      const k = figs.get(n);
+      nl(); buf += '[FIGURE ' + k + ': ' + cap + '; image: ' + figName(k) + ']'; nl();
+      return;
+    }
     if (n.classList.contains('katex')) {
       const f = tex && texOf.has(n) ? tex[texOf.get(n)] : null;
       const a = n.querySelector('annotation[encoding="application/x-tex"]');
@@ -57,9 +90,19 @@ const text = await p.evaluate(tex => {
       buf += n.closest('.katex-display') ? ' $$' + t + '$$ ' : '$' + t + '$' + (f && !f.display ? f.punct : '');
       return;
     }
-    if (tag === 'IMG') { buf += '[figure' + (n.alt ? ': ' + clean(n.alt) : '') + ']'; return; }
     if (tag === 'BR') { nl(); return; }
+    if (tag === 'A') {
+      const h = n.getAttribute('href') || '';
+      if (h.length > 1 && h[0] === '#' && n.getAttribute('aria-hidden') !== 'true') {
+        const id = decodeURIComponent(h.slice(1));
+        for (const c of n.childNodes) walk(c);
+        buf += ' [→ ' + id + ']';
+        if (collecting) linked.add(id);
+        return;
+      }
+    }
     if (tag === 'DETAILS') {
+      if (skipFolds) return;
       const s = n.querySelector(':scope > summary');
       const h = s && s.querySelector('h1,h2,h3,h4,h5,h6');
       const title = h ? clean(h.textContent) : (s ? clean(s.textContent) : '');
@@ -79,10 +122,40 @@ const text = await p.evaluate(tex => {
     for (const c of n.childNodes) walk(c);
     if (blk) nl();
   }
-  walk(document.body);
-  return buf.split('\n').map(l => l.replace(/[ \t]+/g, ' ').trim()).join('\n')
+  const tidy = b => b.split('\n').map(l => l.replace(/[ \t]+/g, ' ').trim()).join('\n')
     .replace(/^(\d+\.|-)\n+/gm, '$1 ')   // a list marker stays on the line of its item's first paragraph
     .replace(/\n{3,}/g, '\n\n').trim() + '\n';
-}, tex);
+  walk(document.body);
+  const text = tidy(buf);
+  collecting = false;
+  // targets: text of each element that a link points to, folds left out
+  const targets = [];
+  if (images) {
+    const els = [...linked].map(id => [id, document.getElementById(id)]);
+    for (const [id] of els.filter(e => !e[1])) console.warn('page-text: link to #' + id + ', but no such id in the page');
+    els.filter(e => e[1]).sort((a, b) => a[1].compareDocumentPosition(b[1]) & 4 ? -1 : 1).forEach(([id, el]) => {
+      skipFolds = true;
+      const t = sub(() => {
+        if (el.matches('nav#toc')) { buf += '(the table of contents of the page)'; return; }
+        if (/^H[1-6]$/.test(el.tagName)) {
+          walk(el);
+          const g = (el.closest('summary') || el.parentElement).querySelector('.gist');
+          if (g) walk(g);
+        } else walk(el);
+      });
+      skipFolds = false;
+      targets.push([id, tidy(t)]);
+    });
+  }
+  return { text, targets, nfig: figs.size };
+}, { tex, images, prefix: basename(stem || '') });
+if (out) {
+  await p.waitForFunction(() => [...document.images].every(i => i.complete));
+  for (let k = 1; k <= nfig; k++) await p.locator('[data-pt-fig="' + k + '"]').screenshot({ path: stem + '-fig-' + k + '.png' });
+  writeFileSync(stem + '-targets.txt', targets.map(([id, t]) => '## ' + id + '\n' + t).join('\n----\n\n') );
+}
 await b.close();
-if (out) { writeFileSync(out, text); console.log('wrote', out, text.split('\n').length, 'lines'); } else process.stdout.write(text);
+if (out) {
+  writeFileSync(out, text);
+  console.log('wrote', out, text.split('\n').length, 'lines;', nfig, 'figures;', targets.length, 'link targets in', stem + '-targets.txt');
+} else process.stdout.write(text);
