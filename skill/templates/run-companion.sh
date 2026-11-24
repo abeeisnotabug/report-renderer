@@ -18,6 +18,11 @@
 #     reader      brief-reader.md (<PAGE>) -> open-<p>.md (questions for RMB), review-<p>.md
 #     fixer       brief-fixer.md (<PAGE>): applies every finding of review-<p>.md -> fixed-<p>.md
 #     build       script again -> page-<p>.html, build-<p>-final.out
+#   optional, on finished pages: ./run-companion.sh mathcheck
+#     mathcheck   one session per part, all parts side by side   brief-mathcheck.md (<PAGE>, <K>)
+#                 + brief-mathcheck-<p>-<k>.md (that part's sources only)
+#                 corrects part-<p>-<k>.Rmd in place -> mathcheck-<p>-<k>.md; then build per page
+#                 -> build-<p>-mathcheck.out. Needs the parts, header-<p>.Rmd and sources/.
 #   4 summary     script: run-done.md (what each page has, open questions, usage per stage), and a
 #                 desktop notification. The conductor waits for run-done.md or limit-*.txt
 #                 (accounts.md Ac1g).
@@ -125,6 +130,23 @@ chains() {
   return $rc
 }
 
+mathcheck() {  # every part of every page side by side, then a build per page
+  local p k n pids=() rc=0
+  for p in $PAGES; do
+    n=$(writers_of $p)
+    for k in $(seq 1 $n); do
+      brief_for brief-mathcheck.md mathcheck-$p-$k.brief brief-mathcheck-$p-$k.md "s/<PAGE>/$p/g; s/<K>/$k/g"
+      ( LIMIT=limit-mathcheck-$p-$k.txt DECISION=decision-mathcheck-$p-$k.txt
+        stage_as "$MODEL_MATHCHECK" mathcheck-$p-$k mathcheck-$p-$k.brief mathcheck-$p-$k.md ) \
+        > chain-mathcheck-$p-$k.out 2>&1 &
+      pids+=($!); sleep 10   # start sessions apart (accounts.md Ac1e)
+    done
+  done
+  for k in $pids; do wait "$k" || rc=1; done   # these pids only (accounts.md Ac1f)
+  for p in $PAGES; do build_page $p build-$p-mathcheck.out || rc=1; done
+  return $rc
+}
+
 summary() {
   local p f
   {
@@ -137,6 +159,8 @@ summary() {
         print -r -- "No final build: the chain stopped early; see chain-$p.out."
       fi
       [[ -s fixed-$p.md ]] && print -r -- "Fixer: fixed-$p.md."
+      for f in mathcheck-$p-*.md(N); do print -r -- "Math check: $f ($(head -1 $f))"; done
+      [[ -s build-$p-mathcheck.out ]] && print -r -- "Build after math check: $(tail -1 build-$p-mathcheck.out)."
       [[ -s open-$p.md ]] && print -r -- "Questions for RMB: open-$p.md ($(grep -c '^Q[0-9]' open-$p.md) items)."
     done
     print -r -- $'\n## Usage per stage\n'
@@ -153,6 +177,8 @@ case "$1" in
   transcribe) waste_gate "${0:t}" && transcribe ;;
   contracts)  waste_gate "${0:t}" && contracts ;;
   chain)      waste_gate "${0:t}" && chain "${2:?page}" ;;
+  mathcheck)  waste_gate "${0:t}" || exit 1
+              mathcheck; rc=$?; summary; exit $rc ;;
   summary)    summary ;;
-  *) echo "usage: $0 all | transcribe | contracts | chain <page> | summary"; exit 1 ;;
+  *) echo "usage: $0 all | transcribe | contracts | chain <page> | mathcheck | summary"; exit 1 ;;
 esac

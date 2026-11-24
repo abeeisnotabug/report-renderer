@@ -114,6 +114,13 @@ Mc7. **Last, in the main session:** move each page next to the pages it links to
 it again (B1, B2), commit, give it to RMB with the questions in `open-<page>.md`, and log the
 usage (big-tasks Co6).
 
+Mc8. **Math check (optional, on finished pages, when RMB asks).** One fresh Opus session per part,
+all side by side (`templates/companion-mathcheck.md`, `run-companion.sh mathcheck`): it checks every
+statement against the transcripts and every step, solution and number, corrects definite errors in
+place with the smallest edit, and lists doubts in `mathcheck-<page>-<k>.md`. The work folder holds
+the parts, the headers, `sources/transcripts/` and the other pages' `.md` files the headers'
+`pages:` name. Then the runner builds each page; the main session rebuilds them together (Mc7).
+
 ## Making a topic introduction
 
 Agreed with RMB on 2026-11-17. Briefs from the templates in `templates/` (R2):
