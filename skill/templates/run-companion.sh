@@ -185,7 +185,7 @@ summary() {
       [[ -s fixed-$p.md ]] && print -r -- "Fixer: fixed-$p.md."
       for f in mathcheck-$p-<->.md(N); do print -r -- "Math check: $f ($(head -1 $f))"; done
       [[ -s build-$p-mathcheck.out ]] && print -r -- "Build after math check: $(tail -1 build-$p-mathcheck.out)."
-      [[ -s open-$p.md ]] && print -r -- "Questions for RMB: open-$p.md ($(grep -c '^Q[0-9]' open-$p.md) items)."
+      [[ -s open-$p.md ]] && print -r -- "Questions for RMB: open-$p.md ($(grep -cE '^(\*\*)?Q[0-9]' open-$p.md) items)."   # labels may be bold
     done
     print -r -- $'\n## Usage per stage\n'
     for f in *.log.jsonl(N); do print -r -- "${f%.log.jsonl}: $(python3 "$USAGE" claude "$f" 2>/dev/null | tail -1)"; done
