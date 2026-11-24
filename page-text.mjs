@@ -1,7 +1,7 @@
 // Dumps a rendered report page as plain text in reading order, for a reader who sees only the page.
 // Headings are kept as "#" lines; each fold (details) is included, opened, between a start and an
 // end line with its title: ">>> FOLD: title" ... "<<< END FOLD: title"; formulas appear as $TeX$
-// (display formulas as $$TeX$$); numbered lists get "1. ", "2. ", ...; the table of contents, the
+// (display formulas as $$TeX$$); numbered lists get "1. ", "2. ", ... (lists of type a, A, i, I: "a. ", "ii. ", ...); the table of contents, the
 // toolbar, scripts and styles are left out. The page itself holds no TeX (KaTeX output is HTML
 // only), so the TeX is taken from report.md next to report.html: pandoc is run as in render.mjs and
 // its formulas are matched, in document order, to the formulas of the page. If the .md is missing
@@ -64,6 +64,12 @@ const { text, targets, nfig } = await p.evaluate(({ tex, images, prefix }) => {
   const sub = f => { const keep = buf; buf = ''; f(); const r = buf; buf = keep; return r; };
   const nl = () => { if (!buf.endsWith('\n')) buf += '\n'; };
   const blank = () => { nl(); if (!buf.endsWith('\n\n')) buf += '\n'; };
+  // the marker of item k of an ol in its type: "a"/"A" letters, "i"/"I" roman numerals, else digits
+  const alpha = k => { let s = ''; for (; k > 0; k = Math.floor((k - 1) / 26)) s = String.fromCharCode(97 + (k - 1) % 26) + s; return s; };
+  const roman = k => [[1000, 'm'], [900, 'cm'], [500, 'd'], [400, 'cd'], [100, 'c'], [90, 'xc'], [50, 'l'], [40, 'xl'],
+    [10, 'x'], [9, 'ix'], [5, 'v'], [4, 'iv'], [1, 'i']].reduce((s, [v, r]) => { while (k >= v) { s += r; k -= v; } return s; }, '');
+  const marker = (k, t) => k < 1 ? String(k) : t === 'a' ? alpha(k) : t === 'A' ? alpha(k).toUpperCase()
+    : t === 'i' ? roman(k) : t === 'I' ? roman(k).toUpperCase() : String(k);
   function walk(n) {
     if (n.nodeType === 3) { buf += n.nodeValue.replace(/\s+/g, ' '); return; }
     if (n.nodeType !== 1) return;
@@ -115,7 +121,7 @@ const { text, targets, nfig } = await p.evaluate(({ tex, images, prefix }) => {
     }
     if (/^H[1-6]$/.test(tag)) { blank(); buf += '#'.repeat(+tag[1]) + ' '; for (const c of n.childNodes) walk(c); blank(); return; }
     if (tag === 'LI') { nl(); const o = n.parentNode.tagName === 'OL' ? n.parentNode : null;
-      buf += o ? (o.start + [...o.children].filter(c => c.tagName === 'LI').indexOf(n)) + '. ' : '- '; for (const c of n.childNodes) walk(c); nl(); return; }
+      buf += o ? marker(o.start + [...o.children].filter(c => c.tagName === 'LI').indexOf(n), o.getAttribute('type')) + '. ' : '- '; for (const c of n.childNodes) walk(c); nl(); return; }
     if (tag === 'TR') { nl(); [...n.children].forEach((c, i) => { if (i) buf += ' | '; for (const k of c.childNodes) walk(k); }); nl(); return; }
     const blk = BLOCK.test(tag);
     if (blk) nl();
@@ -123,7 +129,7 @@ const { text, targets, nfig } = await p.evaluate(({ tex, images, prefix }) => {
     if (blk) nl();
   }
   const tidy = b => b.split('\n').map(l => l.replace(/[ \t]+/g, ' ').trim()).join('\n')
-    .replace(/^(\d+\.|-)\n+/gm, '$1 ')   // a list marker stays on the line of its item's first paragraph
+    .replace(/^(\d+\.|[a-z]{1,4}\.|[A-Z]{1,4}\.|-)\n+/gm, '$1 ')   // a list marker stays on the line of its item's first paragraph
     .replace(/\n{3,}/g, '\n\n').trim() + '\n';
   walk(document.body);
   const text = tidy(buf);
