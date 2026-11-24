@@ -131,19 +131,41 @@ chains() {
 }
 
 mathcheck() {  # every part of every page side by side, then a build per page
+  # ENGINE_MATHCHECK=codex runs each part as one Codex turn (big-tasks accounts.md Co1) with
+  # CODEX_MODEL at high effort; the reply goes to codex-mathcheck-<p>-<k>/, the done file is the
+  # same. Codex's sandbox cannot run WebKit, so the builds stay here, after the turns.
   local p k n pids=() rc=0
   for p in $PAGES; do
     n=$(writers_of $p)
     for k in $(seq 1 $n); do
       brief_for brief-mathcheck.md mathcheck-$p-$k.brief brief-mathcheck-$p-$k.md "s/<PAGE>/$p/g; s/<K>/$k/g"
-      ( LIMIT=limit-mathcheck-$p-$k.txt DECISION=decision-mathcheck-$p-$k.txt
-        stage_as "$MODEL_MATHCHECK" mathcheck-$p-$k mathcheck-$p-$k.brief mathcheck-$p-$k.md ) \
-        > chain-mathcheck-$p-$k.out 2>&1 &
+      if [[ "${ENGINE_MATHCHECK:-claude}" == codex ]]; then
+        [[ -f brief-codex.md ]] && { printf '\n'; cat brief-codex.md; } >> mathcheck-$p-$k.brief
+        [[ -s mathcheck-$p-$k.md ]] && { echo "[mathcheck-$p-$k] already done"; continue; }
+        "$HOME/.agent-skills-shared/big-tasks/scripts/codex_turn_wait.sh" "$D" mathcheck-$p-$k \
+          mathcheck-$p-$k.brief -m "$CODEX_MODEL" -c 'model_reasoning_effort="high"' \
+          > chain-mathcheck-$p-$k.out 2>&1 &
+      else
+        ( LIMIT=limit-mathcheck-$p-$k.txt DECISION=decision-mathcheck-$p-$k.txt
+          stage_as "$MODEL_MATHCHECK" mathcheck-$p-$k mathcheck-$p-$k.brief mathcheck-$p-$k.md ) \
+          > chain-mathcheck-$p-$k.out 2>&1 &
+      fi
       pids+=($!); sleep 10   # start sessions apart (accounts.md Ac1e)
     done
   done
   for k in $pids; do wait "$k" || rc=1; done   # these pids only (accounts.md Ac1f)
-  for p in $PAGES; do build_page $p build-$p-mathcheck.out || rc=1; done
+  for p in $PAGES; do   # build a page only when every part of it finished its check
+    n=$(writers_of $p); local missing=()
+    for k in $(seq 1 $n); do [[ -s mathcheck-$p-$k.md ]] || missing+=($p-$k); done
+    if (( ${#missing} )); then
+      print -r -- "math check unfinished: ${missing[*]} (see chain-mathcheck-*.out); rerun ./run-companion.sh mathcheck to resume" \
+        | tee -a limit-mathcheck.txt
+      osascript -e "display notification \"Math check stopped: ${missing[*]}\" with title \"Report run\"" 2>/dev/null
+      rc=1; continue
+    fi
+    build_page $p build-$p-mathcheck.out || rc=1
+  done
+  [[ "${ENGINE_MATHCHECK:-claude}" == codex ]] && python3 "$USAGE" codex > usage-codex.txt 2>&1
   return $rc
 }
 
@@ -165,6 +187,7 @@ summary() {
     done
     print -r -- $'\n## Usage per stage\n'
     for f in *.log.jsonl(N); do print -r -- "${f%.log.jsonl}: $(python3 "$USAGE" claude "$f" 2>/dev/null | tail -1)"; done
+    [[ -s usage-codex.txt ]] && print -r -- "Codex: $(tail -1 usage-codex.txt)"
   } > run-done.md
   osascript -e 'display notification "Companion run finished: run-done.md" with title "Report run"' 2>/dev/null
   echo "summary: run-done.md"

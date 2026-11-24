@@ -18,7 +18,7 @@ time; you touch only your part.
 ## What you read
 
 R0. Few calls: every call re-reads your whole context. Read each file once, in the fewest slices
-the Read tool allows; do not re-read your part after editing it; collect the corrections of one
+your reading tool allows; do not re-read your part after editing it; collect the corrections of one
 section and apply corrections that sit close together in one Edit.
 
 R1. `part-<PAGE>-<K>.Rmd` in full. Keep its markup (fenced divs, item ids, folds) as it is; read the
