@@ -175,13 +175,15 @@ summary() {
     print -r -- "# Run finished $(date '+%Y-%m-%d %H:%M')"
     for p in $PAGES; do
       print -r -- $'\n'"## Page $p"
-      if [[ -s build-$p-final.out ]]; then
+      if [[ -s build-$p-mathcheck.out && ! -s build-$p-final.out ]]; then
+        : # a math-check run on finished pages: its build is reported below
+      elif [[ -s build-$p-final.out ]]; then
         print -r -- "Final build: $(tail -1 build-$p-final.out) (0 = page-$p.html built and phone-checked; see build-$p-final.out)."
       else
         print -r -- "No final build: the chain stopped early; see chain-$p.out."
       fi
       [[ -s fixed-$p.md ]] && print -r -- "Fixer: fixed-$p.md."
-      for f in mathcheck-$p-*.md(N); do print -r -- "Math check: $f ($(head -1 $f))"; done
+      for f in mathcheck-$p-<->.md(N); do print -r -- "Math check: $f ($(head -1 $f))"; done
       [[ -s build-$p-mathcheck.out ]] && print -r -- "Build after math check: $(tail -1 build-$p-mathcheck.out)."
       [[ -s open-$p.md ]] && print -r -- "Questions for RMB: open-$p.md ($(grep -c '^Q[0-9]' open-$p.md) items)."
     done
