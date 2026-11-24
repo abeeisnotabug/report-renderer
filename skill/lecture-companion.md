@@ -47,6 +47,10 @@ Errors in a sheet or an official solution are pointed out where they occur.
 Lc7. **Slips.** A slip in the notes or a sheet (a wrong cross-reference, a missing hypothesis, a
 typo in a formula) is corrected in a fold "Slip in the notes" (or "Slip in the sheet") where it
 occurs, with the corrected statement. All slips are collected again in an overview at the end.
+A reader may keep folds closed (so as not to see solutions), so a slip that makes a visible
+statement wrong is also flagged in the visible text: right after the statement, one line
+"**Slip in the notes:** <what is wrong>; corrected: <the corrected formula or clause>." The fold
+keeps the explanation (RMB, 2026-11-24).
 
 Lc8. **Final section** of results used without proof (K1): "Earlier results used", restating each
 result cited from earlier courses or chapters under its source's number.
