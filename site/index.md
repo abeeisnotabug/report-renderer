@@ -63,23 +63,14 @@ overviews.
 
 ### Stochastik II companion {#stochastik-ii}
 
-- [The course on one page](stochastik/stochastik2/course-overview.html): what each chapter does,
-  the threads through the course, the limit theorems side by side, every exercise and every slip.
-- [Chapter 0: basics from measure theory and topology](stochastik/stochastik2/ch0-basics.html):
-  Dynkin's π-λ theorem, uniqueness and extension of measures, the topology of metric spaces.
-- [Chapter 1: construction of stochastic processes](stochastik/stochastik2/ch1-construction.html):
-  finite-dimensional distributions, Kolmogorov's extension theorem, Polish spaces.
-- [Chapter 2: the conditional expectation](stochastik/stochastik2/ch2-condexp.html): the best
-  guess from the information in a σ-algebra, its construction through the projection in $L^2$,
-  and its rules.
-- [Chapter 3: martingales](stochastik/stochastik2/ch3-martingales.html): stopping, almost sure
-  convergence, uniform integrability, Doob's inequalities.
-- [Chapter 4: Markov chains](stochastik/stochastik2/ch4-markov.html): stationary measures,
-  recurrence, the fundamental theorem and the ergodic theorem.
-- [Chapter 5: applications of Markov chains](stochastik/stochastik2/ch5-applications.html):
-  PageRank, Markov chain Monte Carlo, a glimpse of Bayesian inference.
-- [Chapter 6: weak convergence](stochastik/stochastik2/ch6-weak.html): Portmanteau, Prohorov,
-  the space of continuous paths, Donsker's theorem.
+Perkowski's Stochastik II, winter 2026/27: one page per finished chapter of the lecture notes.
+
+- [Introduction and chapter 1: the conditional expectation](stochastik/stochastik2/ch1-conditional-expectation.html):
+  the orthogonal projection in $L^2$, the construction of the conditional expectation, and its
+  rules.
+- [Chapter 2: construction of stochastic processes](stochastik/stochastik2/ch2-construction.html):
+  finite-dimensional distributions, Kolmogorov's extension theorem, product measures, Gaussian
+  processes, Markov chains and the Poisson process.
 
 ### Stochastik III {#stochastik-iii}
 
