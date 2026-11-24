@@ -80,9 +80,13 @@ build_page() {  # build_page <page> <output file>
   local p=$1 out=$2 k
   cat header-$p.Rmd > page-$p.Rmd
   for k in $(seq 1 $(writers_of $p)); do printf '\n' >> page-$p.Rmd; cat part-$p-$k.Rmd >> page-$p.Rmd; done
+  local rc
   ( Rscript -e "knitr::knit('page-$p.Rmd')" && "$RENDERER/render.sh" page-$p.md \
     && NODE_PATH=$(npm root -g) node "$RENDERER/phone-check.js" "$PWD/page-$p.html" ) > "$out" 2>&1
-  echo "[build-$p] exit $?, see $out"
+  rc=$?
+  echo "build exit: $rc" >> "$out"
+  echo "[build-$p] exit $rc, see $out"
+  return $rc
 }
 
 writers_of() {  # writers_of <page>: its entry in WRITERS
@@ -99,7 +103,7 @@ chain() {  # chain <page>: writers, build, reader, fixer, build
     stage_as "$MODEL_WRITER" writer-$p-$k writer-$p-$k.brief notes-$p-$k.md \
       || { echo "stopping after writer $p-$k"; return 1; }
   done
-  build_page $p build-$p.out
+  build_page $p build-$p.out   # a failed build still goes to the reader, who lists it
   brief_for brief-reader.md reader-$p.brief "" "s/<PAGE>/$p/g"
   stage_as "$MODEL_READER" reader-$p reader-$p.brief review-$p.md || return 1
   brief_for brief-fixer.md fixer-$p.brief "" "s/<PAGE>/$p/g"
@@ -127,10 +131,13 @@ summary() {
     print -r -- "# Run finished $(date '+%Y-%m-%d %H:%M')"
     for p in $PAGES; do
       print -r -- $'\n'"## Page $p"
-      [[ -s page-$p.html ]] && print -r -- "page-$p.html built." || print -r -- "No page-$p.html: see chain-$p.out."
+      if [[ -s build-$p-final.out ]]; then
+        print -r -- "Final build: $(tail -1 build-$p-final.out) (0 = page-$p.html built and phone-checked; see build-$p-final.out)."
+      else
+        print -r -- "No final build: the chain stopped early; see chain-$p.out."
+      fi
       [[ -s fixed-$p.md ]] && print -r -- "Fixer: fixed-$p.md."
       [[ -s open-$p.md ]] && print -r -- "Questions for RMB: open-$p.md ($(grep -c '^Q[0-9]' open-$p.md) items)."
-      [[ -s build-$p-final.out ]] && print -r -- "Final build: build-$p-final.out ($(grep -ci 'warn' build-$p-final.out) warning lines)."
     done
     print -r -- $'\n## Usage per stage\n'
     for f in *.log.jsonl(N); do print -r -- "${f%.log.jsonl}: $(python3 "$USAGE" claude "$f" 2>/dev/null | tail -1)"; done

@@ -30,16 +30,18 @@ D3. Write the done file named in "Your chunk" last, at most 100 words: pages don
 
 ## Format of a transcript
 
-This format is shared with the transcripts that course folders keep; keep it exactly.
+Keep this format exactly. A transcript that a course folder keeps (`transcripts/`) replaces this
+stage only if it follows this format; otherwise it is converted first.
 
 T1. Markdown with LaTeX math: `$...$` inline, `$$...$$` for displays, `\begin{aligned}` inside
 `$$` for aligned rows. Macros the source defines are written out.
 
 T2. A marker `[p. N]` on its own line at the start of each PDF page (N the PDF's page number, not
-the printed one; add the printed one in brackets if it differs: `[p. 12 (printed 10)]`).
+the printed one; add the printed one in brackets if it differs: `[p. N (printed M)]`).
 
 T3. In the source's order and verbatim: headings with their numbers, every numbered item with its
-label in bold as printed (`**Theorem 1.12.**`, `**Definition 2.3**`, `**Exercise 4.**`), its
+label in bold as printed at the start of a line
+(`**<Kind> <number>.**`, exactly as the source prints kind and number), its
 statement, its proof, the prose between items, footnotes (`[^n]` at the place, the text at the
 end of the page), equation numbers (`\tag{3.1}`), and markers such as the end of a lecture.
 
@@ -49,7 +51,7 @@ T4. No paraphrase and no correction. A slip you notice stays as printed, with a 
 T5. A figure gets one line: `[Figure N: what it shows, with its caption verbatim]`.
 
 T6. Exercise sheets: each exercise verbatim with its parts, points and any rule the sheet states
-for it (for example on the use of AI).
+for it.
 
 ## Limits
 

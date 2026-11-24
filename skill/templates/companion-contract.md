@@ -36,9 +36,9 @@ function), `skill/demo/demo.md` (the markup of each device), and every note in `
 R2. The transcripts that "Your page" names, in full, once. Other sources only where "Your page"
 says so, and only the parts you need (find them with Grep, then Read with offset and limit).
 
-R3. [For a page whose contract follows another page's: from `contract-<earlier page>.md` only the
-shared part (everything before its first `## Part` heading): its notation map and labels, so
-that this page cites them consistently.]
+R3. If "Your page" names a contract that comes before this one: from that file only the shared
+part (everything before its first `## Part` heading), its notation map and labels, so that this
+page cites them consistently.
 
 ## What you write
 
@@ -61,8 +61,8 @@ D1b. **One section per writer**, headed exactly `## Part 1`, `## Part 2`, ... (t
 these headings), in page order. Each holds: the writer's sections; the fixed hand-over sentence
 into its first section and out of its last one, word for word; and, for every item in its
 sections, in order:
-the id ([lecture: `lec-1-12`, `exer-1-4`, `sheet-2-1`, page's own items with the section letter]
-[paper: as `layers.lua` gives them]); the title as it will appear ([lecture: Lc2] [paper: with
+the id (as the top of `layers.lua` gives ids for the source's items, exercises and results used;
+the page's own items with the section letter); the title as it will appear ([lecture: Lc2] [paper: with
 the one-word status]); **where the statement stands**: transcript file and the item's bold label
 or `[p. N]` (the writer copies it from there; do not copy statements into the contract); the
 status line in full ([lecture: Lc5; for *Reminder* you have compared with the source's proof]
@@ -76,13 +76,15 @@ report's own version with its term-by-term notation map.]
 Figures and examples (E1, E3): each with the reason it earns its place, and the property an added
 example has or lacks. No quotas (H3).
 
-D2. `header-<PAGE>.Rmd`, in one Write call: the YAML (`title`, `layered: true`[, `pages:` the
-other pages this page cites]), the build comment of `skill/starter/report.Rmd`, and the setup
+D2. `header-<PAGE>.Rmd`, in one Write call: the YAML (`title`, `layered: true`, and `pages:` with the
+other pages this page cites, if "Your page" names any), the build comment of `skill/starter/report.Rmd`, and the setup
 chunk with `fig.path = "_figures/<PAGE>-"`.
 
-D3. [lecture: `items-<PAGE>.txt`: one line per numbered item of the source that the page holds
-(the label only, for example `Theorem 1.12`), in the source's order. A script compares it with
-the transcript.]
+D3. **Coverage.** Every numbered statement of the source in this page's range is an item
+([lecture: Lc1] [paper: Pc1, within the scope RMB's request names]). Check it once with
+`grep -n '^\*\*' <this page's transcripts>` (the transcripts put every label in bold at the start
+of a line) against your parts, and write `items-<PAGE>.txt`: one line per numbered statement of
+the range, the label as printed, followed by the item's id, or by "left out: <reason>".
 
 D4. `done-contract-<PAGE>.md` last: at most 200 words, what you could not settle (each with its
 place), and any transcript passage marked unclear that the page needs.
@@ -103,4 +105,5 @@ L3. Final reply: three lines.
 the sections, or the paper's sections>. Transcripts: `sources/transcript-<chunk>.md` [, ...].
 [Other sources and what to take from them.] Writers: <n>; split: Part 1 = <sections>, Part 2 =
 <sections>, ... (change a split only if a section's size makes it necessary; say why in the done
-file). [Contract that comes before: `contract-<tag>.md`.]" -->
+file). [Contract that comes before: `contract-<tag>.md` (its shared part only).] [Other pages
+this page cites (for `pages:` in the header): `<file>.md`.]" -->

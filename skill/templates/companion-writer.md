@@ -32,15 +32,15 @@ one is wrong, keep it and report it in your notes.
 R1. In full: `STYLE.md`, `skill/<lecture | paper>-companion.md`, the markup description at the
 top of `~/Documents/Works/report-renderer/layers.lua` (up to the first function),
 `skill/demo/demo.md` (copy markup, never text or placement), every note in `sources/notes/`,
-`contract-<PAGE>-<K>.md`, `header-<PAGE>.Rmd`, and the parts `part-<PAGE>-1.Rmd` to
-`part-<PAGE>-<K-1>.Rmd` if they exist.
+`contract-<PAGE>-<K>.md`, `header-<PAGE>.Rmd`, and the parts of this page already written
+(`part-<PAGE>-<j>.Rmd` for every j below <K>; none if <K> is 1).
 
 R2. From the transcripts in `sources/`: only the passages your part needs, as the contract
 places them (find them with Grep on the label or the `[p. N]` marker, then Read with offset and
 limit). Statements are copied from there verbatim. Read no PDF and no image: a passage that looks
 wrong in the transcript is reported in your notes, not checked on the page.
-[lecture: For an exercise whose solution follows a source the contract names (for example RMB's
-own solutions), that file, only the exercise's part.]
+[lecture: For an exercise whose solution follows a source the contract names, that file, only
+the exercise's part.]
 
 ## What you write
 
@@ -67,9 +67,9 @@ mechanism, and the solution fold the contract names (Lc6); slips in a "Slip in t
 [paper: The paper's equations as printed, with section and page, next to the page's version and
 its term-by-term notation map (Pc3); status lines with the verbs of Pc5; each folding section's
 plain-words fold, written last, after the section is done (Pc6, SKILL.md L3).]
-[If you are the last writer: the slips overview (Lc7) or own-commentary sections (Pc5), the
+If <K> is <N> (you are the last writer), also: the slips overview (Lc7) or own-commentary sections (Pc5), the
 conclusion (M8), and the final section of results used (Lc8 or Pc8), as the contract places
-them.]
+them.
 
 D4. **Check your part on the page.** Make `test-<PAGE>-<K>.Rmd`: `header-<PAGE>.Rmd`, then the
 parts of this page written so far, yours last. From this folder:

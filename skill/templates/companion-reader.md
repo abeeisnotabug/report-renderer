@@ -19,7 +19,8 @@ that may differ from the source, anything you are unsure of) goes to RMB.
 ## What you read
 
 R1. `~/Documents/Works/report-renderer/STYLE.md` and `skill/<lecture | paper>-companion.md` in
-the same folder, `contract-<PAGE>.md` (its check list is for you), the writers' notes
+the same folder, `contract-<PAGE>.md` (its check list is for you), `items-<PAGE>.txt` (every numbered statement
+of the source and its item), the writers' notes
 `notes-<PAGE>-*.md`, the build output `build-<PAGE>.out` (renderer warnings and the phone check),
 and the knitted page `page-<PAGE>.md`, top to bottom, once. Transcripts in `sources/` only to
 check a statement or formula that looks wrong, and only that passage (Grep, then Read with offset
@@ -33,7 +34,8 @@ notation, a status).
 L2. Repeated derivations or explanations: name the first place and the repeat.
 
 L3. Broken references: a label cited that does not exist, a "Uses:" line that misses what an item
-uses, a fixed hand-over sentence that was changed, a section or item of the contract missing.
+uses, a fixed hand-over sentence that was changed, a section or item of the contract or of
+`items-<PAGE>.txt` missing.
 
 L4. Every problem the writers' notes report that is still open.
 
