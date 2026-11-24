@@ -3,7 +3,7 @@ Fill every <...> from the request and the work folder, delete text in [...] that
 and delete this comment. The template holds only wording that every run shares; everything about
 the topic comes from the placeholders. -->
 
-# Brief, stage 1: the outline of a topic introduction on <topic>
+# Brief, stage 1: the outline and plan of a topic introduction on <topic>
 
 ## Why this task exists
 
@@ -21,8 +21,9 @@ W2a. <part 1, one line: what it answers>
 
 W2b. <part 2, ...>
 
-W3. Your stage writes the outline only. <n> writers then write one part each, one after another,
-and a final session assembles the page. RMB approves your outline before they start.
+W3. Your stage writes the outline and the plan only. <n> writers then write one part each, one after another,
+and a final session assembles the page. RMB does not read your outline. RMB approves the page of
+writer 1 (a sample part) before writer 2 starts, and corrects the outline and plan through it.
 
 ## What you do
 
@@ -31,8 +32,8 @@ come first), `topic-introduction.md`, `skill/SKILL.md` in the same folder, the m
 description at the top of `~/Documents/Works/report-renderer/layers.lua`, every note in
 `sources/notes/`, and `sources/<source report>` [and the paper where the source cites it].
 
-D2. Write `outline.md`, the document RMB reads and approves. It is the tree of rule H1, and it
-must itself be easy to read (about 1,500 words at most):
+D2. Write `outline.md`, the writers' contract (not for RMB). It is the tree of rule H1. Every
+writer reads it in full, so keep it short (about 1,500 words at most):
 
 D2a. the question and its parts (W2), and the opening tree of the page (M1);
 
@@ -50,7 +51,9 @@ D2e. the known-results boxes (K1): number, kind word, one line each;
 D2f. "Cut": material of the source that no node needs, one line each with the node it fails.
 Side trips that serve the question but not the main line are listed as side trips, not cut.
 
-D3. Write `plan.md` for the writers (not for RMB):
+D3. Write `plan.md`, also for the writers (not for RMB). Part 1 is the sample part RMB approves, so
+choose the split such that part 1 shows the page's form: its first section, a derivation, an
+example with numbers, and a figure if the page has one. Then:
 
 D3a. the split into <n> parts, one writer each, with each part's sections and the source's
 material for them (item labels and line ranges in `sources/<source report>`);

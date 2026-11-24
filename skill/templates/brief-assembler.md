@@ -7,8 +7,8 @@ Fill every <...>, delete text in [...] that does not apply, and delete this comm
 
 W1. <n> writers have written one part each of a topic introduction (a report that reads like a
 textbook chapter) on <topic>: `part-1.Rmd` to `part-<n>.Rmd` in this folder, with their notes
-`notes-1.md` to `notes-<n>.md`. The contract they followed is `outline.md` (approved by RMB, the
-reader) and `plan.md`; the rules are in `~/Documents/Works/report-renderer/STYLE.md`, and what
+`notes-1.md` to `notes-<n>.md`. The contract they followed is `outline.md` and `plan.md` (RMB did not read these; RMB approved
+part 1 as a sample, and its corrections are in them); the rules are in `~/Documents/Works/report-renderer/STYLE.md`, and what
 differs for this type in `~/Documents/Works/report-renderer/skill/topic-introduction.md`. Their source is
 `sources/<source report>`, a checked report.
 

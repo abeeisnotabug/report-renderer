@@ -11,8 +11,8 @@ formulas rendered at build time, opens in any browser. It is versioned with the 
 ## Start
 
 St1. **Structure comes from RMB.** The talk's structure, length, number of slides, parts (if
-any) and framing come from RMB's request and the outline RMB approves. Nothing in `starter/`,
-`demo/` or an earlier talk is a model for them.
+any) and framing come from RMB's request and RMB's corrections to the sample slides (Sg1a).
+Nothing in `starter/`, `demo/` or an earlier talk is a model for them.
 
 St2. **Copy `starter/`**, which holds an empty `config.json` and an empty title slide, to a
 folder in the project named after the talk. Read `demo/` for markup only: each of its slides
@@ -62,14 +62,18 @@ colour (no darker text shades). Never write a literal colour into a slide, pictu
 
 ## Slides and notes
 
-N1. Audience first: the outline brief states who listens, what they know and what they do not.
+N1. Audience first: the sample brief states who listens, what they know and what they do not.
 Every slide is pitched at that.
 
 N2. A slide's title states its message as a sentence. The titles alone tell the story.
 
 N3. Notes are bullet points (Stichpunkte), one list per state: `<ul data-step="k"><li>…</li></ul>`,
-3 to 6 keywords or short phrases each, saying what to say, the numbers to mention, and links
-back to earlier slides by number. About a quarter of the words of spoken text.
+3 to 6 per state, saying what the speaker must understand and say about the slide at that state.
+A number to mention comes with its derivation in a few words. No section numbers, line numbers,
+report labels, file names or other pointers into sources: the speaker has only the notes. A link
+back to an earlier slide restates what it refers to instead of giving a slide number. The
+audience is never named in the third person: notes are what to say, not remarks about the
+listeners. About a quarter of the words of spoken text.
 
 N4. No colour names in notes or slide text (there are two themes): name the object.
 
@@ -81,6 +85,32 @@ N6. `data-min` per slide; the planned minutes add up to the talk's length (`conf
 
 N7. Labels in pictures at least 24 px. Content stays inside x 96..1824, y 40..1000 (the screenshot
 check reports anything outside, except elements with class `bleed`).
+
+N8. Every symbol, abbreviation and named assumption on a slide is defined on that slide or
+restated there in a few words. A pointer ("slide 7", "(SR)") is not a definition. As few
+abbreviations as possible: a named assumption gets a label only if it is used on several slides.
+
+N9. No number on a slide without its derivation on the slide (in a step, a box, or a side
+column). If there is no room for the derivation, drop the number. Example values are chosen so
+that derivations are short.
+
+N10. One notation for the whole deck: each letter has one meaning, indices are fixed, and
+`plan.md` lists them (the notation table).
+
+N11. Pictures: one meaning per kind of line across the deck (the arrow convention in `plan.md`),
+and each picture says what its lines mean. For an audience that thinks in path diagrams (SEMs),
+models are drawn as path diagrams and variants as changes to one diagram (an arrow added,
+removed, or set to zero).
+
+N12. A result is shown in a box with its assumptions and its statement, so that what is assumed,
+what follows and in which direction is clear at a glance.
+
+N13. The first slide after the title says what the talk will show. The order is the one the
+audience needs to follow, not a source document's order: a reference document's order
+(definitions, assumptions, results, comparison) is not a talk's order. What the audience already
+knows comes first; what changed comes before what follows from it.
+
+N14. No status tags or review marks on slides unless RMB asks for them for that talk.
 
 ## Pictures and live controls
 
@@ -117,23 +147,40 @@ Delete the `*-shots-*` folders afterwards.
 
 ## Stages
 
-Sg1. **Outline.** One session writes the storyboard in the structure RMB's request gives (St1):
-per slide the title, what is on it per
-state, the pictures and controls, the planned minutes, and the notes' content in a line.
-Template: `briefs/brief-outline.md`. RMB approves it before anything is built.
+Sg1. **Plan and sample slides.** One session writes `plan.md`, the builders' contract: per
+slide the title (its message, N2), what is on it per state, the pictures and controls, the
+planned minutes, a line on the notes, and every number with its derivation and source; the
+colour map (C2); the notation table (N10); the arrow convention (N11). The order is N13's. It
+also builds two or three sample slides that represent the deck (for example the running example,
+one typical slide, the densest result slide), with their notes, and runs K1 on them. Template:
+`briefs/brief-sample.md`.
 
-Sg2. **Build.** One session per slides file (or one for a short talk) builds the approved
-outline into the deck folder and runs K1. Template: `briefs/brief-build.md`.
+Sg1a. **RMB approves the sample.** RMB looks at the built sample slides in the browser (key S
+opens the presenter view with the notes) and approves or corrects them; RMB's corrections go into
+`plan.md` and the samples. There is no outline document for RMB: RMB judges what is on the page,
+not a description of it (RMB, 2026-11-24). Nothing more is built before this approval.
 
-Sg3. **Reader.** A fresh session reads the built deck once as the audience would, fixes only
-clear local errors (a wrong number, overflow, a typo, a broken step) and lists the rest for RMB.
-Template: `briefs/brief-reader.md`.
+Sg2. **Build.** One session per slides file (or one for a short talk) builds the rest of the
+deck from `plan.md`, in the form of the approved sample slides, and runs K1. Template:
+`briefs/brief-build.md`.
 
-Sg4. Fill the templates' placeholders from the request and the sources. Do not reuse an earlier
+Sg3. **Reader.** A fresh session reads the built deck once as the audience would, checks it
+against `plan.md` and the rules N1 to N14, fixes only clear local errors (a wrong number,
+overflow, a typo, a broken step) and lists the rest for RMB. Template: `briefs/brief-reader.md`.
+
+Sg4. **Blind review** (optional). After the reader, the conductor offers RMB a blind review, with
+its approximate cost and the run's usage (big-tasks, "Blind review", Bl1 ...). One fresh Sonnet
+session sees only what the audience sees, screenshots of every state and the notes per state
+(`node ~/Documents/Works/report-renderer/talk/notes-dump.mjs <deck folder> notes.txt`), reads
+strictly in order and writes `blind-review.md` slide by slide. Template: `briefs/brief-blind.md`.
+
+Sg5. Fill the templates' placeholders from the request and the sources. Do not reuse an earlier
 talk's briefs. Run each stage headless in an ignored work folder next to the talk, with
-`~/Documents/Works/report-renderer/skill/templates/run-stage.sh`.
+`~/Documents/Works/report-renderer/skill/templates/run-stage.sh`. Its stage names are a
+report's: for a talk, set its stages to `sample` (`brief-sample.md`, done-file
+`notes-sample.md`), `build` and `reader`.
 
-Sg5. Costs of earlier runs: big-tasks, its measured facts. Log each new run's costs there
+Sg6. Costs of earlier runs: big-tasks, its measured facts. Log each new run's costs there
 (big-tasks Co6).
 
 ## Publishing

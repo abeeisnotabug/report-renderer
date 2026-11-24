@@ -25,7 +25,7 @@ If a request does not make the type clear, ask RMB.
 ## Start
 
 St1. **Structure comes from RMB.** A report's structure, its parts, the number and kind of its
-sections, and its framing come from RMB's request and the outline RMB approves. Nothing in
+sections, and its framing come from RMB's request and the sample part RMB approves (Ti4). Nothing in
 `starter/`, `demo/` or an earlier report is a model for them.
 
 St2. **A report starts from `starter/report.Rmd`** in this folder: copy it into the project and
@@ -105,6 +105,11 @@ by script before the reader and after the fixer. The reader sorts its findings: 
 the contract or a transcript settle goes to the fixer, who applies all of it; what needs a
 decision goes to `open-<page>.md` for RMB. So nothing in the run waits for the conductor.
 
+Mc5a. **Blind review (optional, after the reader stage).** At the end of the run (and after a
+major rework) the conductor offers RMB a blind review of each page once, as big-tasks "Blind
+review" (Bl1 and following) says. It is not a stage of `run-companion.sh`. Template:
+`templates/brief-blind.md`; input: the rendered page's text from `page-text.mjs`.
+
 Mc6. **One launch.** `run-companion.sh all` chains all stages unattended, with the usage-limit
 handling of big-tasks (Co5a to Co5c) inside, and writes `run-done.md` at the end (each page's
 state, RMB's open questions, usage per stage). The conductor waits for `run-done.md` or a
@@ -124,8 +129,8 @@ the parts, the headers, `sources/transcripts/` and the other pages' `.md` files 
 ## Making a topic introduction
 
 Agreed with RMB on 2026-11-17. Briefs from the templates in `templates/` (R2):
-`brief-outline.md`, `brief-writer.md`, `brief-assembler.md`, and `run-stage.sh` (with
-`runlib.sh` and `logstate.py`) to run them. Costs of earlier runs: big-tasks, its measured facts.
+`brief-outline.md`, `brief-writer.md`, `brief-assembler.md`, `brief-blind.md` (optional, Ti6a),
+and `run-stage.sh` (with `runlib.sh` and `logstate.py`) to run them. Costs of earlier runs: big-tasks, its measured facts.
 
 Ti1. **Source first.** The content comes from a checked source (for example a checked report on
 the topic, its R checks and the paper it is based on), and the topic introduction rewrites its
@@ -142,9 +147,11 @@ project's data rules, final reply three lines. Accounts and models: big-tasks.
 
 Ti3. **Stage 1, outline.** One fresh session. The brief states the question and its parts in
 RMB's words (rule H2 of `STYLE.md`). It reads `topic-introduction.md`, `STYLE.md`,
-this file, the markup in `layers.lua`, the notes and the source, and writes two files:
+this file, the markup in `layers.lua`, the notes and the source, and writes two files, both for
+the writers. RMB does not read or approve either (RMB approves a sample part, Ti4):
 
-Ti3a. `outline.md`, for RMB, about 1,500 words at most: the question and its parts, the opening
+Ti3a. `outline.md`, the writers' contract, about 1,500 words at most (every writer reads it in
+full): the question and its parts, the opening
 tree (M1); per section its contribution, its paragraphs' jobs in order with the items they state
 (label, one-word status, one line) and its hand-over (M3); the examples and their variants (E3); the figures
 with the reason each earns its place (E1); the known-results boxes (K1); and a "Cut" list of
@@ -156,8 +163,16 @@ chunks and which numbers go where; the hand-over sentences between parts, word f
 part's first sentence depends on the last one before it; additions to the content (Ti1); rules
 found unclear and how the plan resolves them; a check list for the assembler.
 
-Ti4. **RMB approves the outline** (render it as a page) before any writer starts. RMB's changes
-go into `outline.md` and `plan.md`.
+Ti4. **RMB approves a sample part, not the outline** (agreed 2026-11-24: "I have to see what is
+on the page"). Run `./run-stage.sh outline`, then `./run-stage.sh writers 1`. Writer 1 writes
+part 1 and the "Known results" section, and keeps its test page `test-1.html`. The conductor gives
+that page to RMB (re-rendered, B1, if part 1 changed since). RMB approves it or
+corrects it before writer 2 starts. RMB's corrections go into `outline.md`, `plan.md` and
+`part-1.Rmd`: small ones the conductor makes in the main session; if they change the form of the
+whole part, update `outline.md` and `plan.md`, delete `notes-1.md` and `part-1.Rmd`, and run
+`writers 1` again. Then `./run-stage.sh all <n>` runs the rest: it skips writer 1, because
+`notes-1.md` exists (`runlib.sh`, `run_stage`). Writers 2 and later take part 1 as the model
+for form.
 
 Ti5. **Stage 2, writers.** One fresh session per part, **one after
 another**, each reading the parts already written so that the page keeps one voice and cites
@@ -180,6 +195,12 @@ keeps its first place and the second refers back. It changes no claim, formula o
 doubtful one it checks against the source and reports. It runs the plan's check list, builds and
 phone-checks the page, and writes `assembly-report.md` (at most 400 words: fixes, cuts, what is
 left open, word count).
+
+Ti6a. **Blind review (optional).** After the assembler, and after a major rework, the conductor
+offers RMB a blind review once, as big-tasks "Blind review" (Bl1 and following) says: the cost
+and the run's usage first, then the run only if RMB agrees. Template: `templates/brief-blind.md`.
+The reviewer sees only the page's text in reading order with the folds marked
+(`page-text.mjs`), never the notes, sources, briefs or plan.
 
 Ti7. **Last, in the main session:** move the page next to the reports it links to, build and
 check it again (B1, B2), commit, and give it to RMB. Open points from the assembly report go to RMB

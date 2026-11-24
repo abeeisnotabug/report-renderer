@@ -14,13 +14,15 @@ reads like a textbook chapter. The rules for every report are in
 `~/Documents/Works/report-renderer/STYLE.md`; what differs for this type is in
 `~/Documents/Works/report-renderer/skill/topic-introduction.md`.
 
-W2. An earlier session wrote the outline (`outline.md`, approved by RMB, with RMB's changes) and
-the writers' plan (`plan.md`). <n> writers write one part each, one after another; a final
-session assembles the page. You write the part named at the end of this brief.
+W2. An earlier session wrote the writers' contract (`outline.md`) and the writers' plan
+(`plan.md`). RMB reads neither. RMB looks at part 1, rendered as a page, before writer 2 starts, and approves
+or corrects it; the corrections are then in `outline.md`, `plan.md` and `part-1.Rmd`. Unless you
+are writer 1, part 1 is the model for form. <n> writers write one part each, one after another; a
+final session assembles the page. You write the part named at the end of this brief.
 
 W3. The page must read as one text by one author. So follow the plan's notation, labels and
 fixed hand-over sentences exactly, and read the parts already written (if any) before you start:
-match their voice, and refer back to their items rather than repeating them.
+match their voice and form, and refer back to their items rather than repeating them.
 
 ## What you read
 
@@ -63,7 +65,7 @@ From this folder knit it with `Rscript -e 'knitr::knit("test-N.Rmd")'`, render i
 `NODE_PATH=$(npm root -g) node ~/Documents/Works/report-renderer/phone-check.js "$PWD/test-N.html"`.
 Fix every warning of the renderer and every finding of the phone check in your part (a link to
 a later part, which does not exist yet, is fine; list it). Read the "Uses:" lines of your items.
-Then delete `test-N.*` and its figure files, but keep your fragment.
+Then delete `test-N.*` and its figure files, but keep your fragment. (Writer 1: see "Your part".)
 
 D6. **Before you finish,** read your part's first sentences alone: they should give the outline
 of your sections. Read your part once from top to bottom as RMB would, and cut what serves no
@@ -89,4 +91,7 @@ L3. Final reply: three lines.
 "Writer N: `part-N.Rmd`. <its sections, from plan.md>. <which parts are already written: read
 them first and cite their items>. `plan.md` section <...> says what goes where. In your test file
 put parts 1 to N-1 before yours." The first writer also writes the section "Known results",
-because the others cite its boxes; it moves to the end at assembly. -->
+because the others cite its boxes; it moves to the end at assembly. Writer 1's paragraph adds:
+"Your part is the sample RMB looks at, as a rendered page, before anyone else writes. It must show
+the page's form in full, because later writers copy it. Keep `test-1.md` and `test-1.html` (do not
+delete them, D5); the conductor gives that page to RMB." -->

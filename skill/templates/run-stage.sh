@@ -6,6 +6,11 @@
 #   ./run-stage.sh writers 3    writers 1..3 one after another (brief-writer.md + brief-writer-N.md)
 #   ./run-stage.sh assembler    brief-assembler.md -> assembly-report.md (last file it writes)
 #   ./run-stage.sh all 3        writers, then assembler
+# Order of a run (SKILL.md Ti4): outline; then writers 1 (the sample part); RMB looks at the
+# rendered page and approves or corrects it (corrections go into outline.md, plan.md, part-1.Rmd);
+# then all <n>. `all` does not redo writer 1: writers() calls run_stage writer-1, which returns at
+# once because its done-file notes-1.md exists (runlib.sh, run_stage: "already done"). To have
+# writer 1 write again after corrections, delete notes-1.md and part-1.Rmd first.
 # Start it detached: nohup caffeinate -dims ./run-stage.sh all 3 > run-all.out 2>&1 &
 # Rerunnable: a stage whose done-file exists is skipped. Each attempt logs to
 # <stage>[.rN].log.jsonl and prints its cost.
