@@ -50,35 +50,74 @@ notation and derivations only, never for its structure (St1).
 
 ## Long reports
 
-R1. A report that takes more than one session (a long paper, many sections) is a big task: read
-`~/.agent-skills-shared/big-tasks/SKILL.md` first and ask RMB for the cast before anything
-starts (its S1). Effort is high at most.
+R1. A report that takes more than one session (a long paper, many sections, a lecture chapter) is
+a big task: read `~/.agent-skills-shared/big-tasks/SKILL.md` first and ask RMB for the cast before
+anything starts (its S1, in its short form). Effort is high at most.
 
-R2. The contract is the statement layer. One architect session writes it for the whole report:
-every section's gist, every item's statement and status line, the notation map and the labels.
-Equations are first transcribed once from the page images (big-tasks Co2).
+R2. **Briefs come from the templates in `templates/`, never freehand.** Copy the type's
+templates into the work folder, fill their placeholders from the request and the sources, and
+delete the variants that do not apply. What a template does not say is added in its marked
+places ("Your chunk", "Your page", the notes in `sources/notes/`), never by rewriting its rules.
+Do not read an earlier run's briefs, contracts or outlines to write new ones: their
+source-specific details (number of parts, labels, page ranges) carry over into an unrelated
+report. A template that lacks something every run needs is extended in the renderer.
 
-R3. Workers then fill one section each, in fresh sessions: Intuition, Steps and named folds, then
-a paper companion's plain-words fold last (L3 below). A worker reads the contract and its own section's sources
-only. It writes each step out where it is needed, and points elsewhere only to a labelled
-statement, never into another section's folds. It may not change a statement, symbol or label;
-if one is wrong, it reports this instead.
+R3. **Waste check before the launch.** Every runner starts only after the waste check of
+big-tasks (Wc1 to Wc5) has seen its briefs, the runner and its config; the runner refuses
+otherwise (`waste_gate` in `templates/runlib.sh`).
 
-R4. A fresh reader then reads the whole page once (big-tasks T6) and lists contradictions,
-repeated derivations and broken references. The render and phone check (B1, B2) are run by a
-script, not by a model.
+## Making a companion
 
-R1 to R4 are for paper and lecture companions: the source's statements, transcribed once, are
-the contract. A topic introduction has no statement layer to serve as a contract; it is made as
-in the next section.
+Paper and lecture companions: the source's statements, transcribed once, are the contract.
+Templates: `templates/companion-transcribe.md`, `companion-contract.md`, `companion-writer.md`,
+`companion-reader.md`, `companion-fixer.md`, run by `templates/run-companion.sh` with its
+`run.conf` (copy `runlib.sh` and `logstate.py` too). Each template has a lecture and a paper
+variant where the type files differ.
+
+Mc1. **Work folder.** An ignored folder next to the page (e.g. `.work/<name>/`) with `sources/`:
+the transcripts, the source PDFs (for the transcription stage only), the project's notes on the
+reader and on reports in `sources/notes/`, and other files a stage reads (for example RMB's own
+solutions). Every brief limits its session to the folder and the renderer: write only in the
+folder, no git, no memory files, no subagents or web search, final reply three lines.
+
+Mc2. **Stage 1, transcription: its own cheap stage.** Page images are read once, by Sonnet
+sessions of about 10 to 15 pages each, side by side, into text in the format the template
+fixes; every later stage reads text only, never a PDF page or an image. A source that already
+has a transcript (a course folder's `transcripts/`) is copied into `sources/`, and its chunk is
+left out of `run.conf`.
+
+Mc3. **Stage 2, contract: one session per page.** Its statement layer (every item's id, title,
+status line and where its statement stands in a transcript; sections, gists, recaps, hand-overs;
+the notation map; slips; results used; the writers' split and the reader's check list). The
+contract does not copy statements: writers copy them from the transcript. It is written in two
+halves: a shared part and one `## Part k` per writer, so that each writer reads only the shared
+part and its own. A page that cites another page's labels has its contract written after that
+page's, and reads only that contract's shared part.
+
+Mc4. **Stage 3, writers.** One fresh session per part, one after another within a page, each
+reading the parts of its page already written, so that the page keeps one voice. Pages run side
+by side. A writer may not change a statement, symbol or label; if one is wrong, it reports this.
+A paper companion's plain-words fold is written last in its section (L3).
+
+Mc5. **Stage 4 and 5, reader and fixer** (big-tasks T6), Sonnet. The render and phone check run
+by script before the reader and after the fixer. The reader sorts its findings: what the rules,
+the contract or a transcript settle goes to the fixer, who applies all of it; what needs a
+decision goes to `open-<page>.md` for RMB. So nothing in the run waits for the conductor.
+
+Mc6. **One launch.** `run-companion.sh all` chains all stages unattended, with the usage-limit
+handling of big-tasks (Co5a to Co5c) inside, and writes `run-done.md` at the end (each page's
+state, RMB's open questions, usage per stage). The conductor waits for `run-done.md` or a
+`limit-*.txt`.
+
+Mc7. **Last, in the main session:** move each page next to the pages it links to, build and check
+it again (B1, B2), commit, give it to RMB with the questions in `open-<page>.md`, and log the
+usage (big-tasks Co6).
 
 ## Making a topic introduction
 
-Agreed with RMB on 2026-11-17. Write the briefs from the templates in `templates/` in this folder (`brief-outline.md`, `brief-writer.md`,
-`brief-assembler.md`, and `run-stage.sh` to run them): fill their placeholders from the request
-and the sources. Do not read an earlier run's briefs or outline to write new ones: their
-topic-specific details (number of parts, section letters, notation) carry over into an unrelated
-report. Costs of earlier runs: big-tasks, its measured facts.
+Agreed with RMB on 2026-11-17. Briefs from the templates in `templates/` (R2):
+`brief-outline.md`, `brief-writer.md`, `brief-assembler.md`, and `run-stage.sh` (with
+`runlib.sh` and `logstate.py`) to run them. Costs of earlier runs: big-tasks, its measured facts.
 
 Ti1. **Source first.** The content comes from a checked source (for example a checked report on
 the topic, its R checks and the paper it is based on), and the topic introduction rewrites its
@@ -123,7 +162,7 @@ writer also writes the "Known results" section, because the others cite its boxe
 stops when a writer leaves no notes file or ends with an error. At a usage limit it does not
 stop: it writes `limit.txt`, the main session asks RMB, and the answer in `decision.txt` (wait,
 move, restart) decides (big-tasks Co5a–Co5c; how: the comments at the top of
-`templates/run-stage.sh`, which needs `templates/logstate.py` in the work folder). The main
+`templates/runlib.sh`). The main
 session's wait on the run also ends when `limit.txt` appears.
 
 Ti6. **Stage 3, assembler.** One fresh session joins the parts, moves "Known results" to the
