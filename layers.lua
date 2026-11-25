@@ -30,6 +30,17 @@ citations is not affected:
   - An exercise's "Uses:" line sits at the top of its folded solution, not under the task, so
     it does not give away the tools. Every other item's list is a closed fold "Uses" (below).
 
+Interactive figures (livefig.js), in every page, layered or not:
+
+  ::: {.live src="live-<id>.js" #fig-<id>}
+  **Figure 2.** Caption: one or more paragraphs of Markdown with maths.
+  :::
+
+  becomes <figure class="live" id="fig-<id>"> with an empty host element for the script and the
+  caption as <figcaption>. render.mjs puts the script file (its path relative to the .md) into
+  the page right after the figure, and the library livefig.js once into the page. The id and
+  src are required (build error otherwise). How a figure script is written: the top of livefig.js.
+
 Collapsible layers for long reports. Active only when the YAML header has `layered: true`;
 every other document passes through unchanged. render.mjs adds the matching CSS and script
 when the output contains the toolbar this filter writes.
@@ -899,3 +910,28 @@ function Pandoc(doc)
   doc.blocks = final
   return doc
 end
+
+-- Interactive figures -----------------------------------------------------------------------
+-- `::: {.live src="live-x.js" #fig-x}` -> a figure with a host element for the script, the
+-- caption, and a placeholder script that render.mjs replaces by the file (with the library).
+-- Runs in every document, before the layers (so items and folds see a finished figure). The
+-- note stays visible without scripts and in print; livefig.js hides it on screen.
+local function live_figure(d)
+  if not d.classes:includes('live') then return nil end
+  local src = d.attributes.src
+  if not src or src == '' then error('layers.lua: a live figure needs src="live-<id>.js"') end
+  if d.identifier == '' then
+    error('layers.lua: the live figure ' .. src .. ' needs an id: ::: {.live src="' .. src .. '" #fig-<id>}')
+  end
+  local id = esc(d.identifier)
+  local out = List { raw('<figure class="live" id="' .. id .. '"><div class="live-host">'
+    .. '<p class="live-note"><em>Interactive figure</em>: open the page in a browser to use it.</p>'
+    .. '</div><figcaption>') }
+  out:extend(d.content)
+  out:insert(raw('</figcaption></figure>'))
+  out:insert(raw('<script type="text/x-livefig" data-fig="' .. id .. '" data-src="' .. esc(src) .. '"></script>'))
+  return out
+end
+
+-- interactive figures first, then the layers (Pandoc above)
+return { { Div = live_figure }, { Pandoc = Pandoc } }

@@ -77,3 +77,10 @@ details.fold.uses { --f: var(--fc-uses); }
 details.rcode { --f: var(--fc-rcode); }
 details.fold > summary, details.why > summary, details.rcode > summary { color: var(--f); }
 details.fold[open], details.why[open] { border-left-color: var(--f); }
+/* live figures: series colours of interactive figures (livefig.js), the talk palette's six slots
+   and their fills from talk/kit/theme.css. render.mjs keeps this block (to "end live figures")
+   only on pages that have interactive figures. */
+:root { --c-a: #B800A3; --c-a-fill: #F1CCEC; --c-b: #3DA3CC; --c-b-fill: rgba(61, 163, 204, 0.22); --c-c: #E64D00; --c-c-fill: rgba(230, 77, 0, 0.12); --c-d: #00AC8A; --c-d-fill: rgba(0, 172, 138, 0.15); --c-e: #3326FF; --c-e-fill: rgba(51, 38, 255, 0.12); --c-f: #DA8A00; --c-f-fill: rgba(218, 138, 0, 0.15); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --c-a: #FF7AB8; --c-a-fill: rgba(255, 122, 184, 0.26); --c-b: #4FA8E8; --c-b-fill: rgba(79, 168, 232, 0.26); --c-c: #FF9A45; --c-c-fill: rgba(255, 154, 69, 0.16); --c-d: #3FD37E; --c-d-fill: rgba(63, 211, 126, 0.18); --c-e: #5CE1E6; --c-e-fill: rgba(92, 225, 230, 0.16); --c-f: #FFE066; --c-f-fill: rgba(255, 224, 102, 0.16); } }
+:root[data-theme="dark"] { --c-a: #FF7AB8; --c-a-fill: rgba(255, 122, 184, 0.26); --c-b: #4FA8E8; --c-b-fill: rgba(79, 168, 232, 0.26); --c-c: #FF9A45; --c-c-fill: rgba(255, 154, 69, 0.16); --c-d: #3FD37E; --c-d-fill: rgba(63, 211, 126, 0.18); --c-e: #5CE1E6; --c-e-fill: rgba(92, 225, 230, 0.16); --c-f: #FFE066; --c-f-fill: rgba(255, 224, 102, 0.16); }
+/* end live figures */

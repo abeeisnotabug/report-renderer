@@ -21,6 +21,9 @@
 //                        section: its heading and gist). Blocks are separated by a line "----".
 // Without out.txt no image and no targets file are written, and a figure is dumped as the old
 // line "[figure: alt]".
+// An interactive figure (livefig.js) is one line in both modes, no image:
+//   "[interactive figure: <caption>; controls: <labels>]" (sliders, switches, choices, and
+//   "drag <label>" for each point that can be dragged; labels as written, with $TeX$).
 // Needs Playwright with WebKit, installed globally with Homebrew's npm (as phone-check.js).
 import { createRequire } from 'node:module';
 import { writeFileSync, existsSync } from 'node:fs';
@@ -79,6 +82,14 @@ const { text, targets, nfig } = await p.evaluate(({ tex, images, prefix }) => {
     const cs = getComputedStyle(n);
     if (cs.display === 'none') return;
     const tag = n.tagName;
+    // an interactive figure (livefig.js): one line with its caption and its controls' labels
+    if (tag === 'FIGURE' && n.classList.contains('live')) {
+      const fc = n.querySelector('figcaption');
+      const cap = fc ? clean(sub(() => { for (const c of fc.childNodes) walk(c); })) : '';
+      const labels = [...n.querySelectorAll('.lf-controls [data-label]'), ...n.querySelectorAll('.lf-plots [data-label]')].map(e => e.dataset.label);
+      nl(); buf += '[interactive figure: ' + (cap || '(no caption)') + '; controls: ' + (labels.join(', ') || 'none') + ']'; nl();
+      return;
+    }
     if (tag === 'FIGCAPTION' && images) return;   // its text stands in the FIGURE line
     if (tag === 'svg' || tag === 'IMG') {
       if (tag === 'svg' && !isFigSvg(n)) return;

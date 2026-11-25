@@ -8,6 +8,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
+import vm from 'node:vm';
 const require = createRequire(import.meta.url);
 const katex = require('katex');
 import * as breaks from './breaks.mjs';
@@ -58,6 +59,29 @@ body = body.replace(/<img([^>]*?) src="([^"]+)"/g, (m, pre, src) => {
   return `<img${pre}${extra} src="data:${mime};base64,${fs.readFileSync(f).toString('base64')}"`;
 });
 
+// Interactive figures (layers.lua, livefig.js): each figure is followed by a placeholder script
+// naming its file. The file (path relative to the .md) replaces the placeholder, as the body of a
+// function that receives the figure's host element and the library: LiveFig.run(id, (host, L) => ...).
+// A missing file or a syntax error stops the build with the file's name. A literal colour in a
+// script is a warning: figures use theme colours only (STYLE.md, "Interactive figures").
+const liveRe = /<script type="text\/x-livefig" data-fig="([^"]*)" data-src="([^"]*)"><\/script>/g;
+let nLive = 0;
+body = body.replace(liveRe, (m, fig, src) => {
+  nLive++;
+  fig = unesc(fig); src = unesc(src);
+  const f = path.resolve(path.dirname(md), src);
+  if (!fs.existsSync(f)) throw new Error('interactive figure #' + fig + ': script not found: ' + src);
+  const code = fs.readFileSync(f, 'utf8');
+  // (the wrapper's start shares the file's first line, so that line numbers in errors match the file)
+  const wrapped = 'LiveFig.run(' + JSON.stringify(fig) + ', function (host, L) { ' + code + '\n});';
+  try { new vm.Script(wrapped, { filename: f }); }
+  catch (e) { throw new Error('interactive figure #' + fig + ', ' + src + ': ' + e.message + ' (' + (e.stack || '').split('\n')[0] + ')'); }
+  const bare = code.replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:])\/\/.*$/gm, '$1');
+  if (/#[0-9a-fA-F]{3,8}\b|\b(rgba?|hsla?)\(/.test(bare)) console.warn('warning: ' + src + ' has a literal colour; use theme colours (a to f, fg, muted, rule, bg)');
+  // "</script" or "<!--" inside the code would end or confuse the script element
+  return '<script>' + wrapped.replace(/<\/script/gi, '<\\/script').replace(/<!--/g, '<\\!--') + '</script>';
+});
+
 // KaTeX CSS with woff2 fonts inlined, other formats dropped
 const kdir = path.dirname(require.resolve('katex/dist/katex.min.css'));
 let kcss = fs.readFileSync(path.join(kdir, 'katex.min.css'), 'utf8');
@@ -103,22 +127,33 @@ table{border-collapse:collapse;font-size:.88em;margin:.8em 0;display:block;overf
 .katex-display{margin:.7em 0;overflow-x:auto;overflow-y:hidden;padding:2px 0}
 .katex-display>.katex{font-size:1.02em}
 ${breaks.css}`;
+// Series colours of interactive figures, six slots a to f with a translucent fill each; only on
+// pages that have interactive figures (other pages stay byte for byte as they were). A theme
+// overrides them (themes/fsu.css). Chosen to read on white and on the dark grey.
+const liveCss = `
+:root{--c-a:#1f5fbf;--c-a-fill:rgba(31,95,191,.16);--c-b:#c8580f;--c-b-fill:rgba(200,88,15,.16);--c-c:#1d8a4a;--c-c-fill:rgba(29,138,74,.16);--c-d:#8b3fc4;--c-d-fill:rgba(139,63,196,.15);--c-e:#c22a5c;--c-e-fill:rgba(194,42,92,.14);--c-f:#9a7400;--c-f-fill:rgba(154,116,0,.17)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--c-a:#74aef2;--c-a-fill:rgba(116,174,242,.24);--c-b:#f29a55;--c-b-fill:rgba(242,154,85,.22);--c-c:#64cf8c;--c-c-fill:rgba(100,207,140,.2);--c-d:#c49cf2;--c-d-fill:rgba(196,156,242,.24);--c-e:#f27fa6;--c-e-fill:rgba(242,127,166,.22);--c-f:#e2c35a;--c-f-fill:rgba(226,195,90,.2)}}
+:root[data-theme="dark"]{--c-a:#74aef2;--c-a-fill:rgba(116,174,242,.24);--c-b:#f29a55;--c-b-fill:rgba(242,154,85,.22);--c-c:#64cf8c;--c-c-fill:rgba(100,207,140,.2);--c-d:#c49cf2;--c-d-fill:rgba(196,156,242,.24);--c-e:#f27fa6;--c-e-fill:rgba(242,127,166,.22);--c-f:#e2c35a;--c-f-fill:rgba(226,195,90,.2)}`;
 // Optional colour theme: `theme: <name>` in the YAML header adds themes/<name>.css after layers.css
 const yaml = fs.readFileSync(md, 'utf8').match(/^---\n([\s\S]*?)\n---/);
 const themeName = yaml && (yaml[1].match(/^theme:\s*"?([\w-]+)"?\s*$/m) || [])[1];
 const themeFile = themeName && path.join(here, 'themes', themeName + '.css');
 if (themeName && !fs.existsSync(themeFile)) throw new Error('unknown theme: ' + themeName);
+// a theme's block for interactive figures ("/* live figures" to "/* end live figures */") is kept
+// only on pages that have them
+let themeCss = themeFile ? fs.readFileSync(themeFile, 'utf8') : '';
+if (!nLive) themeCss = themeCss.replace(/\/\* live figures[\s\S]*?\/\* end live figures \*\/\n?/g, '');
 const h1 = body.match(/<h1[^>]*>([\s\S]*?)<\/h1>/);
 const title = h1 ? h1[1].replace(/<[^>]+>/g, '').trim() : path.basename(base);
 const html = `<!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${title}</title>
-<style>${kcss}</style><style>${css}</style>${layered ? `<style>${fs.readFileSync(path.join(here, 'layers.css'), 'utf8')}</style>` : ''}${themeFile ? `<style>${fs.readFileSync(themeFile, 'utf8')}</style>` : ''}</head>
+<style>${kcss}</style><style>${css}${nLive ? liveCss : ''}</style>${layered ? `<style>${fs.readFileSync(path.join(here, 'layers.css'), 'utf8')}</style>` : ''}${themeFile ? `<style>${themeCss}</style>` : ''}${nLive ? `<script>${fs.readFileSync(path.join(here, 'livefig.js'), 'utf8')}</script>` : ''}</head>
 <body>
 ${body}
 ${layered ? `<script>${fs.readFileSync(path.join(here, 'layers.js'), 'utf8')}</script>` : ''}
 <script>${breaks.script}</script>
 </body></html>`;
 fs.writeFileSync(base + '.html', html);
-console.log(path.basename(base) + '.html:', nMath, 'formulas');
+console.log(path.basename(base) + '.html:', nMath, 'formulas' + (nLive ? ', ' + nLive + ' interactive figure' + (nLive > 1 ? 's' : '') : ''));

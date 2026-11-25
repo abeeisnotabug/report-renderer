@@ -413,6 +413,35 @@ the layers the reader opens on demand.
   apart by hue ("orange"), by shape ("diamonds") or as "grey", never by "black" or "white",
   which swap in dark mode.
 
+### Interactive figures
+
+- **When.** An R plot where the construction is the point: the figure reproduces the maths with
+  code the reader knows, and the code sits folded under it. An interactive figure where a
+  parameter or a choice is the point: a slider that changes a parameter, a switch that shows or
+  hides a layer, a point that is dragged, while the picture and its numbers follow (RMB,
+  2026-11-25). One question per figure; two or three controls, not ten.
+- **Markup.** `::: {.live src="live-<id>.js" #fig-<id>}` with the caption inside; the script is
+  a file next to the report. How a script is written (the API, an example, the labels): the
+  comment at the top of `livefig.js`; the markup also at the top of `layers.lua`.
+- **"How it is computed".** Every interactive figure is followed by a closed fold
+  `::: {.fold summary="How it is computed"}`: in words and formulas, which draws (how many, from
+  which distribution), which formula each mark shows, and what the numbers under the plot are.
+  The reader can check the figure without reading its code.
+- **Caption** as for every figure (E2), plus the controls in order ("move $H$ with the slider,
+  drag $s$ and $t$"). It names marks by what they are ("the shaded area", "the dashed line") or
+  by the legend, never by hue: the hues differ between themes.
+- **Colours** only by the theme's names (six series colours a to f with their fills, the text
+  colour, muted, rule, background); never a literal colour. The figure then follows the theme and
+  dark mode by itself.
+- **Size.** The figure fills the column (361 px on a phone) and keeps each panel's aspect; text
+  is at least 13 px. Labels short: about 35 characters fit across a phone.
+- **Labels** take a small part of TeX between dollars (italic letters, sub- and superscripts,
+  Greek, relations); heavier notation goes into the caption, which KaTeX typesets.
+- **Seeds.** Every random number comes from a fixed seed, so the figure is the same at every
+  load and a slider changes only what it controls.
+- **Check.** `phone-check.js` moves every control to its ends in light and dark mode and must
+  report no problems; without scripts and in print the figure shows its caption and a note.
+
 ## Display formulas
 
 - **Write every display formula on one line** in the source. Never break one by hand or because it

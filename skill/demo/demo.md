@@ -184,6 +184,16 @@ $$B=[\text{model}].$$
 
 ![**Figure 1.** [The claim, in the first sentence.] [Walk through the parts in order, repeating the notation.]](fig-demo.svg)
 
+[An interactive figure, where a parameter or a choice is the point (STYLE.md, "Interactive figures"): the area under the density up to $a$ is $P(X \le a)$, and the share of the draws below $a$ comes close to it (Figure 2).]
+
+::: {.live src="live-demo.js" #fig-demo-live}
+**Figure 2.** The area under the density of $X \sim N(0, \sigma^2)$ to the left of $a$ is $P(X \le a)$; the share of 400 draws of $X$ that fall below $a$ is close to it. The shaded area is $P(X \le a)$, the curve the density, the bars a histogram of the draws (scaled to area 1). Move $\sigma$ with the slider, drag the point $a$ along the axis, and switch the histogram off and on; the line under the plot gives both numbers.
+:::
+
+::: {.fold summary="How it is computed"}
+The draws are 400 standard normal numbers $z_1, \dots, z_{400}$ with a fixed seed, made once; the figure shows $x_i = \sigma z_i$, so the slider rescales the same draws. The curve is the density $\varphi_\sigma(x) = \frac{1}{\sigma\sqrt{2\pi}} e^{-x^2/(2\sigma^2)}$, and the shaded area and the first number are $P(X \le a) = \Phi(a/\sigma)$. The second number is $\#\{i : \sigma z_i \le a\}/400$.
+:::
+
 ## E. Device: a side trip {#sec-e .fold .side}
 
 ::: gist
