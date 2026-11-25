@@ -32,6 +32,7 @@ git clone https://github.com/abeeisnotabug/report-renderer ~/Documents/Works/rep
 | `tikz2svg.sh` | Turns a TikZ figure (`fig.tex`, a standalone document) into `fig.svg` next to it, with the text as outlines: `tikz2svg.sh fig.tex`. Needs latex and dvisvgm. |
 | `layers.lua` | Pandoc filter: folding sections and items, links, "Uses:" lines, routes pages. Markup described at its top. |
 | `layers.css`, `layers.js` | Style and script of layered pages. |
+| `themes/` | Optional colour themes: `theme: <name>` in a report's YAML header adds `themes/<name>.css` after the other styles. `fsu.css`: the talk kit's FSU colours, light and dark (a test, 2026-11-25). |
 | `skill/paper-companion.md`, `skill/topic-introduction.md`, `skill/lecture-companion.md` | What differs for each of the three types of report; `STYLE.md` holds for all. |
 | `skill/starter/`, `skill/demo/` | For every type: an empty report to copy (`report.Rmd`: header, Notation, final section), and a page `demo.md` showing each teaching device of `STYLE.md` once, with placeholders (markup only, not a model for structure). |
 | `phone-check.js` | Opens a rendered page in WebKit at 393 px with every fold open and lists page width, scrolling formulas, dead anchors and cross-page links: `node phone-check.js /abs/path/report.html`. Needs Playwright (Homebrew's global npm). |

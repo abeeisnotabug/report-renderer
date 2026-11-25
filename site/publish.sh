@@ -33,8 +33,8 @@ cp "$stoch/companion/22-23-stoch3-crash-course.html" "$stage/stochastik/stochast
 for page in ch1-gaussian-processes-GPT ch1-gaussian-processes-Claude; do
   cp "$stoch/25-WS-Stoch3/companion/$page.html" "$stage/stochastik/stochastik3/$page.html"
 done
-# preview of Claude's page with need lines and punches (work folder, not yet the page itself)
-cp "$stoch/25-WS-Stoch3/companion/.work-claude/preview/ch1-preview.html" "$stage/stochastik/stochastik3/ch1-preview-need-punch.html"
+# theme test: Claude's page rendered with `theme: fsu` (themes/fsu.css)
+cp "$stoch/25-WS-Stoch3/companion/ch1-gaussian-processes-Claude-fsu.html" "$stage/stochastik/stochastik3/ch1-gaussian-processes-Claude-fsu.html"
 
 # CCFA and LST-R: the topic introduction -> ccfa/cc-in-lstr.html, the talk for TK ->
 # ccfa/cc-lstr-setup-talk.html, the rebuilt talk (version 3) -> ccfa/cc-lstr-talk.html

@@ -103,13 +103,18 @@ table{border-collapse:collapse;font-size:.88em;margin:.8em 0;display:block;overf
 .katex-display{margin:.7em 0;overflow-x:auto;overflow-y:hidden;padding:2px 0}
 .katex-display>.katex{font-size:1.02em}
 ${breaks.css}`;
+// Optional colour theme: `theme: <name>` in the YAML header adds themes/<name>.css after layers.css
+const yaml = fs.readFileSync(md, 'utf8').match(/^---\n([\s\S]*?)\n---/);
+const themeName = yaml && (yaml[1].match(/^theme:\s*"?([\w-]+)"?\s*$/m) || [])[1];
+const themeFile = themeName && path.join(here, 'themes', themeName + '.css');
+if (themeName && !fs.existsSync(themeFile)) throw new Error('unknown theme: ' + themeName);
 const h1 = body.match(/<h1[^>]*>([\s\S]*?)<\/h1>/);
 const title = h1 ? h1[1].replace(/<[^>]+>/g, '').trim() : path.basename(base);
 const html = `<!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${title}</title>
-<style>${kcss}</style><style>${css}</style>${layered ? `<style>${fs.readFileSync(path.join(here, 'layers.css'), 'utf8')}</style>` : ''}</head>
+<style>${kcss}</style><style>${css}</style>${layered ? `<style>${fs.readFileSync(path.join(here, 'layers.css'), 'utf8')}</style>` : ''}${themeFile ? `<style>${fs.readFileSync(themeFile, 'utf8')}</style>` : ''}</head>
 <body>
 ${body}
 ${layered ? `<script>${fs.readFileSync(path.join(here, 'layers.js'), 'utf8')}</script>` : ''}

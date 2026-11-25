@@ -76,7 +76,7 @@ Perkowski's Stochastik II, winter 2026/27: one page per finished chapter of the 
 
 - [Chapter 1 companion - GPT](stochastik/stochastik3/ch1-gaussian-processes-GPT.html): Gaussian processes, pre-Brownian motion and white noise (Galeati, 2024/25).
 - [Chapter 1 companion - Claude](stochastik/stochastik3/ch1-gaussian-processes-Claude.html): the same chapter, written independently by Claude for comparison.
-- [Chapter 1 companion - Claude, preview with need lines and punches](stochastik/stochastik3/ch1-preview-need-punch.html): the same page with a "Why here" line before each item and a punch after each statement (draft).
+- [Chapter 1 companion - Claude, theme test](stochastik/stochastik3/ch1-gaussian-processes-Claude-fsu.html): the same page in the colours of the FSU talk theme (light and dark follow the phone's setting).
 - [Crash course](stochastik/stochastik3/crash-course.html): stochastic calculus without proofs,
   each result with an intuition, and the bridge to continuous-time MLTS models.
 

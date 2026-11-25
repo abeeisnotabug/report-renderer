@@ -1,0 +1,43 @@
+/* themes/fsu.css: the colour theme of the talk kit (talk/kit/theme.css), for reports.
+   Opt-in: a report's YAML header says `theme: fsu`; render.mjs then adds this file after
+   layers.css, so its values win. Colours only: fonts stay as they are. Values are copied from
+   talk/kit/theme.css (fixed palette, change only when RMB asks).
+
+   Mapping (report token <- talk token):
+     --bg <- --bg, --fg <- --dark, --muted <- --c-muted-text (the talk's greyer inactive text,
+     for Source, Uses, captions), --rule <- --rule, --quote-bg <- --card-bg, --quote-bar <- --light,
+     --code-bg <- --panel-bg, --accent <- --accent (FSU pink), --link <- slot e.
+   Kind labels take the palette slots nearest the report's own hues:
+     definition <- d (teal-green), result <- a (magenta), example and remark <- e (blue),
+     exercise <- f (amber), overview <- b (sky).
+   Solution folds: slot c (FSU orange), the reddest colour of the palette, kept apart from the
+   pink accent. R code colours: fn e, string d, number c, keyword a, attribute f.
+   Dark figures: the report inverts figures in dark mode, which leaves near-black boxes on the
+   dark blue; mix-blend-mode screen lets the blue show through the dark parts. */
+
+:root {
+  --bg: #FFFFFF; --fg: #012F5D; --muted: #5F6987; --rule: #BFDDEB;
+  --quote-bg: #EEF7FB; --quote-bar: #3DA3CC; --code-bg: #E3F1F8; --link: #3326FF;
+  --accent: #CD0067; --peek-shadow: rgba(1, 47, 93, .18);
+  --k-def: #00AC8A; --k-res: #B800A3; --k-ex: #3326FF; --k-exer: #DA8A00; --k-ov: #3DA3CC;
+  --sol: #E64D00;
+  --c-fn: #3326FF; --c-str: #00AC8A; --c-num: #E64D00; --c-kw: #B800A3; --c-attr: #DA8A00; --c-com: #5F6987;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #061D36; --fg: #E8EEF6; --muted: #93A1BD; --rule: #2B4A6E;
+  --quote-bg: #0E2B4A; --quote-bar: #4FA8E8; --code-bg: #0E2B4A; --link: #5CE1E6;
+  --accent: #FF7AB8; --peek-shadow: rgba(0, 0, 0, .6);
+  --k-def: #3FD37E; --k-res: #FF7AB8; --k-ex: #5CE1E6; --k-exer: #FFE066; --k-ov: #4FA8E8;
+  --sol: #FF9A45;
+  --c-fn: #5CE1E6; --c-str: #3FD37E; --c-num: #FF9A45; --c-kw: #FF7AB8; --c-attr: #FFE066; --c-com: #93A1BD;
+} }
+:root[data-theme="dark"] {
+  --bg: #061D36; --fg: #E8EEF6; --muted: #93A1BD; --rule: #2B4A6E;
+  --quote-bg: #0E2B4A; --quote-bar: #4FA8E8; --code-bg: #0E2B4A; --link: #5CE1E6;
+  --accent: #FF7AB8; --peek-shadow: rgba(0, 0, 0, .6);
+  --k-def: #3FD37E; --k-res: #FF7AB8; --k-ex: #5CE1E6; --k-exer: #FFE066; --k-ov: #4FA8E8;
+  --sol: #FF9A45;
+  --c-fn: #5CE1E6; --c-str: #3FD37E; --c-num: #FF9A45; --c-kw: #FF7AB8; --c-attr: #FFE066; --c-com: #93A1BD;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) figure img:is(.tikz, .plot) { mix-blend-mode: screen; } }
+:root[data-theme="dark"] figure img:is(.tikz, .plot) { mix-blend-mode: screen; }
