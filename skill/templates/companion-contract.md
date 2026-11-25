@@ -68,7 +68,9 @@ or `[p. N]` (the writer copies it from there; do not copy statements into the co
 status line in full ([lecture: Lc5; for *Reminder* you have compared with the source's proof]
 [paper: Pc4 and Pc5, with the verb from Pc5's closed list]); and one or two lines on what the
 Steps fold must do, which named folds it gets, and which checks (F4).
-[lecture: Exercises (Lc6) go where they fit in the lecture's order, with where the task stands,
+[lecture: Running text of the notes is not an item (Lc1a): give the writer its place and the
+displays to explain, in order; only a claim that needs its own proof becomes a page item.
+Exercises (Lc6) go where they fit in the lecture's order, with where the task stands,
 the property the Hint names, and the solution's source: <RMB's decision for this run on
 solutions>.]
 [paper: For each equation of the paper the page prints (Pc3): where it stands, and the

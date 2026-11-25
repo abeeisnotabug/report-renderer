@@ -10,6 +10,15 @@ covered in class. These statements are nodes of the outline by definition (H3); 
 steps, figures, examples and overviews are added to them. A statement that goes beyond the
 lecture is marked **(beyond the lecture)**.
 
+Lc1a. **Items are copied, running text is explained** (RMB, 2026-11-25). The notes' numbered
+items (definitions, results, examples, remarks with a number) and boxed exercises are copied
+verbatim. Their running text is not: the page follows its flow in its own words, keeps the notes'
+displays, explains each display right after it (its steps directly under it, not after the whole
+passage), and quotes a sentence only where the wording matters. Running text never becomes a page
+item just to be covered, and it is never labelled with a kind word the notes do not give it. A
+claim made in running text still appears (Lc1), in the prose or, if it needs a proof, as a page
+item stating just that claim.
+
 Lc2. **Labels.** The lecture's numbers are the primary labels ("Lemma 3.38"). A lecture item's
 title is "**Theorem 2.3. [core] Descriptive title.**", without repeating the kind word. The
 page's own items get section letters and a kind word ("**M1. [core] Remark: ...**"). How

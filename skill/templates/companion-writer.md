@@ -37,7 +37,8 @@ top of `~/Documents/Works/report-renderer/layers.lua` (up to the first function)
 
 R2. From the transcripts in `sources/transcripts/`: only the passages your part needs, as the contract
 places them (find them with Grep on the label or the `[p. N]` marker, then Read with offset and
-limit). Statements are copied from there verbatim. Read no PDF and no image: a passage that looks
+limit). Statements of numbered items and boxed exercises are copied from there verbatim; running
+text is explained in the page's own words, display by display (lecture-companion.md, Lc1a). Read no PDF and no image: a passage that looks
 wrong in the transcript is reported in your notes, not checked on the page.
 [lecture: For an exercise whose solution follows a source the contract names, that file, only
 the exercise's part.]
