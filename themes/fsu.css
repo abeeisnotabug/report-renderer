@@ -10,8 +10,7 @@
    Kind labels take the palette slots nearest the report's own hues:
      definition <- d (teal-green), result <- a (magenta), example and remark <- e (blue),
      exercise <- f (amber), overview <- b (sky).
-   Solution folds: slot c (FSU orange), the reddest colour of the palette, kept apart from the
-   pink accent. R code colours: fn e, string d, number c, keyword a, attribute f.
+   Solution folds: red, slot c mixed with slot a (see the fold families below). R code colours: fn e, string d, number c, keyword a, attribute f.
    Dark figures: the report inverts figures in dark mode, which leaves near-black boxes on the
    dark blue; mix-blend-mode screen lets the blue show through the dark parts. */
 
@@ -20,7 +19,7 @@
   --quote-bg: #EEF7FB; --quote-bar: #3DA3CC; --code-bg: #E3F1F8; --link: #3326FF;
   --accent: #CD0067; --peek-shadow: rgba(1, 47, 93, .18);
   --k-def: #00AC8A; --k-res: #B800A3; --k-ex: #3326FF; --k-exer: #DA8A00; --k-ov: #3DA3CC;
-  --sol: #E64D00;
+  --sol: #CF2652;
   --c-fn: #3326FF; --c-str: #00AC8A; --c-num: #E64D00; --c-kw: #B800A3; --c-attr: #DA8A00; --c-com: #5F6987;
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
@@ -28,7 +27,7 @@
   --quote-bg: #0E2B4A; --quote-bar: #4FA8E8; --code-bg: #0E2B4A; --link: #5CE1E6;
   --accent: #FF7AB8; --peek-shadow: rgba(0, 0, 0, .6);
   --k-def: #3FD37E; --k-res: #FF7AB8; --k-ex: #5CE1E6; --k-exer: #FFE066; --k-ov: #4FA8E8;
-  --sol: #FF9A45;
+  --sol: #FF8A7E;
   --c-fn: #5CE1E6; --c-str: #3FD37E; --c-num: #FF9A45; --c-kw: #FF7AB8; --c-attr: #FFE066; --c-com: #93A1BD;
 } }
 :root[data-theme="dark"] {
@@ -36,36 +35,45 @@
   --quote-bg: #0E2B4A; --quote-bar: #4FA8E8; --code-bg: #0E2B4A; --link: #5CE1E6;
   --accent: #FF7AB8; --peek-shadow: rgba(0, 0, 0, .6);
   --k-def: #3FD37E; --k-res: #FF7AB8; --k-ex: #5CE1E6; --k-exer: #FFE066; --k-ov: #4FA8E8;
-  --sol: #FF9A45;
+  --sol: #FF8A7E;
   --c-fn: #5CE1E6; --c-str: #3FD37E; --c-num: #FF9A45; --c-kw: #FF7AB8; --c-attr: #FFE066; --c-com: #93A1BD;
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) figure img:is(.tikz, .plot) { mix-blend-mode: screen; } }
 :root[data-theme="dark"] figure img:is(.tikz, .plot) { mix-blend-mode: screen; }
 
-/* Fold colour families (2026-11-25). One colour per kind of help a fold gives; the summary
-   carries it, and an open fold its left border too.
-     understanding  slot e   Why here, Why it holds / What it demands / What it shows,
-                             Intuition, In words, Where it is used, and other named folds
-     proof          slot d   Steps, the Why folds inside them, Check folds
-     exercise help  slot f   Hint, Key idea (the colour of the exercise labels)
-     solution       slot c   Solution (the reddest colour of the palette)
-     slips          slot a   Slip in the notes / in the sheet
-     reference      muted    Source, Uses, R code
-   Light mode: slots d and f are light on white (contrast about 2.8:1); dark mode is clear. */
-:root {
-  --f-und: #3326FF; --f-proof: #00AC8A; --f-help: #DA8A00; --f-slip: #B800A3;
-}
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
-  --f-und: #5CE1E6; --f-proof: #3FD37E; --f-help: #FFE066; --f-slip: #FF7AB8;
-} }
-:root[data-theme="dark"] {
-  --f-und: #5CE1E6; --f-proof: #3FD37E; --f-help: #FFE066; --f-slip: #FF7AB8;
-}
-details.fold { --f: var(--f-und); }
-details.fold.steps, details.fold.check, details.why { --f: var(--f-proof); }
-details.fold.hint, details.fold.key { --f: var(--f-help); }
-details.fold.solution { --f: var(--sol); }
-details.fold.slip { --f: var(--f-slip); }
-details.fold.source, details.fold.uses, details.rcode { --f: var(--muted); }
+/* Fold colour families (2026-11-25, second version). Each fold type has its own colour; similar
+   types share a hue. Hues are the talk's six slots; the members of a family are shades, the slot
+   mixed with the text colour (darker on white, paler on the dark blue), or for the reasons
+   family, the slot mixed with a neighbouring slot. Values computed once and written out here.
+     context      slot b    Why here; Where it is used (deeper)
+     reasons      slot e    Why it holds; What it demands (light: toward d, dark: toward b);
+                            What it shows (light: toward a, dark: paler)
+     meaning      slot a    Intuition; In words; other named folds
+     proof        slot d    Steps; Why (the reason for one move); Check
+     exercise     f to red  Hint (amber); Key idea (amber toward c); Solution (c mixed with a: red)
+     slips        slot c    Slip in the notes / in the sheet
+     reference    greys     Source; Uses; R code
+   Light-mode contrast on white: at least 3.8:1. */
+:root { --fc-need: #318CB6; --fc-where: #1C638F; --fc-p-why: #3326FF; --fc-p-demands: #1660B5; --fc-p-shows: #7613D1; --fc-intuition: #B800A3; --fc-words: #810E8E; --fc-named: #531A7D; --fc-steps: #009381; --fc-why: #007A78; --fc-check: #016470; --fc-hint: #AF7813; --fc-key: #BE680E; --fc-solution: #CF2652; --fc-slip: #E64D00; --fc-source: #5F6987; --fc-uses: #7A84A0; --fc-rcode: #334F73; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --fc-need: #4FA8E8; --fc-where: #8CC4EE; --fc-p-why: #5CE1E6; --fc-p-demands: #56C4E7; --fc-p-shows: #A2E8EE; --fc-intuition: #FF7AB8; --fc-words: #F7A3CE; --fc-named: #F1C0DD; --fc-steps: #3FD37E; --fc-why: #7ADCA8; --fc-check: #A4E3C6; --fc-hint: #FFE066; --fc-key: #FFC459; --fc-solution: #FF8A7E; --fc-slip: #FF9A45; --fc-source: #93A1BD; --fc-uses: #A8BCD4; --fc-rcode: #7B88A6; } }
+:root[data-theme="dark"] { --fc-need: #4FA8E8; --fc-where: #8CC4EE; --fc-p-why: #5CE1E6; --fc-p-demands: #56C4E7; --fc-p-shows: #A2E8EE; --fc-intuition: #FF7AB8; --fc-words: #F7A3CE; --fc-named: #F1C0DD; --fc-steps: #3FD37E; --fc-why: #7ADCA8; --fc-check: #A4E3C6; --fc-hint: #FFE066; --fc-key: #FFC459; --fc-solution: #FF8A7E; --fc-slip: #FF9A45; --fc-source: #93A1BD; --fc-uses: #A8BCD4; --fc-rcode: #7B88A6; }
+details.fold { --f: var(--fc-named); }
+details.fold.need { --f: var(--fc-need); }
+details.fold.where { --f: var(--fc-where); }
+details.fold.punch-why { --f: var(--fc-p-why); }
+details.fold.punch-demands { --f: var(--fc-p-demands); }
+details.fold.punch-shows { --f: var(--fc-p-shows); }
+details.fold.intuition { --f: var(--fc-intuition); }
+details.fold.words { --f: var(--fc-words); }
+details.fold.steps { --f: var(--fc-steps); }
+details.why { --f: var(--fc-why); }
+details.fold.check { --f: var(--fc-check); }
+details.fold.hint { --f: var(--fc-hint); }
+details.fold.key { --f: var(--fc-key); }
+details.fold.solution { --f: var(--fc-solution); }
+details.fold.slip { --f: var(--fc-slip); }
+details.fold.source { --f: var(--fc-source); }
+details.fold.uses { --f: var(--fc-uses); }
+details.rcode { --f: var(--fc-rcode); }
 details.fold > summary, details.why > summary, details.rcode > summary { color: var(--f); }
 details.fold[open], details.why[open] { border-left-color: var(--f); }

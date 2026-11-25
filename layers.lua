@@ -389,6 +389,9 @@ local function fold_divs(blk)
         if cls == 'fold' and (label:match('^Hint') or label:match('^Hinweis')) then cls = 'fold hint' end
         if cls == 'fold' and label:match('^Slip') then cls = 'fold slip' end
         if cls == 'fold' and label:match('^Check') then cls = 'fold check' end
+        if cls == 'fold' and label:match('^In words') then cls = 'fold words' end
+        if cls == 'fold' and label:match('^Where it is used') then cls = 'fold where' end
+        if cls == 'fold' and label == 'Why' then cls = 'fold why' end
         local out = List { raw('<details class="' .. cls .. '"><summary>' .. esc(label) .. '</summary>') }
         out:extend(d.content)
         out:insert(raw('</details>'))
