@@ -2,7 +2,9 @@
 // Headings are kept as "#" lines; each fold (details) is included, opened, between a start and an
 // end line with its title: ">>> FOLD: title" ... "<<< END FOLD: title"; formulas appear as $TeX$
 // (display formulas as $$TeX$$); numbered lists get "1. ", "2. ", ... (lists of type a, A, i, I: "a. ", "ii. ", ...); the table of contents, the
-// toolbar, scripts and styles are left out. The page itself holds no TeX (KaTeX output is HTML
+// toolbar, scripts and styles are left out. A need line ("Why here: ...") and a visible punch
+// ("Why. ...", "Demands. ...", "Shows. ...") are ordinary paragraphs in reading order; a key idea
+// punch is a fold like the others (">>> FOLD: Key idea"). The page itself holds no TeX (KaTeX output is HTML
 // only), so the TeX is taken from report.md next to report.html: pandoc is run as in render.mjs and
 // its formulas are matched, in document order, to the formulas of the page. If the .md is missing
 // or the counts differ, a warning goes to stderr and the formulas come out as KaTeX's text.

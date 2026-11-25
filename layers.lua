@@ -60,6 +60,20 @@ Markup (Pandoc fenced divs):
   ::: plain                         of the section (not inside an item). Everyday words, an
   :::                               example or analogy, almost no notation.
 
+  ::: need                          a need line, directly before an item (or a prose passage):
+  ...                               one or two sentences, why the page needs it here; visible,
+  :::                               with the label "Why here:"; belongs to the item that follows
+                                    (data-for), and is a side trip with it
+
+  ::: {.punch kind="why"}           a punch, inside an item after its statement (or after a display
+  ...                               in prose): one to three sentences. kind why / demands / shows:
+  :::                               visible, bold label "Why." / "Demands." / "Shows.", placed after
+                                    the statement and its "In words" folds, before the "Uses" fold
+                                    and the other folds. kind key (an exercise's key idea): a
+                                    closed fold "Key idea", placed before the Hint and Solution
+                                    folds. `label="..."` on either replaces the label's text
+                                    (German pages). With `::: more`, put a visible punch before it.
+
   ::: why                           inside a step: the justification, folded under "Why"
   ::: {.fold summary="Tools"}       any other folded block, with its own summary text
   ::: {#lec-3-7 .lec}               a restated lecture result (target of lecture links)
@@ -69,7 +83,7 @@ Automatic:
     become links to lecture entries that exist (missing ones are reported on stderr).
   - Each item gets a "Uses" list: the earlier items its text refers to (override with
     uses="W4 T3", or uses="none"). It is a closed fold "Uses" (class `uses`), the first of the
-    item's folds, after the whole statement (its "In words" folds belong to it), before
+    item's folds, after the whole statement (its "In words" folds and its visible punch belong to it), before
     Intuition and Steps; never between paragraphs of the statement. With `::: more` it is the first thing inside the opened item. An exercise's
     list is a "Uses:" line at the top of its folded solution instead.
   - R code blocks (and their #> output) fold under "R code".
@@ -306,9 +320,62 @@ end
 
 local has_plain = false
 
+-- "Why here:" -> Str Space Str ...; a custom label (`label="..."`) is used as written
+local function words(text)
+  local inl = List()
+  for w in text:gmatch('%S+') do
+    if #inl > 0 then inl:insert(pandoc.Space()) end
+    inl:insert(pandoc.Str(w))
+  end
+  return inl
+end
+
+-- `blocks` with `label` (an inline) and a space in front of the first paragraph; a first block
+-- that is no paragraph gets a paragraph of its own for the label
+local function labelled(blocks, label)
+  local out = List(blocks)
+  local first = out[1]
+  if first and (first.t == 'Para' or first.t == 'Plain') then
+    local inl = List { label, pandoc.Space() }
+    inl:extend(first.content)
+    out[1] = pandoc.Para(inl)
+  else
+    out:insert(1, pandoc.Para { label })
+  end
+  return out
+end
+
+local punch_label = { why = 'Why.', demands = 'Demands.', shows = 'Shows.' }
+
 local function fold_divs(blk)
   return blk:walk {
     Div = function(d)
+      -- a need line (`::: need`): why the page needs the item that follows; visible, with a label.
+      -- (done once: the label span marks a need line that is already built)
+      if d.classes:includes('need') then
+        local f = d.content[1]
+        local f1 = f and (f.t == 'Para' or f.t == 'Plain') and f.content[1]
+        if f1 and f1.t == 'Span' and f1.classes:includes('need-label') then return nil end
+        local lab = pandoc.Span(words(d.attributes.label or 'Why here:'), pandoc.Attr('', { 'need-label' }))
+        return pandoc.Div(labelled(d.content, lab), pandoc.Attr(d.identifier, { 'need' }))
+      end
+      -- a punch (`kind` is set only on the markup, never on the result, so it is built once):
+      -- why / demands / shows stay visible after the statement with a bold label; key (an
+      -- exercise's key idea) is a closed fold
+      if d.classes:includes('punch') and d.attributes.kind then
+        local kind = d.attributes.kind
+        if kind == 'key' then
+          local out = List { raw('<details class="fold sub key"><summary>'
+            .. esc(d.attributes.label or 'Key idea') .. '</summary>') }
+          out:extend(d.content)
+          out:insert(raw('</details>'))
+          return out
+        elseif punch_label[kind] then
+          local lab = pandoc.Strong(words(d.attributes.label or punch_label[kind]))
+          return pandoc.Div(labelled(d.content, lab), pandoc.Attr(d.identifier, { 'punch', 'punch-' .. kind }))
+        end
+        error('layers.lua: punch kind "' .. kind .. '" is none of why, demands, shows, key')
+      end
       -- a section's plain-words layer (L1)
       if d.classes:includes('plain') then
         has_plain = true
@@ -447,8 +514,9 @@ local function item_blocks(d, refs)
     out:insert(raw('</details>'))
   else
     -- an item with its own folds (`::: intuition`, `::: steps`, named `.fold`s after the
-    -- statement): the statement stays open, then the closed fold "Uses" (an exercise's line
-    -- opens its fold "Solution ..." instead), then the other folds
+    -- statement): the statement stays open, then its visible punch (`::: {.punch kind="why"}`),
+    -- then the closed fold "Uses" (an exercise's line opens its fold "Solution ..." instead),
+    -- then the other folds; an exercise's key idea fold comes before its Hint and Solution
     local function is_fold(b) return b.t == 'RawBlock' and b.text:match('^<details class="fold') end
     -- top-level groups of the head: a fold (opening block to its matching close) or one block
     local groups, depth, gs = {}, 0, nil
@@ -456,33 +524,63 @@ local function item_blocks(d, refs)
       local o = b.t == 'RawBlock' and b.text:match('^<details')
       local c = b.t == 'RawBlock' and b.text:match('^</details>')
       if depth == 0 then
-        if o then depth, gs = 1, i else groups[#groups + 1] = { s = i } end
+        if o then depth, gs = 1, i else groups[#groups + 1] = { s = i, e = i } end
       else
         if o then depth = depth + 1 elseif c then depth = depth - 1 end
         if depth == 0 then
-          groups[#groups + 1] = { s = gs, fold = is_fold(head[gs]),
-            inwords = head[gs].text:match('<summary>In words</summary>') ~= nil }
+          local t = head[gs].text
+          groups[#groups + 1] = { s = gs, e = i, fold = is_fold(head[gs]),
+            inwords = t:match('<summary>In words</summary>') ~= nil,
+            key = t:match('^<details class="fold sub key"') ~= nil,
+            hint = t:match('<summary>Hint') ~= nil or t:match('<summary>Hinweis') ~= nil
+              or t:match('<summary>Solution') ~= nil or t:match('<summary>Lösung') ~= nil }
         end
       end
     end
-    -- the statement ends at its first fold that is not an "In words" fold (those follow the
-    -- displays of the statement); the "Uses" fold goes there, else at the end
-    local pos = #head + 1
+    -- parts in order, without the visible punches (a Div of class `punch`, which is part of
+    -- neither the statement nor a fold) and the key idea folds, which are placed below
+    local parts, vis, keys = {}, List(), List()
     for _, g in ipairs(groups) do
-      if g.fold and not g.inwords then pos = g.s; break end
+      local b = head[g.s]
+      if g.s == g.e and b.t == 'Div' and b.classes:includes('punch') then
+        vis:insert(b)
+      elseif g.key then
+        for k = g.s, g.e do keys:insert(head[k]) end
+      else
+        parts[#parts + 1] = g
+      end
     end
+    -- the statement ends at its first fold that is not an "In words" fold (those follow the
+    -- displays of the statement); the punch and the "Uses" fold go there, else at the end
+    local pos, keypos = #parts + 1, nil
+    for k, g in ipairs(parts) do
+      if g.fold and not g.inwords then pos = k; break end
+    end
+    for k, g in ipairs(parts) do
+      if g.fold and g.hint then keypos = k; break end
+    end
+    keypos = keypos or pos
     out:insert(raw('<div class="item ' .. tag .. '" id="' .. id .. '">'))
-    for i, b in ipairs(head) do
-      if i == pos and uses_fold then out:insert(uses_fold) end
-      if is_fold(b) and not b.text:match('^<details class="fold sub') then
-        b = raw((b.text:gsub('^<details class="fold"', '<details class="fold sub"', 1)))
+    for k = 1, #parts + 1 do
+      if k == pos then
+        out:extend(vis)
+        if uses_fold then out:insert(uses_fold) end
       end
-      out:insert(b)
-      if uses_html and is_fold(b) and b.text:match('<summary>Solution') then
-        out:insert(uses_html); uses_html = nil
+      if k == keypos then out:extend(keys) end
+      local g = parts[k]
+      if g then
+        for i = g.s, g.e do
+          local b = head[i]
+          if is_fold(b) and not b.text:match('^<details class="fold sub') then
+            b = raw((b.text:gsub('^<details class="fold"', '<details class="fold sub"', 1)))
+          end
+          out:insert(b)
+          if uses_html and is_fold(b) and b.text:match('<summary>Solution') then
+            out:insert(uses_html); uses_html = nil
+          end
+        end
       end
     end
-    if pos > #head and uses_fold then out:insert(uses_fold) end
     if uses_html then out:insert(uses_html) end
     out:insert(raw('</div>'))
   end
@@ -611,7 +709,12 @@ function Pandoc(doc)
     if b.t == 'Div' and b.classes:includes('item') then
       n = n + 1
       item_index[b.identifier] = n
-      local title = stringify(b.content[1] or '')
+      -- the title is the first block that is not a punch (a punch may be written anywhere in the item)
+      local first = b.content[1]
+      for _, c in ipairs(b.content) do
+        if not (c.t == 'Div' and c.classes:includes('punch')) then first = c; break end
+      end
+      local title = stringify(first or '')
       item_label[b.identifier] = label_of(b.identifier, title)
       -- "Satz 1.9. ..." makes "Satz" a citation word on this page
       local w = title:match('^(%a+) %u?%d*%.%d+%.')
@@ -635,7 +738,8 @@ function Pandoc(doc)
         local head = List()
         for _, x in ipairs(b.content) do
           if x.t == 'Div' and (x.classes:includes('more') or x.classes:includes('intuition')
-              or x.classes:includes('steps') or x.classes:includes('fold') or x.classes:includes('why')) then
+              or x.classes:includes('steps') or x.classes:includes('fold') or x.classes:includes('why')
+              or (x.classes:includes('punch') and x.attributes.kind == 'key')) then
             break
           end
           head:insert(x)
@@ -651,7 +755,8 @@ function Pandoc(doc)
 
   -- pass 2: links, items, folds
   local blocks = List()
-  for _, b in ipairs(fold_code(doc.blocks)) do
+  local pre = fold_code(doc.blocks)
+  for bi, b in ipairs(pre) do
     if b.t == 'Div' and b.classes:includes('item') then
       local refs = List()
       local linked = linkify_block(b, b.identifier, refs)
@@ -680,7 +785,16 @@ function Pandoc(doc)
       local self = (b.t == 'Div' and b.classes:includes('lec')) and b.identifier or nil
       -- wrapped, so that a fold at the top level of a section (`::: plain`, `::: {.fold}`)
       -- folds too: a walk does not visit the block it starts from
-      blocks:extend(folded({ linkify_block(b, self, nil) }))
+      local res = folded({ linkify_block(b, self, nil) })
+      -- a need line directly before an item belongs to it: `data-for` names the item, and a
+      -- side trip's need line is a side trip too ("Core only" hides both)
+      local nxt = pre[bi + 1]
+      if b.t == 'Div' and b.classes:includes('need') and nxt and nxt.t == 'Div'
+          and nxt.classes:includes('item') and res[1] and res[1].t == 'Div' then
+        res[1].attributes['data-for'] = nxt.identifier
+        if stringify(nxt.content[1] or ''):match('%[side trip%]') then res[1].classes:insert('side') end
+      end
+      blocks:extend(res)
     end
   end
 

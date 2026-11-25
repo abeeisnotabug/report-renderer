@@ -84,7 +84,7 @@ details.sec.side>summary h2::after{content:"side trip";font-size:.6em;font-weigh
 .item{margin:.9em 0;padding:0 0 0 .7em;border-left:3px solid var(--rule)}
 .item.core{border-left-color:var(--accent)}
 details.item>summary>p:first-child,div.item>p:first-child{margin-top:.2em}
-.uses{font-size:.85em;color:var(--muted);margin:.25em 0}
+p.uses{font-size:.85em;color:var(--muted);margin:.25em 0}
 .more-hint{display:block;font-size:.82em;color:var(--link);margin:.15em 0 .35em}
 .more-hint::before{content:"▸ steps and details"}
 details.item[open]>summary .more-hint::before{content:"▾ hide steps"}
@@ -189,6 +189,16 @@ td .katex,th .katex{white-space:nowrap}
 .diagram{margin:1em 0;text-align:center}
 .diagram svg{max-width:100%;height:auto}
 .diagram .cap{font-size:.9em;color:var(--muted);text-align:left}
+
+/* Need lines and punches (2026-11-25): a need line stands before its item, quiet, in the item's
+   indentation; a visible punch follows the statement; "Key idea" is an ordinary fold (details.sub) */
+.need{margin:.9em 0 -.55em;padding:0 0 0 calc(.7em + 3px);font-size:.88em;color:var(--muted)}
+.need p{margin:.2em 0}
+.need-label{font-weight:600;letter-spacing:.02em;margin-right:.1em}
+.punch{margin:.5em 0}
+.punch p{margin:.3em 0}
+.punch>p:first-child>strong:first-child{color:var(--accent)}
+@media (max-width:560px){.need{padding-left:calc(.35em + 2px)}}
 </style></head>
 <body>
 <div id="layer-toolbar"><a class="tb" href="#toc" id="tb-toc">Contents</a><button class="tb" id="tb-open">Open all</button><button class="tb" id="tb-close">Close all</button><label class="tb"><input type="checkbox" id="tb-core"> Core only</label></div>
@@ -248,6 +258,9 @@ Build: ~/Documents/Works/report-renderer/render.sh demo.md -->
 <details class="fold sub"><summary>In words</summary>
 <p>[The display said as a sentence, with every object named.]</p>
 </details>
+<div class="punch punch-demands">
+<p><strong>Demands.</strong> [What the definition demands beyond the obvious weaker notion, in one to three sentences.]</p>
+</div>
 <details class="fold sub intuition"><summary>Intuition</summary>
 <p>[What the object means, where the meaning fails.]</p>
 </details>
@@ -262,13 +275,15 @@ Build: ~/Documents/Works/report-renderer/render.sh demo.md -->
 </summary>
 <p><strong>So far.</strong> [What the text has shown that this section needs, with the formulas it uses written out (M2):] Section A defined <span class="katex"><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal">A</span></span></span></span> as [the definition, written out] (<a href="#A1" class="xref">A1</a>). Symbols: <a href="#sec-notation">Notation</a>.</p>
 <p>[What this section adds.]</p>
+<div class="need" data-for="B1">
+<p><span class="need-label">Why here:</span> [One or two sentences: why this section needs <a href="#B1" class="xref">B1</a> at this point.]</p>
+</div>
 <div class="item core k-res" id="B1">
 <p><strong>B1. [core] Result: [title].</strong> [Assumption, with its reason.] Then</p>
 <p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="katex-seg"><span class="katex-base"><span class="katex-strut" style="height:2.7em;vertical-align:-1.1em;"></span><span class="mord"><span class="mtable"><span class="col-align-r"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.6em;"><span style="top:-3.76em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">A</span></span></span><span style="top:-2.26em;"><span class="pstrut" style="height:3em;"></span><span class="mord"></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.1em;"><span></span></span></span></span></span><span class="col-align-l"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.6em;"><span style="top:-3.76em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span></span></span><span style="top:-2.26em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord mathnormal" style="margin-right:0.0715em;">C</span><span class="mord">.</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.1em;"><span></span></span></span></span></span></span></span></span></span></span></span></span></p>
 <details class="why"><summary>Why</summary>
 <p>[One sentence per move, for moves the reader supplies at once (F2):] [reason for the first move] (<a href="#lec-K-1" class="xref lecref">Lemma K.1</a>). [Reason for the second move.]</p>
 </details>
-<p class="uses">Uses: <a class="xref" href="#A1">A1</a>, <a class="xref" href="#lec-K-1">Lemma K.1</a></p>
 <details class="fold sub"><summary>In words</summary>
 <p>[The result said as a sentence.]</p>
 </details>
@@ -277,6 +292,10 @@ Build: ~/Documents/Works/report-renderer/render.sh demo.md -->
 <li>[Claim (a), and the part of the formula it reads off.]</li>
 <li>[Claim (b), and the part of the formula it reads off.]</li>
 </ol>
+<div class="punch punch-why">
+<p><strong>Why.</strong> [Why the result holds, in one to three sentences.]</p>
+</div>
+<details class="fold sub uses"><summary>Uses</summary><p><a class="xref" href="#A1">A1</a>, <a class="xref" href="#lec-K-1">Lemma K.1</a></p></details>
 <details class="fold sub steps"><summary>Steps</summary>
 <ol type="1">
 <li>[A step that uses something, with what it uses: the equation written out, the label after it as a link, e.g. “inserting [the equation of <a href="#A1" class="xref">A1</a>] (<a href="#A1" class="xref">A1</a>)”.]</li>
@@ -330,7 +349,7 @@ Build: ~/Documents/Works/report-renderer/render.sh demo.md -->
 </div>
 <div class="item core k-ex" id="C2">
 <p><strong>C2. [core] Example: [variant name].</strong> As <a href="#C1" class="xref">C1</a>, except that [the one property that changes, and only that].</p>
-<p class="uses">Uses: <a class="xref" href="#C1">C1</a></p>
+<details class="fold sub uses"><summary>Uses</summary><p><a class="xref" href="#C1">C1</a></p></details>
 </div>
 <table>
 <thead>
@@ -460,6 +479,7 @@ Build: ~/Documents/Works/report-renderer/render.sh demo.md -->
     for (const n of nodes) {
       const c = n.cloneNode(true);
       if (c.nodeType === 1) {
+        // (the "Uses" fold is a details.sub; an exercise's "Uses:" line is a p.uses)
         if (c.matches('.uses, .more-hint, details.sub')) continue;
         c.removeAttribute('id');
         c.querySelectorAll('[id]').forEach(x => x.removeAttribute('id'));

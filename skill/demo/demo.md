@@ -46,6 +46,10 @@ $$A:=[\text{definition}].$$
 [The display said as a sentence, with every object named.]
 :::
 
+::: {.punch kind="demands"}
+[What the definition demands beyond the obvious weaker notion, in one to three sentences.]
+:::
+
 ::: intuition
 [What the object means, where the meaning fails.]
 :::
@@ -62,6 +66,10 @@ $$A:=[\text{definition}].$$
 **So far.** [What the text has shown that this section needs, with the formulas it uses written out (M2):] Section A defined $A$ as [the definition, written out] (A1). Symbols: [Notation](#sec-notation).
 
 [What this section adds.]
+
+::: need
+[One or two sentences: why this section needs B1 at this point.]
+:::
 
 ::: {#B1 .item}
 **B1. [core] Result: [title].** [Assumption, with its reason.] Then
@@ -80,6 +88,10 @@ Two consequences follow, each read off this formula (F7).
 
 a. [Claim (a), and the part of the formula it reads off.]
 b. [Claim (b), and the part of the formula it reads off.]
+
+::: {.punch kind="why"}
+[Why the result holds, in one to three sentences.]
+:::
 
 ::: steps
 1. [A step that uses something, with what it uses: the equation written out, the label after it as a link, e.g. "inserting [the equation of A1] (A1)".]

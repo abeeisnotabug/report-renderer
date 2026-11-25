@@ -19,6 +19,14 @@ item just to be covered, and it is never labelled with a kind word the notes do 
 claim made in running text still appears (Lc1), in the prose or, if it needs a proof, as a page
 item stating just that claim.
 
+Lc1b. **Need lines and punches.** An item may carry a need line before it (`::: need`: why the
+page needs it at this point) and a punch after its statement (`::: {.punch kind="why"}`: why a
+result holds; "demands": what a definition requires beyond the obvious weaker notion; "shows":
+what an example shows). Both are visible. For an exercise the punch is its key idea
+(`kind="key"`) and stays in a closed fold before the Hint. Running text that is treated like an
+item may carry them too. Markup: the top of `layers.lua`; how they are written:
+`skill/templates/brief-punch.md`.
+
 Lc2. **Labels.** The lecture's numbers are the primary labels ("Lemma 3.38"). A lecture item's
 title is "**Theorem 2.3. [core] Descriptive title.**", without repeating the kind word. The
 page's own items get section letters and a kind word ("**M1. [core] Remark: ...**"). How

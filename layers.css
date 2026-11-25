@@ -130,3 +130,13 @@ td .katex,th .katex{white-space:nowrap}
 .diagram{margin:1em 0;text-align:center}
 .diagram svg{max-width:100%;height:auto}
 .diagram .cap{font-size:.9em;color:var(--muted);text-align:left}
+
+/* Need lines and punches (2026-11-25): a need line stands before its item, quiet, in the item's
+   indentation; a visible punch follows the statement; "Key idea" is an ordinary fold (details.sub) */
+.need{margin:.9em 0 -.55em;padding:0 0 0 calc(.7em + 3px);font-size:.88em;color:var(--muted)}
+.need p{margin:.2em 0}
+.need-label{font-weight:600;letter-spacing:.02em;margin-right:.1em}
+.punch{margin:.5em 0}
+.punch p{margin:.3em 0}
+.punch>p:first-child>strong:first-child{color:var(--accent)}
+@media (max-width:560px){.need{padding-left:calc(.35em + 2px)}}

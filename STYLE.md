@@ -37,6 +37,14 @@ names no lecture, course or theorem number. (A lecture companion cites its own l
   - items tagged **[core]** or **[side trip]** (a topic introduction puts its one-word status
     there instead, P4); the statement stays visible, and everything else sits in separate
     closed folds under it, in this order:
+    - **need line** (`::: need`, directly before the item): one or two sentences, why the page
+      needs this item here. Visible, before the statement (before the item's box; it goes with
+      the item in "Core only");
+    - **punch** (`::: {.punch kind="why"}`, after the statement): one to three sentences. Visible,
+      after the statement and its "In words" folds, with a bold label: "Why." (a result),
+      "Demands." (a definition), "Shows." (an example). For an exercise it is the key idea
+      (`kind="key"`): a closed fold "Key idea" before the Hint and Solution folds. Both also
+      work around running text outside an item. How they are written: `skill/templates/brief-punch.md`;
     - **Uses**, written by the renderer: the items and restated results the text cites, as one
       closed fold right after the whole statement (an exercise's list sits at the top of its
       solution instead);
