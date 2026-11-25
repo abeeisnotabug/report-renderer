@@ -5,7 +5,7 @@
 
 The status line is the first italic paragraph standing directly inside an item (not inside a fold)
 whose text starts with one of: "The notes", "Sheet <n>, p.", "New here", "Known", "Redrawn here",
-"Status:". The paragraph  *The notes, p. 10: defined.*  becomes
+"Status:" (also the form  *Status:* text  with only the label in italics). The paragraph  *The notes, p. 10: defined.*  becomes
 
   ::: source
   The notes, p. 10: defined.
@@ -74,8 +74,9 @@ def convert(lines):
                 j += 1
             para = ' '.join(l.strip() for l in lines[i:j])
             m = re.match(r'^\*(?!\*)(.*?)\*$', para)
-            if m and OPENINGS.match(m.group(1).strip()):
-                text = m.group(1).strip()
+            m2 = re.match(r'^\*Status:\*\s*(.*)$', para)   # Stochastik II form: "*Status:* notes p. 2, *defined*."
+            if (m and OPENINGS.match(m.group(1).strip())) or m2:
+                text = m.group(1).strip() if m and OPENINGS.match(m.group(1).strip()) else m2.group(1).strip()
                 out += ['::: source\n', text + '\n', ':::\n']
                 stack[-1] = False
                 found += 1
