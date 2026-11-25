@@ -28,7 +28,7 @@ citations is not affected:
     citation enters the "Uses:" line. A German word that begins item titles there is a citation
     word here too. A number written with a non-breaking space ("Lemma\ A.5") stays plain.
   - An exercise's "Uses:" line sits at the top of its folded solution, not under the task, so
-    it does not give away the tools.
+    it does not give away the tools. Every other item's list is a closed fold "Uses" (below).
 
 Collapsible layers for long reports. Active only when the YAML header has `layered: true`;
 every other document passes through unchanged. render.mjs adds the matching CSS and script
@@ -67,14 +67,17 @@ Markup (Pandoc fenced divs):
 Automatic:
   - "W4", "(T5," ... become links to items that exist; "Theorem 3.7(i)", "Stoch I, Satz 5.12"
     become links to lecture entries that exist (missing ones are reported on stderr).
-  - Each item gets a "Uses:" line: the earlier items its text refers to (override with
-    uses="W4 T3", or uses="none").
+  - Each item gets a "Uses" list: the earlier items its text refers to (override with
+    uses="W4 T3", or uses="none"). It is a closed fold "Uses" (class `uses`), the first of the
+    item's folds, after the whole statement (its "In words" folds belong to it), before
+    Intuition and Steps; never between paragraphs of the statement. With `::: more` it is the first thing inside the opened item. An exercise's
+    list is a "Uses:" line at the top of its folded solution instead.
   - R code blocks (and their #> output) fold under "R code".
   - A contents list (a side bar on wide screens) and a toolbar are added after the title.
     "Core only" appears only if something is tagged as a side trip.
     "Plain words only" appears only if the page has `::: plain` folds: it shows the opening,
     the section titles, their takeaways and the plain-words folds (opened), and hides the rest.
-  - `uses: false` in the YAML header turns the "Uses:" lines off.
+  - `uses: false` in the YAML header turns the "Uses" lists off.
 
 Two routes: a routes page lists pairs of items that reach the same conclusion in two
 reports, and each report shows its partner's statement under the item.
@@ -404,13 +407,21 @@ local function item_blocks(d, refs)
     table.sort(uses, function(a, b) return item_index[a] < item_index[b] end)
     uses:extend(restated)
   end
-  local uses_html = nil
+  -- an exercise's "Uses:" line names the tools of its solution, so it opens with the solution
+  -- (a paragraph, already hidden); every other item gets a closed fold "Uses" after its statement
+  local spoiler = kind == 'exer'
+  local uses_html, uses_fold = nil, nil
   if #uses > 0 and show_uses then
     local links = {}
     for _, u in ipairs(uses) do
       links[#links + 1] = '<a class="xref" href="#' .. u .. '">' .. esc(item_label[u] or u) .. '</a>'
     end
-    uses_html = raw('<p class="uses">Uses: ' .. table.concat(links, ', ') .. '</p>')
+    if spoiler then
+      uses_html = raw('<p class="uses">Uses: ' .. table.concat(links, ', ') .. '</p>')
+    else
+      uses_fold = raw('<details class="fold sub uses"><summary>Uses</summary><p>'
+        .. table.concat(links, ', ') .. '</p></details>')
+    end
   end
   -- split at the first `::: more`
   local head, tail, split = List(), List(), false
@@ -428,42 +439,51 @@ local function item_blocks(d, refs)
   if split then
     out:insert(raw('<details class="item ' .. tag .. '" id="' .. id .. '"><summary>'))
     out:extend(head)
-    -- an exercise's "Uses:" line names the tools of its solution, so it opens with the solution
-    local spoiler = kind == 'exer'
-    if uses_html and not spoiler then out:insert(uses_html) end
     out:insert(raw('<span class="more-hint"></span></summary>'))
-    if uses_html and spoiler then out:insert(uses_html) end
+    -- opened with the item: the "Uses" fold first, an exercise's line first in its solution
+    if uses_fold then out:insert(uses_fold) end
+    if uses_html then out:insert(uses_html) end
     out:extend(tail)
     out:insert(raw('</details>'))
   else
     -- an item with its own folds (`::: intuition`, `::: steps`, named `.fold`s after the
-    -- statement): the statement stays open, the "Uses:" line follows it (an exercise's opens
-    -- its fold "Solution ..."), then the folds
+    -- statement): the statement stays open, then the closed fold "Uses" (an exercise's line
+    -- opens its fold "Solution ..." instead), then the other folds
     local function is_fold(b) return b.t == 'RawBlock' and b.text:match('^<details class="fold') end
-    local first
-    for i, b in ipairs(head) do if is_fold(b) then first = i; break end end
-    -- an exercise's "Uses:" line opens its fold "Solution (...)" instead, as with `::: more`
-    local spoiler = kind == 'exer'
-    out:insert(raw('<div class="item ' .. tag .. '" id="' .. id .. '">'))
-    if first then
-      for i = 1, first - 1 do out:insert(head[i]) end
-      local placed = not uses_html
-      if not placed and not spoiler then out:insert(uses_html); placed = true end
-      for i = first, #head do
-        local b = head[i]
-        if is_fold(b) and not b.text:match('^<details class="fold sub') then
-          b = raw((b.text:gsub('^<details class="fold"', '<details class="fold sub"', 1)))
-        end
-        out:insert(b)
-        if not placed and is_fold(b) and b.text:match('<summary>Solution') then
-          out:insert(uses_html); placed = true
+    -- top-level groups of the head: a fold (opening block to its matching close) or one block
+    local groups, depth, gs = {}, 0, nil
+    for i, b in ipairs(head) do
+      local o = b.t == 'RawBlock' and b.text:match('^<details')
+      local c = b.t == 'RawBlock' and b.text:match('^</details>')
+      if depth == 0 then
+        if o then depth, gs = 1, i else groups[#groups + 1] = { s = i } end
+      else
+        if o then depth = depth + 1 elseif c then depth = depth - 1 end
+        if depth == 0 then
+          groups[#groups + 1] = { s = gs, fold = is_fold(head[gs]),
+            inwords = head[gs].text:match('<summary>In words</summary>') ~= nil }
         end
       end
-      if not placed then out:insert(uses_html) end
-    else
-      out:extend(head)
-      if uses_html then out:insert(uses_html) end
     end
+    -- the statement ends at its first fold that is not an "In words" fold (those follow the
+    -- displays of the statement); the "Uses" fold goes there, else at the end
+    local pos = #head + 1
+    for _, g in ipairs(groups) do
+      if g.fold and not g.inwords then pos = g.s; break end
+    end
+    out:insert(raw('<div class="item ' .. tag .. '" id="' .. id .. '">'))
+    for i, b in ipairs(head) do
+      if i == pos and uses_fold then out:insert(uses_fold) end
+      if is_fold(b) and not b.text:match('^<details class="fold sub') then
+        b = raw((b.text:gsub('^<details class="fold"', '<details class="fold sub"', 1)))
+      end
+      out:insert(b)
+      if uses_html and is_fold(b) and b.text:match('<summary>Solution') then
+        out:insert(uses_html); uses_html = nil
+      end
+    end
+    if pos > #head and uses_fold then out:insert(uses_fold) end
+    if uses_html then out:insert(uses_html) end
     out:insert(raw('</div>'))
   end
   return out

@@ -50,7 +50,8 @@ steps are:
 Lc6. **Exercises** (the sheets' and the lecture's boxed ones) go where they fit in the lecture's
 order: the task; a fold "Hint" that names the property needed, not the mechanism; and a fold
 "Solution (official)" or "Solution (this page's)". An exercise has no Steps fold. Its "Uses:"
-line sits inside the solution (the renderer puts it there), so it does not give the tools away.
+line sits inside the solution (the renderer puts it there), so it does not give the tools away;
+every other item's list is a closed fold "Uses" after its statement.
 Errors in a sheet or an official solution are pointed out where they occur.
 
 Lc7. **Slips.** A slip in the notes or a sheet (a wrong cross-reference, a missing hypothesis, a

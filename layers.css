@@ -25,7 +25,7 @@ details.sec.side>summary h2::after{content:"side trip";font-size:.6em;font-weigh
 .item{margin:.9em 0;padding:0 0 0 .7em;border-left:3px solid var(--rule)}
 .item.core{border-left-color:var(--accent)}
 details.item>summary>p:first-child,div.item>p:first-child{margin-top:.2em}
-.uses{font-size:.85em;color:var(--muted);margin:.25em 0}
+p.uses{font-size:.85em;color:var(--muted);margin:.25em 0}
 .more-hint{display:block;font-size:.82em;color:var(--link);margin:.15em 0 .35em}
 .more-hint::before{content:"▸ steps and details"}
 details.item[open]>summary .more-hint::before{content:"▾ hide steps"}

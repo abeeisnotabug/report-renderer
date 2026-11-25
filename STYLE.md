@@ -37,6 +37,9 @@ names no lecture, course or theorem number. (A lecture companion cites its own l
   - items tagged **[core]** or **[side trip]** (a topic introduction puts its one-word status
     there instead, P4); the statement stays visible, and everything else sits in separate
     closed folds under it, in this order:
+    - **Uses**, written by the renderer: the items and restated results the text cites, as one
+      closed fold right after the whole statement (an exercise's list sits at the top of its
+      solution instead);
     - **Intuition** (`::: intuition`): what the statement means, a picture, where it fails;
     - **Steps** (`::: steps`): the derivation, numbered;
     - **named folds** (`::: {.fold summary="..."}`) for anything else, each labelled with the kind
@@ -65,8 +68,8 @@ names no lecture, course or theorem number. (A lecture companion cites its own l
   with Definition, Result, Example, Remark, Figure or Overview (and Exercise in lecture
   companions). A restated lecture result keeps the
   lecture's own label: "**Lemma 3.38. [core] ...**".
-- **"Uses:" lines point backward only.** Each item gets a "Uses:" line listing what it uses; it is
-  built from the labels cited in the text. No forward "used in" lists. Forward pointers in words
+- **"Uses" lists point backward only.** Each item gets a closed fold "Uses" (the first fold, after
+  the statement) listing what it uses; it is built from the labels cited in the text. No forward "used in" lists. Forward pointers in words
   are fine, in the running text or in a "Why it is needed" fold, and may cite the later item.
 - **Exercises, hints and solutions** appear only in lecture companions.
 - **R code**, where a type shows it (E4), folds away; it uses the native pipe `|>` and ggplot2 for

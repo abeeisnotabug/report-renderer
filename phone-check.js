@@ -1,6 +1,6 @@
 // Opens a rendered page in WebKit at iPhone width (393 px), opens every fold, and prints:
 // scrollW (page width; 393 means no sideways scroll), items, scrollingDisplays (items whose
-// display formulas scroll), uses (each item's "Uses:" line), deadLocal (links to anchors missing
+// display formulas scroll), uses (each item's "Uses" list), deadLocal (links to anchors missing
 // on the page), crossPage (links to anchors on other pages, to check by hand), and script errors.
 // Optional: screenshots of the listed items into a folder.
 //   node phone-check.js /abs/path/report.html [shots-folder item-id,item-id]
@@ -17,7 +17,7 @@ const { webkit } = require('/opt/homebrew/lib/node_modules/playwright');
     const out = { scrollW: document.documentElement.scrollWidth };
     out.items = document.querySelectorAll('.item').length;
     out.scrollingDisplays = [...document.querySelectorAll('.katex-display')].filter(d => { const s = d.closest('.math-scroll') || d; return d.scrollWidth > d.clientWidth + 1 || s.scrollWidth > s.clientWidth + 1; }).map(d => (d.closest('.item')||{}).id);
-    out.uses = [...document.querySelectorAll('.item')].map(e => e.id + ': ' + (e.querySelector('.uses')?.textContent.replace(/\s+/g,' ').trim() || '-'));
+    out.uses = [...document.querySelectorAll('.item')].map(e => e.id + ': ' + (() => { const u = e.querySelector('.uses'); if (!u) return '-'; const c = u.cloneNode(true); c.querySelector('summary')?.remove(); return 'Uses: ' + c.textContent.replace(/\s+/g,' ').replace(/^\s*Uses:\s*/,'').trim(); })());
     const ids = new Set([...document.querySelectorAll('[id]')].map(e => e.id));
     out.deadLocal = [...document.querySelectorAll('a[href^="#"]')].map(a => a.getAttribute('href').slice(1)).filter(h => h && !ids.has(h));
     out.crossPage = [...new Set([...document.querySelectorAll('a[href*=".html#"]')].map(a => a.getAttribute('href')).filter(h => !/^https?:/.test(h)))];

@@ -71,6 +71,7 @@
     for (const n of nodes) {
       const c = n.cloneNode(true);
       if (c.nodeType === 1) {
+        // (the "Uses" fold is a details.sub; an exercise's "Uses:" line is a p.uses)
         if (c.matches('.uses, .more-hint, details.sub')) continue;
         c.removeAttribute('id');
         c.querySelectorAll('[id]').forEach(x => x.removeAttribute('id'));
