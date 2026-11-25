@@ -16,6 +16,16 @@
   // toolbar
   $('#tb-open').onclick = () => document.querySelectorAll('details:not(.rcode)').forEach(d => { d.open = true; });
   $('#tb-close').onclick = () => document.querySelectorAll('details').forEach(d => { d.open = false; });
+  // light or dark: the button switches between them and overrides the system setting; the choice
+  // is kept for the next visit (data-theme on <html>; every colour rule and livefig.js follow it)
+  const root = document.documentElement;
+  try { const t = localStorage.getItem('layers-theme'); if (t === 'light' || t === 'dark') root.dataset.theme = t; } catch (e) {}
+  const themeNow = () => root.dataset.theme || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  $('#tb-theme').onclick = () => {
+    const t = themeNow() === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = t;
+    try { localStorage.setItem('layers-theme', t); } catch (e) {}
+  };
   // "Core only" exists only on pages with side trips
   const core = $('#tb-core');
   const setCore = on => {

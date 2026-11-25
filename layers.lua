@@ -891,6 +891,8 @@ function Pandoc(doc)
     .. '<button class="tb" id="tb-close">Close all</button>'
     .. (has_side and '<label class="tb"><input type="checkbox" id="tb-core"> Core only</label>' or '')
     .. (has_plain and '<label class="tb"><input type="checkbox" id="tb-plain"> Plain words only</label>' or '')
+    -- light or dark, overriding the system setting (layers.js); an icon only, so the row fits a phone
+    .. '<button class="tb" id="tb-theme" title="Switch light or dark" aria-label="Switch light or dark">&#9680;</button>'
     .. '</div>')
   local final = List()
   local placed = false
