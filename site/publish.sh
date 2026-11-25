@@ -35,11 +35,12 @@ for page in ch1-gaussian-processes-GPT ch1-gaussian-processes-Claude; do
 done
 
 # CCFA and LST-R: the topic introduction -> ccfa/cc-in-lstr.html, the talk for TK ->
-# ccfa/cc-lstr-setup-talk.html
+# ccfa/cc-lstr-setup-talk.html, the rebuilt talk (version 3) -> ccfa/cc-lstr-talk.html
 ccfa="$HOME/Documents/Works/FSU Jena/Projekte/Tobi/CCFA and LST-R/reports"
 mkdir -p "$stage/ccfa"
 cp "$ccfa/cc-in-lstr/cc-in-lstr.html" "$stage/ccfa/cc-in-lstr.html"
 cp "$ccfa/../talks/cc-lstr-setup/cc-lstr-setup-talk.html" "$stage/ccfa/cc-lstr-setup-talk.html"
+cp "$ccfa/../talks/cc-lstr-v3/cc-lstr-talk.html" "$stage/ccfa/cc-lstr-talk.html"
 
 chmod -R a+rX "$stage"
 rsync -a --delete "$stage/" li53vet@scotty.ads.uni-jena.de:/home/FSUJENA/li53vet/ShinyApps/reports/

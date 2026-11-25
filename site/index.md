@@ -92,3 +92,8 @@ Background for the paper "A Latent State–Trait Perspective on Cross-Classified
   for CC models inside LST-R, from the definitions and assumptions to the results, the comparison
   with the draft and the choices left open; slides tagged "not yet reviewed" rest on parts not yet
   checked. Arrow keys step, S opens the presenter view, D switches light and dark.
+- [Talk, version 3: CC models inside LST-R in about 40 minutes](ccfa/cc-lstr-talk.html): the
+  rebuilt talk in seven parts and a summary, from the design and its assumptions to the
+  definitions, what follows and the open choice of the context; appendix A on what a fitted CC
+  model reports, appendix B on further topics. Arrow keys step, S opens the presenter view, D
+  switches light and dark.
