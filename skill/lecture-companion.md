@@ -19,12 +19,14 @@ item just to be covered, and it is never labelled with a kind word the notes do 
 claim made in running text still appears (Lc1), in the prose or, if it needs a proof, as a page
 item stating just that claim.
 
-Lc1b. **Need lines and punches.** An item may carry a need line before it (`::: need`: why the
-page needs it at this point) and a punch after its statement (`::: {.punch kind="why"}`: why a
-result holds; "demands": what a definition requires beyond the obvious weaker notion; "shows":
-what an example shows). Both are visible. For an exercise the punch is its key idea
-(`kind="key"`) and stays in a closed fold before the Hint. Running text that is treated like an
-item may carry them too. Markup: the top of `layers.lua`; how they are written:
+Lc1b. **Need lines and punches** are closed folds of the item. An item may carry a need line
+(`::: need`, written before it or inside it: why the page needs it at this point; fold "Why
+here", the item's first fold) and a punch (`::: {.punch kind="why"}`: why a result holds, fold
+"Why it holds"; "demands": what a definition requires beyond the obvious weaker notion, "What it
+demands"; "shows": what an example shows, "What it shows"). For an exercise the punch is its key
+idea (`kind="key"`, fold "Key idea", before the Solution). The renderer fixes the order of an
+item's folds (`STYLE.md`, "Layered page"). Running text that is treated like an item may carry
+them too, as folds where they stand. Markup: the top of `layers.lua`; how they are written:
 `skill/templates/brief-punch.md`.
 
 Lc2. **Labels.** The lecture's numbers are the primary labels ("Lemma 3.38"). A lecture item's
@@ -43,8 +45,9 @@ Lc4. **Sections follow the lecture's sections**, with the lecture's section numb
 ("(§3.2)"). The page's own sections (overviews, a question the lecture leaves open) are placed
 where they serve the order of the lecture.
 
-Lc5. **Status lines.** After each statement, a line that says where it comes from and whose the
-steps are:
+Lc5. **Status lines.** Each item has one, in its closed fold "Source" (`::: source`, after the
+statement in the source; the renderer places the fold near the end). It says where the item comes
+from and whose the steps are:
 - the source, with its page or number, and what it does with the statement: *defined*;
   *stated* (no proof there); *derived* (proved there); *set* (an exercise);
 - the steps on the page, with one of: *Reminder* (they follow the source's proof, with steps
@@ -59,7 +62,8 @@ Lc6. **Exercises** (the sheets' and the lecture's boxed ones) go where they fit 
 order: the task; a fold "Hint" that names the property needed, not the mechanism; and a fold
 "Solution (official)" or "Solution (this page's)". An exercise has no Steps fold. Its "Uses:"
 line sits inside the solution (the renderer puts it there), so it does not give the tools away;
-every other item's list is a closed fold "Uses" after its statement.
+every other item's list is the last closed fold, "Uses". The fold order of an exercise: Hint,
+Key idea, Solution (red), Source, Uses.
 Errors in a sheet or an official solution are pointed out where they occur.
 
 Lc7. **Slips.** A slip in the notes or a sheet (a wrong cross-reference, a missing hypothesis, a

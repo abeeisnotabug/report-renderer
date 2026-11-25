@@ -57,7 +57,7 @@ $$A:=[\text{definition}].$$
 
 [Hand-over (M3): the question, obstacle or suspicion that the next section takes up in its first sentence.]
 
-## B. Device: a recap, a derivation with a Why fold, claims read off the result {#sec-b .fold}
+## B. Device: a recap, an item with every fold, claims read off the result {#sec-b .fold}
 
 ::: gist
 [Claim.]
@@ -67,8 +67,12 @@ $$A:=[\text{definition}].$$
 
 [What this section adds.]
 
+<!-- B1 carries every fold an item may have, written in reading order; the renderer shows them in its
+fixed order whatever the order here: Why here, Why it holds, Intuition, Steps, named folds, Source,
+Uses (the last, written by the renderer from the labels cited). B2 shows the folds of an exercise. -->
+
 ::: need
-[One or two sentences: why this section needs B1 at this point.]
+[One or two sentences: why this section needs B1 at this point. Shown as the item's first fold, "Why here".]
 :::
 
 ::: {#B1 .item}
@@ -89,8 +93,16 @@ Two consequences follow, each read off this formula (F7).
 a. [Claim (a), and the part of the formula it reads off.]
 b. [Claim (b), and the part of the formula it reads off.]
 
+::: source
+[Where B1 comes from: "Notes, p. 3: derived. Steps: New here." The status line, as the fold "Source".]
+:::
+
 ::: {.punch kind="why"}
-[Why the result holds, in one to three sentences.]
+[Why the result holds, in one to three sentences. Shown as the fold "Why it holds".]
+:::
+
+::: intuition
+[What the result means, a picture, where it fails.]
 :::
 
 ::: steps
@@ -109,6 +121,31 @@ b. [Claim (b), and the part of the formula it reads off.]
 
 ::: {.fold summary="Example: the numbers"}
 [The example's numbers for (a) and (b) (E3), and the named instances (E6):] [For the named case [name], the formula gives ...]
+:::
+
+::: {.fold summary="Where it is used"}
+[A forward pointer in words: which later item needs B1, and for what.]
+:::
+:::
+
+::: {#B2 .item}
+**B2. [core] Exercise: [task].** [The task, as a sentence; it uses B1.]
+
+::: source
+[Notes, p. 4: set (a boxed exercise). Solution: this page's.]
+:::
+
+::: {.fold summary="Hint"}
+[The property needed, not the mechanism.]
+:::
+
+::: {.punch kind="key"}
+[The decisive idea, in one to three sentences. Shown as the fold "Key idea", between Hint and Solution.]
+:::
+
+::: {.fold summary="Solution (this page's)"}
+1. [Step that uses B1 (B1).]
+2. [Last step.]
 :::
 :::
 

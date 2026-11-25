@@ -51,7 +51,7 @@ Write call; then fix what the check (D4) finds with as few edits as possible.
 
 D2. **Content.** Every statement of your sections appears ([lecture: Lc1] [paper: Pc1]). Steps
 follow the source's proof and add every step the reader does not do at a glance; a proof the
-source leaves out is written here, marked as its status line says. Steps are a chain of equations
+source leaves out is written here, marked as its status line says (the status line is a `::: source` block after the statement). Steps are a chain of equations
 with the reasons on the line or in a Why fold (F2). Nothing passed off as obvious that is not.
 
 D3. **Form.** The rules of `STYLE.md` and the type file, in particular: a section opens with a

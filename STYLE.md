@@ -35,24 +35,27 @@ names no lecture, course or theorem number. (A lecture companion cites its own l
 - **Layered page** (`layered: true` in the YAML header; markup at the top of `layers.lua`):
   - sections that fold, each with a takeaway stated as a claim (`::: gist`);
   - items tagged **[core]** or **[side trip]** (a topic introduction puts its one-word status
-    there instead, P4); the statement stays visible, and everything else sits in separate
-    closed folds under it, in this order:
-    - **need line** (`::: need`, directly before the item): one or two sentences, why the page
-      needs this item here. Visible, before the statement (before the item's box; it goes with
-      the item in "Core only");
-    - **punch** (`::: {.punch kind="why"}`, after the statement): one to three sentences. Visible,
-      after the statement and its "In words" folds, with a bold label: "Why." (a result),
-      "Demands." (a definition), "Shows." (an example). For an exercise it is the key idea
-      (`kind="key"`): a closed fold "Key idea" before the Hint and Solution folds. Both also
-      work around running text outside an item. How they are written: `skill/templates/brief-punch.md`;
-    - **Uses**, written by the renderer: the items and restated results the text cites, as one
-      closed fold right after the whole statement (an exercise's list sits at the top of its
-      solution instead);
+    there instead, P4); the statement stays visible (with its "In words" folds, right after their
+    displays), and everything else sits in closed folds under it. The renderer puts them in this
+    order, whatever the order in the source:
+    - **Why here** (`::: need`, written directly before the item or inside it): one or two
+      sentences, why the page needs this item here; the first fold;
+    - **Why it holds** / **What it demands** / **What it shows** (`::: {.punch kind="why"}`,
+      `"demands"`, `"shows"`): the punch, one to three sentences: why a result holds, what a
+      definition demands beyond the obvious weaker notion, what an example shows. Both this and
+      "Why here" also work, as folds, around running text outside an item. How they are
+      written: `skill/templates/brief-punch.md`;
     - **Intuition** (`::: intuition`): what the statement means, a picture, where it fails;
     - **Steps** (`::: steps`): the derivation, numbered;
     - **named folds** (`::: {.fold summary="..."}`) for anything else, each labelled with the kind
-      of material it holds: "In words", "The computation in full", "Example: the numbers", "Why
-      it is needed", "Beyond the lecture". Never a generic label such as "Details".
+      of material it holds: "The computation in full", "Example: the numbers", "Where it is used",
+      "Beyond the lecture". Never a generic label such as "Details".
+    - for an exercise, then: **Hint**, **Key idea** (`kind="key"`, the decisive idea), **Solution**
+      (red; its "Uses:" line sits at its top);
+    - **Source** (`::: source`): where the item comes from, its status line (P4); grey;
+    - **Uses**, written by the renderer: the items and restated results the text cites, one
+      closed fold, always last; grey (an exercise's list sits at the top of its solution
+      instead).
   - Older pages fold everything after the statement into one block (`::: more`, "steps and
     details"); the renderer still supports it, and a page moves to the separate folds when it is
     next reworked.
@@ -64,7 +67,7 @@ names no lecture, course or theorem number. (A lecture companion cites its own l
   | --- | --- |
   | L1, plain words | the **"In words" folds** after displays (P7); in a paper companion also a section's plain-words fold (`skill/paper-companion.md`) |
   | L2, conceptual | the section's takeaway (`::: gist`), its recap (M2), and the items' **Intuition** folds |
-  | L3, technical | the visible statement with its status (P4) |
+  | L3, technical | the visible statement; its status (P4) in the **Source** fold |
   | L4, rigorous | the **Steps** fold, with "Why" folds inside the steps and after chains (F2) |
   | L5, full depth | **named folds** and side trips: proofs of invoked results, subtleties, counterexamples, limits, connections |
 
@@ -76,9 +79,9 @@ names no lecture, course or theorem number. (A lecture companion cites its own l
   with Definition, Result, Example, Remark, Figure or Overview (and Exercise in lecture
   companions). A restated lecture result keeps the
   lecture's own label: "**Lemma 3.38. [core] ...**".
-- **"Uses" lists point backward only.** Each item gets a closed fold "Uses" (the first fold, after
-  the statement) listing what it uses; it is built from the labels cited in the text. No forward "used in" lists. Forward pointers in words
-  are fine, in the running text or in a "Why it is needed" fold, and may cite the later item.
+- **"Uses" lists point backward only.** Each item gets a closed fold "Uses" (the last fold)
+  listing what it uses; it is built from the labels cited in the text. No forward "used in" lists. Forward pointers in words
+  are fine, in the running text or in a "Where it is used" fold, and may cite the later item.
 - **Exercises, hints and solutions** appear only in lecture companions.
 - **R code**, where a type shows it (E4), folds away; it uses the native pipe `|>` and ggplot2 for
   every plot. The renderer colours code by token. A block meant to be read on the page, such as
@@ -174,8 +177,9 @@ jointly normal (Lemma K.1)", "setting $p=2$ in $f(x)=\dots$ (Eq. 13 in P9)". Nev
 bare labels such as "this is what M23 in L2 does, with p=2 in M13 under P9".
 
 P4. **Status.** Every statement says what it is ("Writing", "Say what every piece is"). The form
-depends on the type: one word in the item title (topic introduction), a status line after the
-statement (paper and lecture companions). The type files give the words.
+depends on the type: one word in the item title (topic introduction), a status line in the closed
+fold "Source" (`::: source`) of the item (paper and lecture companions). The type files give the
+words.
 
 P5. **The kind of a statement is also carried by its sentence:**
 - a new term is set in bold where it is defined, after the object has been built;
@@ -416,6 +420,9 @@ the layers the reader opens on demand.
 - **Separate equations** (a system, or several definitions) are aligned rows,
   `\begin{aligned} ... \end{aligned}`. An aligned row cannot break, so keep rows short; a row that
   is too wide scrolls.
+- **A chain whose moves are explained one by one** (a numbered list, "the first equality ...", one
+  Why fold per move) is aligned rows too, one relation per row, so that each explanation sits next
+  to its row on every screen (RMB, 2026-11-25). A chain explained as a whole stays one formula.
 - **Equation numbers** with `\tag{...}`: shown in the right margin, level with the formula's last
   line.
 - What the renderer does (`breaks.mjs`):

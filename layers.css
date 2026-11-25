@@ -131,12 +131,13 @@ td .katex,th .katex{white-space:nowrap}
 .diagram svg{max-width:100%;height:auto}
 .diagram .cap{font-size:.9em;color:var(--muted);text-align:left}
 
-/* Need lines and punches (2026-11-25): a need line stands before its item, quiet, in the item's
-   indentation; a visible punch follows the statement; "Key idea" is an ordinary fold (details.sub) */
-.need{margin:.9em 0 -.55em;padding:0 0 0 calc(.7em + 3px);font-size:.88em;color:var(--muted)}
-.need p{margin:.2em 0}
-.need-label{font-weight:600;letter-spacing:.02em;margin-right:.1em}
-.punch{margin:.5em 0}
-.punch p{margin:.3em 0}
-.punch>p:first-child>strong:first-child{color:var(--accent)}
-@media (max-width:560px){.need{padding-left:calc(.35em + 2px)}}
+/* Technical and spoiler folds (2026-11-25). "Why here", the punches and "Key idea" are ordinary
+   folds (details.sub). Source and Uses are grey, like the Uses: line of an exercise (p.uses); a fold
+   titled "Solution ..." is red. Closed, only the summary shows its colour; open, the left border too. */
+:root{--sol:#b3261e}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--sol:#f28b82}}
+:root[data-theme="dark"]{--sol:#f28b82}
+details.source>summary,details.uses>summary{color:var(--muted)}
+details.source[open],details.uses[open]{border-left-color:var(--muted)}
+details.solution>summary{color:var(--sol)}
+details.solution[open]{border-left-color:var(--sol)}

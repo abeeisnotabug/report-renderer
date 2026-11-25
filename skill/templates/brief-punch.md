@@ -14,9 +14,9 @@ a course's notes alone, without a lecturer>. The page is <page: title, what it c
 item RMB wants two short texts:
 - a **punch**: what makes the item true or necessary, in as few words as the idea allows: for a
   result, the reason it holds; for a definition, what it demands beyond the obvious weaker notion;
-  for an example, what it shows; for an exercise, the decisive idea (it stays in a closed fold, so
-  it may give the idea away; write "none" if a punch would give away the whole solution);
-- a **need line**: why the page needs this item at this point, what the items before it leave
+  for an example, what it shows; for an exercise, the decisive idea (every punch is a closed fold of the
+  item, so the idea may be given away there; write "none" if a punch would give away the whole solution);
+- a **need line** (a closed fold "Why here", the item's first fold): why the page needs this item at this point, what the items before it leave
   open, so that the item feels inevitable rather than one more fact ("none" where the step is
   obvious).
 There are no further rules. What RMB means is shown by the examples at the end, RMB's own picks
