@@ -41,3 +41,31 @@
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) figure img:is(.tikz, .plot) { mix-blend-mode: screen; } }
 :root[data-theme="dark"] figure img:is(.tikz, .plot) { mix-blend-mode: screen; }
+
+/* Fold colour families (2026-11-25). One colour per kind of help a fold gives; the summary
+   carries it, and an open fold its left border too.
+     understanding  slot e   Why here, Why it holds / What it demands / What it shows,
+                             Intuition, In words, Where it is used, and other named folds
+     proof          slot d   Steps, the Why folds inside them, Check folds
+     exercise help  slot f   Hint, Key idea (the colour of the exercise labels)
+     solution       slot c   Solution (the reddest colour of the palette)
+     slips          slot a   Slip in the notes / in the sheet
+     reference      muted    Source, Uses, R code
+   Light mode: slots d and f are light on white (contrast about 2.8:1); dark mode is clear. */
+:root {
+  --f-und: #3326FF; --f-proof: #00AC8A; --f-help: #DA8A00; --f-slip: #B800A3;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --f-und: #5CE1E6; --f-proof: #3FD37E; --f-help: #FFE066; --f-slip: #FF7AB8;
+} }
+:root[data-theme="dark"] {
+  --f-und: #5CE1E6; --f-proof: #3FD37E; --f-help: #FFE066; --f-slip: #FF7AB8;
+}
+details.fold { --f: var(--f-und); }
+details.fold.steps, details.fold.check, details.why { --f: var(--f-proof); }
+details.fold.hint, details.fold.key { --f: var(--f-help); }
+details.fold.solution { --f: var(--sol); }
+details.fold.slip { --f: var(--f-slip); }
+details.fold.source, details.fold.uses, details.rcode { --f: var(--muted); }
+details.fold > summary, details.why > summary, details.rcode > summary { color: var(--f); }
+details.fold[open], details.why[open] { border-left-color: var(--f); }

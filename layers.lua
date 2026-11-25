@@ -385,6 +385,10 @@ local function fold_divs(blk)
         local cls = d.classes:includes('why') and 'why' or 'fold'
         -- a fold titled "Solution ..." / "Lösung ..." is red (layers.css)
         if cls == 'fold' and (label:match('^Solution') or label:match('^Lösung')) then cls = 'fold solution' end
+        -- classes for the fold colour families of a theme (themes/*.css): hint, slip, check
+        if cls == 'fold' and (label:match('^Hint') or label:match('^Hinweis')) then cls = 'fold hint' end
+        if cls == 'fold' and label:match('^Slip') then cls = 'fold slip' end
+        if cls == 'fold' and label:match('^Check') then cls = 'fold check' end
         local out = List { raw('<details class="' .. cls .. '"><summary>' .. esc(label) .. '</summary>') }
         out:extend(d.content)
         out:insert(raw('</details>'))
