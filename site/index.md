@@ -74,9 +74,7 @@ Perkowski's Stochastik II, winter 2026/27: one page per finished chapter of the 
 
 ### Stochastik III {#stochastik-iii}
 
-- [Chapter 1 companion - GPT](stochastik/stochastik3/ch1-gaussian-processes-GPT.html): Gaussian processes, pre-Brownian motion and white noise (Galeati, 2024/25).
-- [Chapter 1 companion - Claude](stochastik/stochastik3/ch1-gaussian-processes-Claude.html): the same chapter, written independently by Claude for comparison.
-- [Chapter 1 companion - Claude, theme test](stochastik/stochastik3/ch1-gaussian-processes-Claude-fsu.html): the same page in the colours of the FSU talk theme (light and dark follow the phone's setting).
+- [Chapter 1 companion](stochastik/stochastik3/ch1-gaussian-processes-Claude-fsu.html): Gaussian processes, pre-Brownian motion and white noise (Galeati, 2024/25), with interactive figures; light and dark follow the phone's setting.
 - [Crash course](stochastik/stochastik3/crash-course.html): stochastic calculus without proofs,
   each result with an intuition, and the bridge to continuous-time MLTS models.
 
@@ -89,10 +87,6 @@ Background for the paper "A Latent State–Trait Perspective on Cross-Classified
   model must be defined inside revised latent state–trait theory, the restrictions R1–R5 it
   adds, and where trait change, autoregression and noninvariance go; with a running example
   computed in R.
-- [Talk for Tobias Koch: the setup in 30 minutes](ccfa/cc-lstr-setup-talk.html): the setup
-  for CC models inside LST-R, from the definitions and assumptions to the results, the comparison
-  with the draft and the choices left open; slides tagged "not yet reviewed" rest on parts not yet
-  checked. Arrow keys step, S opens the presenter view, D switches light and dark.
 - [Talk, version 3: CC models inside LST-R in about 40 minutes](ccfa/cc-lstr-talk.html): the
   rebuilt talk in seven parts and a summary, from the design and its assumptions to the
   definitions, what follows and the open choice of the context; appendix A on what a fitted CC

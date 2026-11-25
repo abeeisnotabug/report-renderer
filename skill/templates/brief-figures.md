@@ -12,12 +12,12 @@ W1. The page is <page: title, file>, a <lecture companion | paper companion | to
 introduction> rendered with RMB's report renderer. RMB, a mathematician and statistician who
 knows R well (not web programming), reads it on a phone and a laptop, in light and dark mode.
 
-W2. RMB's rule for the two kinds (2026-11-25): an **R plot** where the construction is the point:
-the data are simulated in R in the page's notation, and the code sits folded under the plot, so
-that RMB sees exactly what is drawn and how the construction works. An **interactive figure**
-where a parameter or a choice is the point: a slider, a switch or a point to drag shows how the
-picture changes. Every figure must deepen the understanding of the item it sits next to; it is
-judged by `STYLE.md` E1 (what a figure must do) and E2 (captions).
+W2. RMB's rule (2026-11-25, final): every plot is an **interactive figure**: a slider, a switch
+or a point to drag shows how the picture changes, and a closed fold "How it is computed" says in
+words and formulas what is drawn. No R plots: RMB seldom reads the code. A plot in the source is
+not reproduced as it stands; draw the page's own version with controls. Every figure must deepen
+the understanding of the item it sits next to; it is judged by `STYLE.md` E1 (what a figure must
+do) and E2 (captions).
 
 W3. Your list `figs-<K>.md` (appended below) fixes for each figure its id, kind, place and what
 it must make visible. It is the contract: do not move, drop or add figures. If an entry is wrong
@@ -40,10 +40,7 @@ R3. The notes' transcripts in <transcripts folder> only where an item's statemen
 D1. For each figure `<id>`, a fragment `frag-<id>.Rmd`: exactly the R Markdown that goes into the
 page at its place, starting with one sentence of running text that leads into the figure and
 cites it ("Figure: ..." is not a sentence). The figure:
-- R plot: one R chunk, `echo=TRUE`, with `fig.cap` (E2), chunk label `<id>`, plotting in the
-  style of the page's existing plots; the code readable for an R user: the construction in the
-  page's notation, a comment per step, no plotting tricks that hide the maths.
-- Interactive: the markup of the interactive figure (caption inside it, E2: first sentence the
+- The markup of the interactive figure (caption inside it, E2: first sentence the
   claim, then what each control does), the script `live-<id>.js` beside the fragment, and a
   closed fold `::: {.fold summary="How it is computed"}` right after it: in words and formulas,
   what is simulated or computed for each control value (grid, seed, formula), so the figure

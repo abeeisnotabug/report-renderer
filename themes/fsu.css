@@ -6,7 +6,8 @@
    Mapping (report token <- talk token):
      --bg <- --bg, --fg <- --dark, --muted <- --c-muted-text (the talk's greyer inactive text,
      for Source, Uses, captions), --rule <- --rule, --quote-bg <- --card-bg, --quote-bar <- --light,
-     --code-bg <- --panel-bg, --accent <- --accent (FSU pink), --link <- slot e.
+     --code-bg <- --panel-bg, --accent <- --accent (FSU pink), --link <- slot e in light mode; in dark
+     mode slot b mixed 65 % with the text colour (#85C0ED), since slot e there is a glaring aqua (RMB).
    Kind labels take the palette slots nearest the report's own hues:
      definition <- d (teal-green), result <- a (magenta), example and remark <- e (blue),
      exercise <- f (amber), overview <- b (sky).
@@ -24,7 +25,7 @@
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
   --bg: #061D36; --fg: #E8EEF6; --muted: #93A1BD; --rule: #2B4A6E;
-  --quote-bg: #0E2B4A; --quote-bar: #4FA8E8; --code-bg: #0E2B4A; --link: #5CE1E6;
+  --quote-bg: #0E2B4A; --quote-bar: #4FA8E8; --code-bg: #0E2B4A; --link: #85C0ED;
   --accent: #FF7AB8; --peek-shadow: rgba(0, 0, 0, .6);
   --k-def: #3FD37E; --k-res: #FF7AB8; --k-ex: #5CE1E6; --k-exer: #FFE066; --k-ov: #4FA8E8;
   --sol: #FF8A7E;
@@ -32,7 +33,7 @@
 } }
 :root[data-theme="dark"] {
   --bg: #061D36; --fg: #E8EEF6; --muted: #93A1BD; --rule: #2B4A6E;
-  --quote-bg: #0E2B4A; --quote-bar: #4FA8E8; --code-bg: #0E2B4A; --link: #5CE1E6;
+  --quote-bg: #0E2B4A; --quote-bar: #4FA8E8; --code-bg: #0E2B4A; --link: #85C0ED;
   --accent: #FF7AB8; --peek-shadow: rgba(0, 0, 0, .6);
   --k-def: #3FD37E; --k-res: #FF7AB8; --k-ex: #5CE1E6; --k-exer: #FFE066; --k-ov: #4FA8E8;
   --sol: #FF8A7E;

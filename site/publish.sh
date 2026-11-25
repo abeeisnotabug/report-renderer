@@ -30,18 +30,14 @@ for page in ch1-conditional-expectation ch2-construction; do
   cp "$stoch/26-WS-Stoch2/companion/$page.html" "$stage/stochastik/stochastik2/$page.html"
 done
 cp "$stoch/companion/22-23-stoch3-crash-course.html" "$stage/stochastik/stochastik3/crash-course.html"
-for page in ch1-gaussian-processes-GPT ch1-gaussian-processes-Claude; do
-  cp "$stoch/25-WS-Stoch3/companion/$page.html" "$stage/stochastik/stochastik3/$page.html"
-done
-# theme test: Claude's page rendered with `theme: fsu` (themes/fsu.css)
+# the Stochastik III chapter 1 companion (Claude's page, theme: fsu, interactive figures)
 cp "$stoch/25-WS-Stoch3/companion/ch1-gaussian-processes-Claude-fsu.html" "$stage/stochastik/stochastik3/ch1-gaussian-processes-Claude-fsu.html"
 
-# CCFA and LST-R: the topic introduction -> ccfa/cc-in-lstr.html, the talk for TK ->
-# ccfa/cc-lstr-setup-talk.html, the rebuilt talk (version 3) -> ccfa/cc-lstr-talk.html
+# CCFA and LST-R: the topic introduction -> ccfa/cc-in-lstr.html, the talk (version 3) ->
+# ccfa/cc-lstr-talk.html
 ccfa="$HOME/Documents/Works/FSU Jena/Projekte/Tobi/CCFA and LST-R/reports"
 mkdir -p "$stage/ccfa"
 cp "$ccfa/cc-in-lstr/cc-in-lstr.html" "$stage/ccfa/cc-in-lstr.html"
-cp "$ccfa/../talks/cc-lstr-setup/cc-lstr-setup-talk.html" "$stage/ccfa/cc-lstr-setup-talk.html"
 cp "$ccfa/../talks/cc-lstr-v3/cc-lstr-talk.html" "$stage/ccfa/cc-lstr-talk.html"
 
 chmod -R a+rX "$stage"

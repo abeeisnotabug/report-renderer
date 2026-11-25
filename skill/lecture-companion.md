@@ -77,4 +77,4 @@ keeps the explanation (RMB, 2026-11-24).
 Lc8. **Final section** of results used without proof (K1): "Earlier results used", restating each
 result cited from earlier courses or chapters under its source's number.
 
-Lc9. **R code** folds away (`STYLE.md`, "Form of a report"; E4).
+Lc9. **Plots are interactive figures**, each with its "How it is computed" fold; no R plots, and the notes' own plots are replaced by the page's versions with controls (`STYLE.md`, "Interactive figures"; RMB, 2026-11-25).

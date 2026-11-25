@@ -415,11 +415,12 @@ the layers the reader opens on demand.
 
 ### Interactive figures
 
-- **When.** An R plot where the construction is the point: the figure reproduces the maths with
-  code the reader knows, and the code sits folded under it. An interactive figure where a
-  parameter or a choice is the point: a slider that changes a parameter, a switch that shows or
-  hides a layer, a point that is dragged, while the picture and its numbers follow (RMB,
-  2026-11-25). One question per figure; two or three controls, not ten.
+- **When.** Every plot is an interactive figure (RMB, 2026-11-25, final: "no more R plots. i
+  seldom read the code and the illustrations with controls just add much more value"): a slider
+  that changes a parameter, a switch that shows or hides a layer, a point that is dragged, while
+  the picture and its numbers follow. A plot in the source is not reproduced as it stands; the
+  page draws its own version with controls. Static figures remain only for structures with no
+  parameter (TikZ: maps, diagrams). One question per figure; two or three controls, not ten.
 - **Markup.** `::: {.live src="live-<id>.js" #fig-<id>}` with the caption inside; the script is
   a file next to the report. How a script is written (the API, an example, the labels): the
   comment at the top of `livefig.js`; the markup also at the top of `layers.lua`.
