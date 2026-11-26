@@ -53,6 +53,9 @@ reading in an "In words" fold (P7); reasons at the reader's level, routine ones 
 after the chain (F2), no display for a step done at a glance (F3); derivations in the general
 objects, claims read off formulas, numbers in "Example: the numbers" folds (F6, F7, E3);
 computations by hand in "The computation in full" folds and no R code on the page (F8, E4);
+no plots: for each interactive figure `plan.md` gives your part, one line `<!-- live: <id> -->`
+exactly at its place, which a later stage replaces by the figure (static TikZ figures only for
+structures with no parameter, as the plan gives them);
 known results cited from the "Known results" boxes (K1). Lecture links: <none, or as RMB asked
 for this report (K2)>. Side-trip folds and sections as the plan names them.
 

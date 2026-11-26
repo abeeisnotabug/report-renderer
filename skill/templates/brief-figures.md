@@ -10,9 +10,11 @@ only in its own folder, never the page. -->
 
 ## Why
 
-W1. The page is `page-<PAGE>.Rmd` in this folder (its title in the YAML header says what it
-covers), a <lecture companion | paper companion | topic introduction> rendered with RMB's report
-renderer. One brief serves every page of the run, so take the page's subject from its header. RMB, a
+W1. The page is a <lecture companion | paper companion | topic introduction> rendered with RMB's
+report renderer. Its source is in this folder: `page-<PAGE>.Rmd` if it exists (a companion run
+builds it from the parts), else the parts `part-*.Rmd` (a topic introduction, whose subject and
+notation are in `outline.md` and `plan.md`). One brief serves every page of the run, so take the
+page's subject from its YAML header or the outline. RMB, a
 mathematician and statistician who knows R well (not web programming), reads it on a phone and a
 laptop, in light and dark mode.
 
@@ -34,9 +36,9 @@ tables, code" and "Figures and plots" (with "Interactive figures"); the comment 
 `~/Documents/Works/report-renderer/livefig.js` (how a figure script is written); the lines on
 interactive figures at the top of `layers.lua`.
 
-R2. From `page-<PAGE>.Rmd`: the YAML header, the notation section, and for each of your figures
-the item it sits next to: find the marker `<!-- live: <id> -->` with Grep and read that item with
-offset and limit. Not the whole page.
+R2. From the page's source (W1): the notation section (or the notation in `plan.md`), and for
+each of your figures the item it sits next to: find the marker `<!-- live: <id> -->` with Grep in
+this folder's `.Rmd` files and read that item with offset and limit. Not the whole page.
 
 R3. The transcripts in `sources/transcripts/` only where an item's statement is not enough.
 
@@ -59,8 +61,8 @@ D2. Correctness first: every simulated object has exactly the law the page defin
 construction in the caption or fold); fixed seeds, so the figure is the same at each load;
 grids fine enough that what the figure claims is visible.
 
-D3. Check your figures on a test page in `figs-<PAGE>/`: `test-<K>.Rmd` = the YAML header of
-`page-<PAGE>.Rmd`, then your fragments in order. From that folder:
+D3. Check your figures on a test page in `figs-<PAGE>/`: `test-<K>.Rmd` = a YAML header with a
+`title`, `layered: true` and `theme: fsu`, then your fragments in order. From that folder:
 `Rscript -e 'knitr::knit("test-<K>.Rmd")'`, `~/Documents/Works/report-renderer/render.sh test-<K>.md`,
 `NODE_PATH=$(npm root -g) node ~/Documents/Works/report-renderer/phone-check.js "$PWD/test-<K>.html"`
 (it also moves every control to its ends, in light and dark mode). Fix every warning, error and

@@ -21,7 +21,9 @@ pages.
 Tq4. **No plain-words folds** (`::: plain`): the "In words" folds (P7) are the L1 layer, and the
 "Plain words only" button does not appear.
 
-Tq5. **No R code on the page** (E4).
+Tq5. **No R code on the page** (E4). Every plot is an interactive figure, as many as `STYLE.md`,
+"Interactive figures", "How many", asks: the outline lists them in `figs-page.md`, and figure
+workers build them after the writers (`SKILL.md` Ti5a). Theme: `theme: fsu` (`STYLE.md`, "Page").
 
 Tq6. **Final section** of results used without proof (K1): "Known results", boxes numbered K.1,
 K.2, ...

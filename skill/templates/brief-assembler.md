@@ -44,7 +44,9 @@ D3. **One text.** Read the whole page once as RMB would.
   claim, formula or number; if one looks wrong, check it against the source and report it.
 
 D4. **Run the check list** in `plan.md`. In addition: every Known-results box is cited at least
-once, and every general result the text uses has a box.
+once, and every general result the text uses has a box; every figure of `figs-page.md` is on the
+page (`figures-page.md` says which were placed) and no marker `<!-- live: ... -->` is left. Do
+not edit the figure scripts in `live/`; a problem with a figure goes into your report.
 
 D5. **Build and check.** From this folder: `Rscript -e 'knitr::knit("<report name>.Rmd")'`,
 then `~/Documents/Works/report-renderer/render.sh <report name>.md`, then

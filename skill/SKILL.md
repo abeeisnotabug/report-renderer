@@ -155,7 +155,7 @@ the parts, the headers, `sources/transcripts/` and the other pages' `.md` files 
 ## Making a topic introduction
 
 Agreed with RMB on 2026-11-17. Briefs from the templates in `templates/` (R2):
-`brief-outline.md`, `brief-writer.md`, `brief-assembler.md`, `brief-blind.md` (optional, Ti6a),
+`brief-outline.md`, `brief-writer.md`, `brief-figures.md`, `brief-assembler.md`, `brief-blind.md` (optional, Ti6a),
 and `run-stage.sh` (with `runlib.sh` and `logstate.py`) to run them. Costs of earlier runs: big-tasks, its measured facts.
 
 Ti1. **Source first.** The content comes from a checked source (for example a checked report on
@@ -181,18 +181,20 @@ full): the question and its parts, the opening
 tree (M1); per section its contribution, its paragraphs' jobs in order with the items they state
 (label, one-word status, one line) and its hand-over (M3); the examples and their variants (E3); the figures
 with the reason each earns its place (E1); the known-results boxes (K1); and a "Cut" list of
-source material no node needs.
+source material no node needs. A third file, `figs-page.md`, lists the interactive figures for
+the figure workers (Ti5a).
 
 Ti3b. `plan.md`, for the writers: the split into parts, one writer each, with each part's
-sections and its sources (labels and line ranges); notation, labels and section letters; which plot
-chunks and which numbers go where; the hand-over sentences between parts, word for word where a
+sections and its sources (labels and line ranges); notation, labels and section letters; which
+figures (their marker lines) and which numbers go where; the hand-over sentences between parts, word for word where a
 part's first sentence depends on the last one before it; additions to the content (Ti1); rules
 found unclear and how the plan resolves them; a check list for the assembler.
 
 Ti4. **RMB approves a sample part, not the outline** (agreed 2026-11-24: "I have to see what is
 on the page"). Run `./run-stage.sh outline`, then `./run-stage.sh writers 1`. Writer 1 writes
-part 1 and the "Known results" section, and keeps its test page `test-1.html`. The conductor gives
-that page to RMB (re-rendered, B1, if part 1 changed since). RMB approves it or
+part 1 and the "Known results" section, and keeps its test page `test-1.html`; then the figure
+workers make part 1's figures (Ti5a). The conductor re-renders the test page from `part-1.Rmd`
+(B1; the figures' scripts are in `live/`), looks at each figure (Mc7), and gives the page to RMB. RMB approves it or
 corrects it before writer 2 starts. RMB's corrections go into `outline.md`, `plan.md` and
 `part-1.Rmd`: small ones the conductor makes in the main session; if they change the form of the
 whole part, update `outline.md` and `plan.md`, delete `notes-1.md` and `part-1.Rmd`, and run
@@ -214,6 +216,14 @@ move, restart) decides (big-tasks Co5a–Co5c; how: the comments at the top of
 `templates/runlib.sh`). The main
 session's wait on the run also ends when `limit.txt` appears.
 
+Ti5a. **Figures, after each writers call.** `run-stage.sh writers <n>` ends by running
+`figures 1 ... n`: the entries of `figs-page.md` whose marker still stands in a part are cut into
+runs of `FIGS_PER_WORKER` (default 3), one Opus worker per run, side by side
+(`brief-figures.md`, page tag `page`); then `tools/figures-splice.py` puts each fragment at its
+marker in `part-N.Rmd` and the scripts into `live/` (report: `figures-page.md`). Figures already
+placed are not made again, so part 1's figures are made once, before RMB sees the sample.
+`./run-stage.sh figures <parts>` repeats the step alone.
+
 Ti6. **Stage 3, assembler.** One fresh session joins the parts, moves "Known results" to the
 end, settles each writer's note (`plan.md` decides between parts; where it is silent, the
 source), and reads the page once as RMB would. Cutting is its main tool: a repeated derivation
@@ -228,8 +238,9 @@ and the run's usage first, then the run only if RMB agrees. Template: `templates
 The reviewer sees only the page's text in reading order with the folds marked
 (`page-text.mjs`), never the notes, sources, briefs or plan.
 
-Ti7. **Last, in the main session:** move the page next to the reports it links to, build and
-check it again (B1, B2), commit, and give it to RMB. Open points from the assembly report go to RMB
+Ti7. **Last, in the main session:** move the page next to the reports it links to, with its
+`live/` folder, build and check it again (B1, B2), look at every interactive figure once (as in
+Mc7), commit, and give it to RMB. Open points from the assembly report go to RMB
 as decisions. RMB's vetoes and fixes are
 made in the main session.
 
