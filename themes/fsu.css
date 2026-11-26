@@ -6,8 +6,8 @@
    Mapping (report token <- talk token):
      --bg <- --bg, --fg <- --dark, --muted <- --c-muted-text (the talk's greyer inactive text,
      for Source, Uses, captions), --rule <- --rule, --quote-bg <- --card-bg, --quote-bar <- --light,
-     --code-bg <- --panel-bg, --accent <- --accent (FSU pink), --link <- slot e in light mode; in dark
-     mode slot b mixed 65 % with the text colour (#85C0ED), since slot e there is a glaring aqua (RMB).
+     --code-bg <- --panel-bg, --accent <- --accent (FSU pink), --link <- slot b mixed 65 % with the text colour in both modes: light #287AA5 (slot e, #3326FF, read
+     as early-web link blue), dark #85C0ED (slot e there is a glaring aqua) (RMB).
    Kind labels take the palette slots nearest the report's own hues:
      definition <- d (teal-green), result <- a (magenta), example and remark <- e (blue),
      exercise <- f (amber), overview <- b (sky).
@@ -17,7 +17,7 @@
 
 :root {
   --bg: #FFFFFF; --fg: #012F5D; --muted: #5F6987; --rule: #BFDDEB;
-  --quote-bg: #EEF7FB; --quote-bar: #3DA3CC; --code-bg: #E3F1F8; --link: #3326FF;
+  --quote-bg: #EEF7FB; --quote-bar: #3DA3CC; --code-bg: #E3F1F8; --link: #287AA5;
   --accent: #CD0067; --peek-shadow: rgba(1, 47, 93, .18);
   --k-def: #00AC8A; --k-res: #B800A3; --k-ex: #3326FF; --k-exer: #DA8A00; --k-ov: #3DA3CC;
   --sol: #CF2652;
