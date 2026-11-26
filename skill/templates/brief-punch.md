@@ -21,7 +21,8 @@ a need line where the step is obvious. Use this to judge a run's output and to p
 # Brief: write a "punch" and a "need line" for every item of a page
 
 W1. The reader is RMB, a mathematician and statistician <reading situation: e.g. working through
-a course's notes alone, without a lecturer>. The page is <page: title, what it covers>. For each
+a course's notes alone, without a lecturer>. The page is `page-<PAGE>.Rmd` in this folder (its
+title in the YAML header says what it covers; read only the header). For each
 item RMB wants two short texts:
 - a **punch**: what makes the item true or necessary, in as few words as the idea allows: for a
   result, the reason it holds; for a definition, what it demands beyond the obvious weaker notion;

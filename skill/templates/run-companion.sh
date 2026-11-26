@@ -159,7 +159,8 @@ figures() {  # figures <page>: figure sessions, then the splice into the parts
 punch_insert() {  # punch_insert <page>: astra's punches and Opus's need lines into the parts
   local p=$1 pf=punch-astra-$1.md
   [[ -s punch-opus-$p.md ]] || { echo "[punches-$p] no need lines: see chain-punch-opus-$p.out"; return 1; }
-  if ! grep -q '^Punch:' $pf 2>/dev/null; then
+  if grep -q '^Punch:' $pf 2>/dev/null; then rm -f punch-fallback-$p.txt
+  else
     pf=punch-opus-$p.md
     echo "Codex wrote no punches (see chain-punch-astra-$p.out): Opus's punches used" | tee punch-fallback-$p.txt
   fi
@@ -266,7 +267,8 @@ summary() {
       else
         print -r -- "No final build: the chain stopped early; see chain-$p.out."
       fi
-      [[ -s figures-$p.md ]] && print -r -- "Figures: $(sed -n 3p figures-$p.md) $(sed -n 5,6p figures-$p.md | tr '\n' ' ')"
+      if [[ -s figures-$p.md ]]; then print -r -- "Figures: $(sed -n 3p figures-$p.md) $(sed -n 5,6p figures-$p.md | tr '\n' ' ')"
+      else print -r -- "Figures: none (no list figs-$p.md from the contract, or the stage did not run)."; fi
       [[ -s punches-$p.md ]] && print -r -- "Punches: $(sed -n 3p punches-$p.md)"
       [[ -s punch-fallback-$p.txt ]] && print -r -- "Punches: $(cat punch-fallback-$p.txt)"
       [[ -s fixed-$p.md ]] && print -r -- "Fixer: fixed-$p.md."

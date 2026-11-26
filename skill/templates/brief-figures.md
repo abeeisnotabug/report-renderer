@@ -10,8 +10,9 @@ only in its own folder, never the page. -->
 
 ## Why
 
-W1. The page is `page-<PAGE>.Rmd` in this folder, a <lecture companion | paper companion | topic
-introduction> on <what the page covers>, rendered with RMB's report renderer. RMB, a
+W1. The page is `page-<PAGE>.Rmd` in this folder (its title in the YAML header says what it
+covers), a <lecture companion | paper companion | topic introduction> rendered with RMB's report
+renderer. One brief serves every page of the run, so take the page's subject from its header. RMB, a
 mathematician and statistician who knows R well (not web programming), reads it on a phone and a
 laptop, in light and dark mode.
 
