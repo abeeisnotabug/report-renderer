@@ -4,9 +4,11 @@
 :root[data-theme="dark"]{--accent:#6cc3ae;--peek-shadow:rgba(0,0,0,.6)}
 
 #layer-toolbar{position:sticky;top:0;z-index:20;display:flex;flex-wrap:wrap;gap:6px;align-items:center;background:var(--bg);border-bottom:1px solid var(--rule);padding:6px 0;margin:0 0 .4em}
-.tb{font:inherit;font-size:.8em;line-height:1.2;color:var(--fg);background:var(--code-bg);border:1px solid var(--rule);border-radius:4px;padding:.25em .6em;min-height:30px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:.35em}
+/* every toolbar control the same small height: border-box, so the links and labels ("Contents",
+   "Core only") count padding and border inside the height as the buttons already do (RMB) */
+.tb{box-sizing:border-box;font:inherit;font-size:.8em;line-height:1.2;color:var(--fg);background:var(--code-bg);border:1px solid var(--rule);border-radius:4px;padding:0 .6em;height:26px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:.35em}
 .tb input{margin:0}
-#tb-theme{font-size:1em;padding:.1em .45em}
+#tb-theme{font-size:1em;padding:0 .45em}
 [id]{scroll-margin-top:56px}
 
 details>summary{cursor:pointer;list-style:none}
