@@ -21,7 +21,8 @@ that may differ from the source, anything you are unsure of) goes to RMB.
 R1. `~/Documents/Works/report-renderer/STYLE.md` and `skill/<lecture | paper>-companion.md` in
 the same folder, `contract-<PAGE>.md` (its check list is for you), `items-<PAGE>.txt` (every numbered statement
 of the source and its item), the writers' notes
-`notes-<PAGE>-*.md`, the build output `build-<PAGE>.out` (renderer warnings and the phone check),
+`notes-<PAGE>-*.md`, the figure workers' notes `figs-<PAGE>/notes-*.md`, the reports of the two
+scripts after them (`figures-<PAGE>.md`, `punches-<PAGE>.md`), the build output `build-<PAGE>.out` (renderer warnings and the phone check),
 and the knitted page `page-<PAGE>.md`, top to bottom, once. Transcripts in `sources/transcripts/` only to
 check a statement or formula that looks wrong, and only that passage (Grep, then Read with offset
 and limit). No PDF, no image.
@@ -44,6 +45,13 @@ pages of the same run (they resolve when the pages are built together).
 
 L6. A statement that differs from the contract or the transcript, a step that is wrong, or a
 claim passed off as obvious that is not.
+
+L7. Interactive figures: a figure of the contract's list `figs-<PAGE>.md` that is missing, a
+marker `<!-- live: ... -->` still in the page, a caption or "How it is computed" fold that
+disagrees with the item or the notation. Need lines and punches ("Why here", "Why it holds" and
+the others): one that is mathematically wrong, or a key idea that gives an exercise's solution
+away. These texts were chosen to RMB's taste by a separate stage: a problem with one goes to
+`open-<PAGE>.md`, never to the review, unless it is a plain error of fact or notation.
 
 ## What you write
 

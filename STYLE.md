@@ -112,7 +112,8 @@ H3. Every element must serve its node better than plain text would: a figure, a 
 example, a check, a restated formula, a side remark. What serves no node is cut. The statements
 of a paper or a lecture that a companion reports are nodes by definition; this test applies to
 everything added to them. There are no quotas: the number of figures, folds or items follows
-from this test, not from a limit.
+from this test, not from a limit. For interactive figures the test is generous: whatever a reader
+can move in an item earns one ("Interactive figures", "How many").
 
 H4. A rule in this file serves the purpose given with it. Where following the letter of a rule
 would defeat its purpose, the purpose wins.
@@ -266,8 +267,10 @@ point at once.
 E1. **A figure earns its place** when it does what the text does worse: it shows how parts are
 arranged (sets, graphs, dependencies over time); it tells two or three similar objects or
 readings apart; it shows which information an object uses and which it ignores; it shows an
-intuition failing; or it shows behaviour across a range when that behaviour is the argument. No
-figure for a check, a computation or a formula that is already its clearest form. How figures
+intuition failing; or it shows behaviour across a range when that behaviour is the argument; or a
+parameter, a limit, a law or a point can be moved and the picture follows, so the reader sees what
+the statement depends on (an interactive figure, "Interactive figures"). No figure for a check, a
+computation or a formula that is already its clearest form. How figures
 and plots are made: "Figures and plots" below.
 
 E2. **Captions** state the claim in the first sentence, letter the panels and walk through them in
@@ -375,6 +378,11 @@ the layers the reader opens on demand.
 - **One symbol, one meaning.**
 - **Use the field's terms** (in probability: measurable, predictable, adapted), never home-made
   paraphrases.
+- **Part labels in bold.** A paragraph that starts with "(a) ", "a) ", "(i) " or "A. " becomes a
+  lettered or roman list in pandoc: "(a) ... (b) ..." in a hint renders as "a." with "(b)" left
+  in the text. Write the labels in bold, **(a)**, wherever they start a paragraph and are not
+  meant as a list. The renderer warns about a one-item lettered or roman list whose text holds
+  the next label.
 
 ## Figures and plots
 
@@ -421,6 +429,15 @@ the layers the reader opens on demand.
   the picture and its numbers follow. A plot in the source is not reproduced as it stands; the
   page draws its own version with controls. Static figures remain only for structures with no
   parameter (TikZ: maps, diagrams). One question per figure; two or three controls, not ten.
+- **How many** (RMB, 2026-11-26: the Stochastik III chapter 1 companion is the model). Go
+  through every item and ask what a reader could move in it: a parameter of a definition or an
+  example; a sample size or a mesh going to its limit; a law chosen among several (to see which
+  conclusions survive); a point or a time; a hypothesis switched off (to see the result fail); the
+  steps of a construction. Each such item gets a figure, unless moving it shows nothing the
+  statement does not already say. Exercises count too: a figure that shows why the answer is what
+  it is, placed after the task (it must not give the solution away). On a lecture companion this
+  gives roughly one figure for every two or three items (the model page: 14 figures for 36
+  items); a page with far fewer has likely missed some.
 - **Markup.** `::: {.live src="live-<id>.js" #fig-<id>}` with the caption inside; the script is
   a file next to the report. How a script is written (the API, an example, the labels): the
   comment at the top of `livefig.js`; the markup also at the top of `layers.lua`.
@@ -478,5 +495,9 @@ the layers the reader opens on demand.
 
 ## Page
 
+- **Theme: FSU** (RMB, 2026-11-26: final, the standard). Every new report sets `theme: fsu` in
+  its YAML header (`themes/fsu.css`: the FSU colours, one colour per fold type, light and dark);
+  the starter and the brief templates write it. A page without the line keeps the renderer's
+  older default look.
 - White background in light mode, dark grey in dark mode (follows the device).
 - Phones: 17 px text over the full width. Wider screens: 20 px text in a column of 800 px.

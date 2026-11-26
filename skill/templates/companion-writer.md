@@ -59,9 +59,16 @@ D3. **Form.** The rules of `STYLE.md` and the type file, in particular: a sectio
 fixed sentences word for word; a paragraph's first sentence states its move (M5); prose and items
 take turns (P1); references written for a human reader (P3); "we", never "I" (P6); "In words"
 folds after displays that define or derive (P7); checks after definitions and results (F4);
-figures only where E1 holds (TikZ as `fig-<PAGE>-<name>.tex`, compiled with
-`~/Documents/Works/report-renderer/tikz2svg.sh`; plots in R chunks); examples as the contract
-gives them (E3); display formulas as `STYLE.md`, "Display formulas", says.
+examples as the contract gives them (E3); display formulas as `STYLE.md`, "Display formulas", says.
+
+D3a. **Figures, need lines and punches come from later stages** (SKILL.md Mc4a, Mc4b). Write no
+plots and no R chunks that draw. For each interactive figure the contract places in your
+sections, write one line `<!-- live: <id> -->` exactly at its place (after an item's closing
+`:::`, before an item, or, for a figure item of the source, inside the item after the caption you
+copied); a later stage replaces it by the figure. Static TikZ figures only for structures with no
+parameter (maps, diagrams), as the contract gives them: `fig-<PAGE>-<name>.tex`, compiled with
+`~/Documents/Works/report-renderer/tikz2svg.sh`. Write no `::: need` and no `::: {.punch ...}`
+blocks: a later stage writes them for every item.
 [lecture: Exercises with the task, a Hint fold that names the property needed and not the
 mechanism, and the solution fold the contract names (Lc6); slips in a "Slip in the notes" or
 "Slip in the sheet" fold where they occur (Lc7).]

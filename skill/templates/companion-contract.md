@@ -75,12 +75,24 @@ the property the Hint names, and the solution's source: <RMB's decision for this
 solutions>.]
 [paper: For each equation of the paper the page prints (Pc3): where it stands, and the
 report's own version with its term-by-term notation map.]
-Figures and examples (E1, E3): each with the reason it earns its place, and the property an added
-example has or lacks. No quotas (H3).
+Examples (E3): each with the property it has or lacks. Figures: the id and place of each
+interactive figure of the list (D1c) that falls in the part, so the writer puts its marker line
+`<!-- live: <id> -->` there; and the static TikZ figures (maps, diagrams), each with its reason.
 
-D2. `header-<PAGE>.Rmd`, in one Write call: the YAML (`title`, `layered: true`, and `pages:` with the
-other pages this page cites, if "Your page" names any), the build comment of `skill/starter/report.Rmd`, and the setup
-chunk with `fig.path = "_figures/<PAGE>-"`.
+D1c. `figs-<PAGE>.md`, the list of interactive figures, for the figure workers (SKILL.md Mc4a;
+they run side by side and each gets a few consecutive entries plus everything before the first
+entry). First one short paragraph: the page and where its notation section stands. Then one entry
+per figure, in page order, headed `## <id>` (lower case, letters, digits and hyphens): its place
+(the item's id and "after", "before" or "inside": inside is for a figure item of the source,
+whose plot the page redraws with controls, `STYLE.md` "Interactive figures"); what it must make
+visible, as one claim the reader should see; the controls (two or three) and what moving each
+shows; the construction where it matters (law, formula, grid); and the reason it earns its place
+(E1). How many: `STYLE.md` "Interactive figures", "How many": go through every item and ask what
+a reader could move in it.
+
+D2. `header-<PAGE>.Rmd`, in one Write call: the YAML (`title`, `layered: true`, `theme: fsu`, and `pages:` with the
+other pages this page cites, if "Your page" names any), the build comment of `skill/starter/report.Rmd`, and its setup
+chunk.
 
 D3. **Coverage.** Every numbered statement of the source in this page's range is an item
 ([lecture: Lc1] [paper: Pc1, within the scope RMB's request names]). Check it once with

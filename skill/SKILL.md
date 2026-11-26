@@ -71,9 +71,13 @@ script check only; a template that changed gets one `--full` review (Wc4).
 
 Paper and lecture companions: the source's statements, transcribed once, are the contract.
 Templates: `templates/companion-transcribe.md`, `companion-contract.md`, `companion-writer.md`,
-`companion-reader.md`, `companion-fixer.md`, run by `templates/run-companion.sh` with its
-`run.conf` (copy `runlib.sh` and `logstate.py` too). Each template has a lecture and a paper
-variant where the type files differ.
+`brief-figures.md`, `brief-punch.md` (with `punch-examples.md`), `companion-reader.md`,
+`companion-fixer.md`, run by `templates/run-companion.sh` with its `run.conf` (copy `runlib.sh`
+and `logstate.py` too). Each template has a lecture and a paper variant where the type files
+differ. The model of what a finished lecture companion looks like (RMB, 2026-11-26) is the
+Stochastik III chapter 1 page: FSU theme, an interactive figure wherever something can be moved,
+a need line and a punch for every item. These rules and stages produce it; the page itself is not
+read as a model (St1, W3).
 
 Mc1. **Work folder.** An ignored folder next to the page (e.g. `.work/<name>/`) with `sources/`:
 the transcripts, the source PDFs (for the transcription stage only), the project's notes on the
@@ -101,6 +105,23 @@ reading the parts of its page already written, so that the page keeps one voice.
 by side. A writer may not change a statement, symbol or label; if one is wrong, it reports this.
 A paper companion's plain-words fold is written last in its section (L3).
 
+Mc4a. **Figures, after the writers.** The contract lists the page's interactive figures in
+`figs-<page>.md` (as many as `STYLE.md`, "Interactive figures", "How many", asks), and the writers
+leave a marker line `<!-- live: <id> -->` at each figure's place. The runner cuts the list into
+runs of `FIGS_PER_WORKER` (default 3) and starts one Opus figure worker per run, side by side
+(`brief-figures.md`); each writes fragments and scripts into `figs-<page>/`, never the page.
+Then `tools/figures-splice.py` puts each fragment at its marker in the parts, copies the scripts
+to `live/` and writes `figures-<page>.md` (placed, missing, unused).
+
+Mc4b. **Need lines and punches, beside the figures.** `tools/punches.py items` writes every item's
+statement into `punch-items-<page>.md`. Codex `gpt-6.2-astra` (high) and Claude Opus (high) get the
+same brief (`brief-punch.md` with `punch-examples.md`: RMB's picks and comments, no rules), side
+by side; `tools/punches.py insert` takes astra's punches and Opus's need lines (RMB's blind test,
+2026-11-25) and writes them into every item, the kind of punch set by the item (why, demands,
+shows, key). If Codex writes nothing, Opus's punches are used and `run-done.md` says so. This
+stage sends the item statements and the transcripts to OpenAI (big-tasks accounts.md Co4): say
+so in the cast proposal. Test the model id with one call before the run (accounts.md Co1a).
+
 Mc5. **Stage 4 and 5, reader and fixer** (big-tasks T6), Sonnet. The render and phone check run
 by script before the reader and after the fixer. The reader sorts its findings: what the rules,
 the contract or a transcript settle goes to the fixer, who applies all of it; what needs a
@@ -116,9 +137,13 @@ handling of big-tasks (Co5a to Co5c) inside, and writes `run-done.md` at the end
 state, RMB's open questions, usage per stage). The conductor waits for `run-done.md` or a
 `limit-*.txt`.
 
-Mc7. **Last, in the main session:** move each page next to the pages it links to, build and check
-it again (B1, B2), commit, give it to RMB with the questions in `open-<page>.md`, and log the
-usage (big-tasks Co6).
+Mc7. **Last, in the main session:** move each page next to the pages it links to, with its
+`live/` folder (the scripts of its interactive figures, inlined at every render) and its TikZ
+files, build and check it again (B1, B2), and look at every interactive figure once: a screenshot
+of each figure element at phone width, light and dark, with Playwright (the figure workers do not
+look at images). Fix what is wrong, or send it back to a figure worker with the finding. Then
+commit, give the page to RMB with the questions in `open-<page>.md`, and log the usage (big-tasks
+Co6).
 
 Mc8. **Math check (optional, on finished pages, when RMB asks).** One fresh Opus session per part,
 all side by side (`templates/companion-mathcheck.md`, `run-companion.sh mathcheck`): it checks every
@@ -232,9 +257,10 @@ B0. Figures: after changing a TikZ figure `fig-name.tex`, run
 
 B1. Render: `~/Documents/Works/report-renderer/render.sh path/to/report.md`, which writes
 `report.html` next to it. R Markdown is first knitted to `.md` with `knitr::knit()`, run from the
-report's folder. Fix every warning about missing links or lecture entries, and every warning that
+report's folder. Fix every warning about missing links or lecture entries, every warning that
 a wrapped line starts a list (move the line break so that no line inside a paragraph starts with
-"1." or "-"). A warning that an image is over 500 KB means: rasterise that plot's heavy
+"1." or "-"), and every warning that a paragraph became a one-item lettered list (write its part
+labels in bold, **(a)**; `STYLE.md`, "Part labels in bold"). A warning that an image is over 500 KB means: rasterise that plot's heavy
 layer.
 
 B2. Phone check: `NODE_PATH=$(npm root -g) node ~/Documents/Works/report-renderer/phone-check.js

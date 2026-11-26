@@ -24,6 +24,13 @@ for (const w of listCheck(fs.readFileSync(md, 'utf8'))) console.warn('warning: '
 let body = execFileSync(pandoc, ['-f', 'markdown', '-t', 'html5', '--math-method=katex', '--wrap=none',
   '--lua-filter', path.join(here, 'layers.lua'), md], { encoding: 'utf8', maxBuffer: 512 * 1024 * 1024 });  // long pages exceed the default buffer
 const layered = body.includes('id="layer-toolbar"');
+// A paragraph that starts with "(a) " becomes a one-item lettered list, and "(b)" stays in its text
+// (STYLE.md, "Part labels in bold"): a warning, not an error. Lettered lists that are meant have more items.
+for (const m of body.matchAll(/<ol[^>]*type="([aAiI])"[^>]*>\s*<li>((?:(?!<\/?li>)[\s\S])*)<\/li>\s*<\/ol>/g)) {
+  const next = { a: '(b)|b)', A: '(B)|B.', i: '(ii)|ii)', I: '(II)|II.' }[m[1]].split('|');
+  const text = m[2].replace(/<[^>]+>/g, '');
+  if (next.some(n => text.includes(n))) console.warn('warning: ' + path.basename(md) + ', a paragraph starting "' + text.slice(0, 30).trim() + '..." became a one-item list: write its part labels in bold, **(a)**');
+}
 
 const unesc = s => s.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, '&');
 let nMath = 0;

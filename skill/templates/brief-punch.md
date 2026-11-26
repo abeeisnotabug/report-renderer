@@ -1,11 +1,22 @@
 <!-- Template: punches and need lines for the items of a report or lecture companion (RMB, 2026-11-25;
 study and results: big-tasks "Measured facts", 2026-11-25). Copy into the work folder as
-brief-punch.md, fill every <...>, delete this comment. Append `punch-examples.md` (RMB's picks, with
-RMB's comments) after it. Engines, from blind tests against RMB's own picks: Codex gpt-6.2-astra
-(high) writes the punches, Claude Opus (high) the need lines; run both on the same brief and take
-each engine's field. Examples beat rules: a brief with these examples and no rule list won 6 of 7
-punches and 7 of 8 need lines against a brief with 33 rules. Do not add rules here; add RMB's next
-picks to punch-examples.md instead. -->
+brief-punch.md with `punch-examples.md` beside it, fill every <...>, delete this comment. In a
+companion run, run-companion.sh does the rest (SKILL.md Mc4b): it fills <PAGE>, makes
+`punch-items-<PAGE>.md` from the page (tools/punches.py items), appends punch-examples.md (RMB's
+picks, with RMB's comments) and the output file's name, runs Codex gpt-6.2-astra (high) and
+Claude Opus (high) on the same brief side by side, and puts astra's punches and Opus's need lines
+into the parts (tools/punches.py insert; the punch's kind comes from the item). Engines, from
+blind tests against RMB's own picks: astra won the punches, Opus the need lines. Examples beat
+rules: a brief with these examples and no rule list won 6 of 7 punches and 7 of 8 need lines
+against a brief with 33 rules, which had pushed both engines into compressed, hard-to-parse text.
+Do not add rules here; add RMB's next picks, with RMB's comments, to punch-examples.md instead.
+For the conductor, not for the brief: what RMB likes and rejects, in sum. Likes: plain words,
+readable in one pass; restating what we already have; saying what a result does not settle;
+reusing the item's exact terms (e.g. "symmetric bilinear") so the reader can connect them; need
+lines that give a new perspective or a real reason for the item here. Rejects: text that needs
+several readings; notions RMB does not know ("sub-/superadditive"); proof-step register; too much
+packed after a comma; pedantic need lines; a punch for an exercise that gives the solution away;
+a need line where the step is obvious. Use this to judge a run's output and to pick new examples. -->
 
 # Brief: write a "punch" and a "need line" for every item of a page
 
@@ -23,11 +34,11 @@ There are no further rules. What RMB means is shown by the examples at the end, 
 among many candidates on another page, with RMB's comments. Learn from them what makes a good
 punch and a good need line for this reader, and write in that spirit; do not copy their wording.
 
-W2. Input: `items.md` in this folder (every item, statement only, under `## <id>`), made by script
-from the page. The sources are here too (<transcripts>): read a passage only when you need an
-item's proof idea (search, then read the passage).
+W2. Input: `punch-items-<PAGE>.md` in this folder (every item, statement only, under `## <id>`),
+made by script from the page. The sources are in `sources/transcripts/`: read a passage only
+when you need an item's proof idea (search, then read the passage).
 
-T1. For every item of `items.md`, in order:
+T1. For every item of `punch-items-<PAGE>.md`, in order:
 
     ## <id>
     Punch: <text, or "none">
@@ -36,3 +47,4 @@ T1. For every item of `items.md`, in order:
 No preamble, no closing remarks.
 
 L1. Read only the files of this folder. Write only the output file named at the end. No git, no web.
+Final reply: one line.

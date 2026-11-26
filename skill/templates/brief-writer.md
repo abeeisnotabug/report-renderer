@@ -59,7 +59,7 @@ for this report (K2)>. Side-trip folds and sections as the plan names them.
 D4. **Display formulas** follow `STYLE.md`.
 
 D5. **Check your part on the page.** Make a test file `test-N.Rmd`: the YAML header of
-`sources/<source report>` with `layered: true`, then the fragments written so far, yours last.
+`sources/<source report>` with `layered: true` and `theme: fsu`, then the fragments written so far, yours last.
 From this folder knit it with `Rscript -e 'knitr::knit("test-N.Rmd")'`, render it with
 `~/Documents/Works/report-renderer/render.sh test-N.md`, and run
 `NODE_PATH=$(npm root -g) node ~/Documents/Works/report-renderer/phone-check.js "$PWD/test-N.html"`.

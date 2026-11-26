@@ -16,8 +16,10 @@ places they name as they are. The rules are `~/Documents/Works/report-renderer/S
 
 D1. Read `review-<PAGE>.md`, `open-<PAGE>.md`, and the parts `part-<PAGE>-*.Rmd` where the
 findings point. Edit the parts (not `page-<PAGE>.Rmd`, which the runner generates). Apply each
-finding. Do not change any other statement, formula or label. A finding you find wrong, or one
-that touches a place named in `open-<PAGE>.md`: skip it and say why.
+finding. Do not change any other statement, formula or label. Do not reword need lines, punches
+(`::: need`, `::: {.punch ...}`) or figure scripts (`live/*.js`) beyond what a finding states
+exactly. A finding you find wrong, or one that touches a place named in `open-<PAGE>.md`: skip it
+and say why.
 
 D2. Rebuild once, after all edits: from this folder, `cat header-<PAGE>.Rmd` followed by the parts
 in order (a blank line between) into `page-<PAGE>.Rmd`; then

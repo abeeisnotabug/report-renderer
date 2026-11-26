@@ -19,7 +19,9 @@ item just to be covered, and it is never labelled with a kind word the notes do 
 claim made in running text still appears (Lc1), in the prose or, if it needs a proof, as a page
 item stating just that claim.
 
-Lc1b. **Need lines and punches** are closed folds of the item. An item may carry a need line
+Lc1b. **Need lines and punches** are closed folds of the item. Every item gets both from a stage
+of their own after the writers (SKILL.md Mc4b), unless the text would be "none"; the writers write
+none. An item carries a need line
 (`::: need`, written before it or inside it: why the page needs it at this point; fold "Why
 here", the item's first fold) and a punch (`::: {.punch kind="why"}`: why a result holds, fold
 "Why it holds"; "demands": what a definition requires beyond the obvious weaker notion, "What it
@@ -77,4 +79,6 @@ keeps the explanation (RMB, 2026-11-24).
 Lc8. **Final section** of results used without proof (K1): "Earlier results used", restating each
 result cited from earlier courses or chapters under its source's number.
 
-Lc9. **Plots are interactive figures**, each with its "How it is computed" fold; no R plots, and the notes' own plots are replaced by the page's versions with controls (`STYLE.md`, "Interactive figures"; RMB, 2026-11-25).
+Lc9. **Plots are interactive figures**, each with its "How it is computed" fold; no R plots, and the notes' own plots are replaced by the page's versions with controls (`STYLE.md`, "Interactive figures"; RMB, 2026-11-25). As many as "How many" there asks: the contract lists them, figure workers build them after the writers (SKILL.md Mc4a).
+
+Lc10. **Theme:** `theme: fsu`, as for every report (`STYLE.md`, "Page").

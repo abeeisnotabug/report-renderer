@@ -26,7 +26,7 @@ Parts of `sources/<source report>` where you need to check a claim.
 ## What you do
 
 D1. **Assemble** `<report name>.Rmd` in this folder: the YAML header (`pagetitle`,
-`layered: true`), a build comment with the knit and render commands, then the parts in order,
+`layered: true`, `theme: fsu`), a build comment with the knit and render commands, then the parts in order,
 with the section "Known results" moved to the very end. [Links to other reports, such as
 `<file>.html#<anchor>`, stay as they are; the page is later moved next to those files.]
 
