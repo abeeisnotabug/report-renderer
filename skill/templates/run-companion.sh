@@ -41,7 +41,8 @@
 #     No transcription, contract or writers. The conductor cuts each page into header-<p>.Rmd and
 #     one part part-<p>-1.Rmd (WRITERS=(1 ...)) and keeps before-<p>.Rmd. Per page a planner
 #     (brief-rework.md + brief-rework-<p>.md, MODEL_REWORK) edits the part -> rework-<p>.md; then
-#     figures, punches, build, reader, fixer as above; the reader gets diff-<p>.txt (before -> now).
+#     figures, punches, build, reader, fixer as above; the reader gets diff-<p>.txt (the planner's
+#     changes), the figure fragments and the punch files.
 # Nothing in the run waits for the conductor except a usage limit by day (runlib.sh).
 # Rerunnable: a stage whose done file exists is skipped. Single steps, for repairs:
 #   ./run-companion.sh transcribe | contracts | chain <page> | figures <page> | punches <page> | summary
@@ -185,6 +186,8 @@ chain() {  # chain <page>: writers (or the rework planner), figures and punches,
       || { echo "[chain-$p] rework needs header-$p.Rmd, part-$p-1.Rmd and before-$p.Rmd"; return 1; }
     brief_for brief-rework.md rework-$p.brief brief-rework-$p.md "s/<PAGE>/$p/g"
     stage_as "$MODEL_REWORK" rework-$p rework-$p.brief rework-$p.md || { echo "stopping after the planner of $p"; return 1; }
+    # the planner's changes only (figures and punches are read from their own files; waste check 2026-11-27)
+    [[ -s diff-$p.txt ]] || { assemble_page $p; diff -u before-$p.Rmd page-$p.Rmd > diff-$p.txt; true; }
     n=0   # no writers
   else
     [[ -s done-contract-$p.md ]] || { echo "[chain-$p] no contract yet"; return 1; }
@@ -207,7 +210,6 @@ chain() {  # chain <page>: writers (or the rework planner), figures and punches,
     || echo "[chain-$p] figures not all placed: see figures-$p.md"; }
   punch_insert $p || echo "[chain-$p] no punches or need lines inserted"
   build_page $p build-$p.out   # a failed build still goes to the reader, who lists it
-  (( ${REWORK:-0} )) && { diff -u before-$p.Rmd page-$p.Rmd > diff-$p.txt; true; }
   brief_for brief-reader.md reader-$p.brief "" "s/<PAGE>/$p/g"
   stage_as "$MODEL_READER" reader-$p reader-$p.brief review-$p.md || return 1
   brief_for brief-fixer.md fixer-$p.brief "" "s/<PAGE>/$p/g"

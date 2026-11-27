@@ -33,9 +33,13 @@ and limit). No PDF, no image.
 
 [rework: R1a. This page is a rework of a finished page (SKILL.md Mc9): there is no contract, no
 `items-<PAGE>.txt` and no writers' notes. Instead read the planner's report `rework-<PAGE>.md`, the
-figure list `figs-<PAGE>.md`, and `diff-<PAGE>.txt` (the page before the run against the page now,
-made by script), and read `page-<PAGE>.md` only where the diff changed it, with enough context to
-judge each change. L1 to L3 and L6 apply to the changed places only; L5 and L7 in full.]
+figure list `figs-<PAGE>.md`, `diff-<PAGE>.txt` (the planner's changes: the page before the run
+against the page right after the planner, made by script), the figures as made
+(`figs-<PAGE>/frag-*.Rmd`, `figures-<PAGE>.md`), and the punches and need lines as inserted
+(`punches-<PAGE>.md`; the punches from `punch-astra-<PAGE>.md`, or from `punch-opus-<PAGE>.md` if
+`punch-fallback-<PAGE>.txt` exists; the need lines from `punch-opus-<PAGE>.md`). Read
+`page-<PAGE>.md` only where one of these needs its context (an item's statement, a figure's place).
+L1 to L3 and L6 apply to the planner's changes only; L5 and L7 in full.]
 
 ## What you look for
 
