@@ -27,6 +27,12 @@ and the knitted page `page-<PAGE>.md`, top to bottom, once. Transcripts in `sour
 check a statement or formula that looks wrong, and only that passage (Grep, then Read with offset
 and limit). No PDF, no image.
 
+[rework: R1a. This page is a rework of a finished page (SKILL.md Mc9): there is no contract, no
+`items-<PAGE>.txt` and no writers' notes. Instead read the planner's report `rework-<PAGE>.md`, the
+figure list `figs-<PAGE>.md`, and `diff-<PAGE>.txt` (the page before the run against the page now,
+made by script), and read `page-<PAGE>.md` only where the diff changed it, with enough context to
+judge each change. L1 to L3 and L6 apply to the changed places only; L5 and L7 in full.]
+
 ## What you look for
 
 L1. Contradictions: two places that state the same thing differently (a statement, a formula,

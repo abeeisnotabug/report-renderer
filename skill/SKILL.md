@@ -152,6 +152,19 @@ place with the smallest edit, and lists doubts in `mathcheck-<page>-<k>.md`. The
 the parts, the headers, `sources/transcripts/` and the other pages' `.md` files the headers'
 `pages:` name. Then the runner builds each page; the main session rebuilds them together (Mc7).
 
+Mc9. **Rework of a finished companion** (RMB, 2026-11-27): a page whose content is checked is
+brought up to rules that came after it (interactive figures, need lines and punches, visible slip
+lines, the theme), instead of being written again. `run-companion.sh` with `REWORK=1`: the
+conductor cuts each page into `header-<p>.Rmd` (with `theme: fsu` set by script) and one part
+`part-<p>-1.Rmd` (`WRITERS=(1 ...)`), keeps the page as it was in `before-<p>.Rmd`, and fills
+`templates/companion-rework.md` (with a paragraph per page in `brief-rework-<p>.md`). Per page an
+Opus planner sorts the R chunks (static figures stay; plots become markers and entries of
+`figs-<p>.md`; computations stay hidden), adds the figures "How many" asks, renumbers the static
+figures, adds the visible slip lines and updates the reading guide. Then figures (Mc4a), punches
+(Mc4b), build, and the reader's rework variant, which reads the diff, and the fixer. Last, Mc7.
+Pages one after another (`PARALLEL_PAGES=0`) when a usage window may run out, so that the first
+page finishes whole.
+
 ## Making a topic introduction
 
 Agreed with RMB on 2026-11-17. Briefs from the templates in `templates/` (R2):

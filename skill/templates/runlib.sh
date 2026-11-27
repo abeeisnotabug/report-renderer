@@ -14,6 +14,9 @@
 #   restart   start the stage fresh on OTHER_CFG (later stages stay there)
 # By day (DAY_START to DAY_END) it waits for $DECISION; at night it waits for the reset and
 # resumes, unless $DECISION arrives first. It never restarts a stage on the same account.
+# LIMIT_DECISION=wait (set in run.conf or the environment) answers every limit with "wait", day
+# and night, without asking: for a run RMB wants kept on one account (RMB, 2026-11-27). The
+# reset time is that of the window that stopped the run (5-hour or weekly; the log's resetsAt).
 # Tested 2026-11-20 on the normal path; 2026-11-21 the limit path with "move"; 2026-11-24 the
 # night path (wait for the reset, resume the same session) unattended.
 
@@ -78,7 +81,10 @@ on_limit() {  # on_limit <stage> <reset epoch>; changes sid, fresh, CFG of run_s
     "$name" "$sid" "$CFG" "$(date -r $resume_at)" "$DECISION" > "$LIMIT"
   osascript -e "display notification \"$name: usage limit, reset $(date -r $resume_at +%H:%M). Answer in $DECISION\" with title \"Report run\"" 2>/dev/null
   h=$(( 10#$(date +%H) ))
-  if (( h >= DAY_START && h < DAY_END )); then
+  if [[ -n "${LIMIT_DECISION:-}" ]]; then
+    echo "[$name] usage limit: answer fixed in advance ($LIMIT_DECISION); waiting until $(date -r $resume_at)"
+    print -r -- "$LIMIT_DECISION" > "$DECISION"
+  elif (( h >= DAY_START && h < DAY_END )); then
     echo "[$name] usage limit (day): waiting for $DECISION (wait | move | restart): $(date)"
     until [[ -s "$DECISION" ]]; do sleep 60; done
   else

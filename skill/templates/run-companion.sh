@@ -37,6 +37,11 @@
 #   4 summary     script: run-done.md (what each page has, open questions, usage per stage), and a
 #                 desktop notification. The conductor waits for run-done.md or limit-*.txt
 #                 (accounts.md Ac1g).
+#   rework mode (REWORK=1 in run.conf; SKILL.md Mc9): a finished page brought up to newer rules.
+#     No transcription, contract or writers. The conductor cuts each page into header-<p>.Rmd and
+#     one part part-<p>-1.Rmd (WRITERS=(1 ...)) and keeps before-<p>.Rmd. Per page a planner
+#     (brief-rework.md + brief-rework-<p>.md, MODEL_REWORK) edits the part -> rework-<p>.md; then
+#     figures, punches, build, reader, fixer as above; the reader gets diff-<p>.txt (before -> now).
 # Nothing in the run waits for the conductor except a usage limit by day (runlib.sh).
 # Rerunnable: a stage whose done file exists is skipped. Single steps, for repairs:
 #   ./run-companion.sh transcribe | contracts | chain <page> | figures <page> | punches <page> | summary
@@ -172,11 +177,19 @@ punches() {  # punches <page>: punch sessions, then the need lines and punches i
   punch_sessions $1; punch_insert $1
 }
 
-chain() {  # chain <page>: writers, figures and punches, build, reader, fixer, build
+chain() {  # chain <page>: writers (or the rework planner), figures and punches, build, reader, fixer, build
   local p=$1 n k
   n=$(writers_of $p); [[ -n "$n" ]] || { echo "page $p not in run.conf"; return 1; }
-  [[ -s done-contract-$p.md ]] || { echo "[chain-$p] no contract yet"; return 1; }
-  for k in $(seq 1 $n); do
+  if (( ${REWORK:-0} )); then
+    [[ -s header-$p.Rmd && -s part-$p-1.Rmd && -s before-$p.Rmd ]] \
+      || { echo "[chain-$p] rework needs header-$p.Rmd, part-$p-1.Rmd and before-$p.Rmd"; return 1; }
+    brief_for brief-rework.md rework-$p.brief brief-rework-$p.md "s/<PAGE>/$p/g"
+    stage_as "$MODEL_REWORK" rework-$p rework-$p.brief rework-$p.md || { echo "stopping after the planner of $p"; return 1; }
+    n=0   # no writers
+  else
+    [[ -s done-contract-$p.md ]] || { echo "[chain-$p] no contract yet"; return 1; }
+  fi
+  for (( k = 1; k <= n; k++ )); do   # not seq: on macOS `seq 1 0` counts down
     cut_contract $p $k
     brief_for brief-writer.md writer-$p-$k.brief "" "s/<PAGE>/$p/g; s/<K>/$k/g; s/<N>/$n/g"
     stage_as "$MODEL_WRITER" writer-$p-$k writer-$p-$k.brief notes-$p-$k.md \
@@ -194,6 +207,7 @@ chain() {  # chain <page>: writers, figures and punches, build, reader, fixer, b
     || echo "[chain-$p] figures not all placed: see figures-$p.md"; }
   punch_insert $p || echo "[chain-$p] no punches or need lines inserted"
   build_page $p build-$p.out   # a failed build still goes to the reader, who lists it
+  (( ${REWORK:-0} )) && { diff -u before-$p.Rmd page-$p.Rmd > diff-$p.txt; true; }
   brief_for brief-reader.md reader-$p.brief "" "s/<PAGE>/$p/g"
   stage_as "$MODEL_READER" reader-$p reader-$p.brief review-$p.md || return 1
   brief_for brief-fixer.md fixer-$p.brief "" "s/<PAGE>/$p/g"
