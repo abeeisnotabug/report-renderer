@@ -9,6 +9,10 @@ work folder as brief-reader.md; the runner replaces <PAGE> by each page's tag. F
 W1. Several writers, one after another, wrote the <lecture | paper> companion `page-<PAGE>` from
 a fixed contract, `contract-<PAGE>.md`. Writers working one after another drift. You are a fresh
 reader (big-tasks T6): you read the whole page once and **list** problems; you do not rewrite.
+[rework: Here there were no writers: the page is a finished page that a planner and the figure
+and punch stages changed (SKILL.md Mc9). You read the changes, not the whole page (R1a), and R1a
+replaces what R1 says about the contract, the items list, the writers' notes and reading the
+whole page.]
 
 W2. The run goes on without anyone looking in between: a fixer applies **every** finding you put
 into `review-<PAGE>.md`, and RMB answers the questions in `open-<PAGE>.md` after the run. So sort
