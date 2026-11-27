@@ -49,11 +49,6 @@ Background for extending multilevel latent time series models to count and event
 - [The Kalman filter, and how Sørensen (2026) marginalises a DSEM](mlts/sorensen-2026/kalman-intro.html):
   what the filter computes, why it gives the marginal likelihood exactly, and how the paper gives
   a DSEM the filter's shape.
-- [Talk (RMB version): the same story in about 45 minutes](mlts/sorensen-2026/kalman-talk-RMB.html): animated
-  slides; arrow keys step, S opens the presenter view with the talk text.
-- [Talk (group version)](mlts/sorensen-2026/kalman-talk-group.html): the same story for the
-  research group, without the measure-theoretic layer, with a slide on why drawing the states is
-  slow; arrow keys step, S opens the presenter view, D switches light and dark.
 
 ## Stochastik {#stochastik}
 
