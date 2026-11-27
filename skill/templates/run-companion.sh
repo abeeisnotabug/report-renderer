@@ -88,6 +88,7 @@ transcribe() {
 
 contracts() {  # one after another: a later page's contract may cite an earlier page's labels
   local p
+  (( ${REWORK:-0} )) && { echo "[contracts] rework mode: no contracts"; return 0; }
   for p in $PAGES; do
     brief_for brief-contract.md contract-$p.brief brief-contract-$p.md "s/<PAGE>/$p/g"
     stage_as "$MODEL_CONTRACT" contract-$p contract-$p.brief done-contract-$p.md || return 1
@@ -187,6 +188,7 @@ chain() {  # chain <page>: writers (or the rework planner), figures and punches,
     brief_for brief-rework.md rework-$p.brief brief-rework-$p.md "s/<PAGE>/$p/g"
     stage_as "$MODEL_REWORK" rework-$p rework-$p.brief rework-$p.md || { echo "stopping after the planner of $p"; return 1; }
     # the planner's changes only (figures and punches are read from their own files; waste check 2026-11-27)
+    # made once, right after the planner: a rerun keeps it, since by then figures and punches may be in
     [[ -s diff-$p.txt ]] || { assemble_page $p; diff -u before-$p.Rmd page-$p.Rmd > diff-$p.txt; true; }
     n=0   # no writers
   else
